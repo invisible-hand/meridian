@@ -43,39 +43,45 @@ const EXCLUDE_KEYWORDS = [
 const EXCLUDE_URL_PATTERNS = ["/video/", "/videos/", "youtube.com", "youtu.be", "tiktok.com", "/podcast/"];
 
 // ── Prompt for the smol.ai newsletter extraction pass ────────────────────────
-const SMOL_EXTRACT_PROMPT = [
-  "You are analyzing an AI industry newsletter to extract key stories for banking executives.",
-  "From the full newsletter text provided, identify:",
-  "- Up to 3 stories (bankingStories) that are BOTH about AI/ML AND directly relevant to banking, fintech, payments, fraud, compliance, lending, or financial regulation.",
-  "- Up to 3 stories (aiStories) covering the most strategically important general AI/ML developments an executive should know about.",
-  "HARD RULES:",
-  "- Completely exclude any content from paywalled sources (FT, WSJ, Bloomberg, The Information, American Banker, The Economist, Barrons, etc.).",
-  "- Exclude social media gossip, developer tooling minutiae, and entertainment/consumer AI.",
-  "- For bankingStories: the banking/finance connection must be explicit and name a real institution, regulator, or financial product.",
-  "- For each story: write a sharp title capturing the key insight, a 2-3 sentence executiveSummary with concrete facts, and a businessImpact sentence with a specific action for banking leaders.",
-  "- Set sourceUrl to the newsletter URL provided — do not invent external URLs.",
-  "Return strict JSON: {\"bankingStories\":[{\"title\":\"...\",\"executiveSummary\":\"...\",\"businessImpact\":\"...\",\"sourceUrl\":\"...\"}],\"aiStories\":[...]}"
-].join(" ");
+const SMOL_EXTRACT_PROMPT = `You're reading this morning's AI newsletter so a banking executive doesn't have to. They're walking into their 8am board call in 20 minutes. What do they actually need to know?
+
+From the newsletter provided, pull out:
+- Up to 3 bankingStories: AI moves that directly touch their world — a real bank, a named regulator, a specific financial product. Not "could affect banks someday." Happening now.
+- Up to 3 aiStories: The AI developments big enough that they'd kick themselves for missing. Model releases, capability leaps, enterprise deployments already reshaping their vendor landscape.
+
+Skip anything from paywalled sources (FT, WSJ, Bloomberg, The Information, American Banker, Economist, Barrons). Skip developer gossip, consumer apps, entertainment AI.
+
+For each story, write like you're briefing a sharp colleague who has no patience for filler:
+- title: The actual point, not a repackaged headline. What happened and why it matters in one line.
+- executiveSummary: 2-3 sentences. What happened, who did it, what it means. No hedging, no "it remains to be seen." Stick to what is known.
+- businessImpact: One concrete thing they should do or watch. Start with a verb. Not "banks should consider exploring..." — try "Pressure your core banking vendor on this at your next QBR" or "This is the model your fraud team should be evaluating right now."
+- sourceUrl: Use the newsletter URL exactly as provided — do not invent external URLs.
+
+Return strict JSON: {"bankingStories":[{"title":"...","executiveSummary":"...","businessImpact":"...","sourceUrl":"..."}],"aiStories":[...]}`;
+
 
 // ── Main prompt for the supplementary RSS candidates pass ─────────────────────
-export const LLM_PROMPT = `You are a senior analyst curating a daily AI intelligence brief for C-suite banking executives. Stories from the smol.ai newsletter are already included — your job is to surface ADDITIONAL coverage from the provided RSS items.
+export const LLM_PROMPT = `You're a trusted intelligence analyst who knows banking inside-out. The smol.ai newsletter stories are already handled — now scan these RSS items for anything else worth surfacing.
 
-SELECTION CRITERIA
-- Up to 3 bankingStories: AI developments with a direct, explicit connection to banking, fintech, or financial services. No tenuous links.
-- Up to 3 aiStories: Broad AI developments significant enough that a banking executive should know about them today.
+The executive reading this is sharp, time-constrained, and allergic to filler. They read between 7am meetings. Your job isn't to summarize the internet — it's to find the 1-3 things they'd actually wish they knew about today.
 
-HARD REJECT
-- Paywalled articles with no substantive content
-- Social media, entertainment, or lifestyle content
-- Duplicate coverage of anything already in the smol.ai newsletter
-- Opinion pieces without new information or data
+WHAT TO INCLUDE
+- bankingStories (up to 3): AI news where the banking angle is explicit and concrete. Not "could apply to financial services someday." A named bank deployed it. A regulator issued guidance. A fintech raised on it. Real, specific, now.
+- aiStories (up to 3): General AI developments a banking executive would feel behind on if they missed — new model capabilities, enterprise adoption at scale, meaningful moves from the major labs.
 
-WRITING STANDARDS
-Write for a time-pressed executive who reads at 7am between meetings. Every word must earn its place.
-- executiveSummary: 2–3 sentences max. What happened, why it matters. No jargon, no hedging.
-- businessImpact: 1–2 sentences. Specific, actionable implication for a bank or fintech. Avoid vague statements like "this could affect the industry."
+WHAT TO SKIP
+- Paywalled articles with no actual content. A headline and a wall isn't a story.
+- Social, entertainment, lifestyle. Not their world.
+- Vague opinion pieces with no new data or concrete developments.
+- Anything already covered by the smol.ai stories.
 
-OUTPUT FORMAT
+HOW TO WRITE IT
+Think of it as explaining to a very smart colleague who's been heads-down in a board meeting for a week. They don't need the background. They need: what changed, why it matters, what to do about it.
+
+- title: The actual point in one line — not a repackaged headline.
+- executiveSummary: 2-3 sentences. Direct, active voice. What changed, who moved, what's different now. Avoid: "it's worth noting," "this highlights," "in a significant development."
+- businessImpact: One or two sentences starting with an action verb. Specific enough they could say it in a meeting. Avoid: "banks should monitor this space," "this could impact the industry," "leaders may want to consider."
+
 Return strict JSON only — no commentary, no markdown wrapper.
 
 {
