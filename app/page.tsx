@@ -207,9 +207,12 @@ export default async function HomePage() {
 
       <div className="lp">
         {/* Nav */}
-        <nav className="lp-nav">
+          <nav className="lp-nav">
           <span className="lp-logo"><span>M</span>eridian</span>
-          <Link href="/issues" className="lp-nav-link">Past issues →</Link>
+          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+            <Link href="/about" className="lp-nav-link">About</Link>
+            <Link href="/issues" className="lp-nav-link">Past issues →</Link>
+          </div>
         </nav>
 
         {/* Hero */}
@@ -254,7 +257,10 @@ export default async function HomePage() {
 
         {/* Footer */}
         <footer className="lp-footer">
-          <Link href="/issues" className="lp-footer-link">Past issues</Link>
+          <div style={{ display: "flex", gap: "1.25rem" }}>
+            <Link href="/issues" className="lp-footer-link">Past issues</Link>
+            <Link href="/about" className="lp-footer-link">About</Link>
+          </div>
           <p style={{ margin: 0, fontSize: 11, color: "#1e293b" }}>
             Curated by AI · Delivered daily
           </p>
