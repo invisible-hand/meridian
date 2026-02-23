@@ -5,7 +5,7 @@ import {
   listActiveSubscriberEmails,
   markDigestSent
 } from "@/lib/db";
-import { sendDigestEmail } from "@/lib/email";
+import { batchSendDigestEmails, sendDigestEmail } from "@/lib/email";
 import { DailyDigest } from "@/lib/types";
 
 export type SendResult =
@@ -45,31 +45,30 @@ export async function runSendForToday(options?: {
   }
 
   const digestPayload = digest.content_json as DailyDigest;
-  let successCount = 0;
-  let failCount = 0;
 
-  for (const email of recipients) {
-    try {
-      await sendDigestEmail({ to: email, digest: digestPayload });
-      successCount += 1;
-      await addSendLog({
-        digestId: digest.id,
-        email,
-        status: testMode ? "sent_test" : "sent"
-      });
-    } catch (error) {
-      failCount += 1;
-      await addSendLog({
-        digestId: digest.id,
-        email,
-        status: testMode ? "failed_test" : "failed",
-        error: error instanceof Error ? error.message : "unknown"
-      });
-    }
+  const { sent: successCount, failed: failCount, failures } =
+    await batchSendDigestEmails({ recipients, digest: digestPayload });
+
+  // Log failures individually so they're visible in the admin monitor
+  for (const { email, error } of failures) {
+    await addSendLog({
+      digestId: digest.id,
+      email,
+      status: testMode ? "failed_test" : "failed",
+      error
+    });
   }
 
-  if (successCount > 0 && !testMode) {
-    await markDigestSent(digest.id);
+  if (successCount > 0) {
+    // Log a single aggregated success entry rather than N individual rows
+    await addSendLog({
+      digestId: digest.id,
+      email: `batch:${successCount}`,
+      status: testMode ? "sent_test" : "sent"
+    });
+    if (!testMode) {
+      await markDigestSent(digest.id);
+    }
   }
 
   return {

@@ -1,13 +1,14 @@
 import { Resend } from "resend";
 import { DailyDigest, DigestStory } from "@/lib/types";
 import { isPaywalled } from "@/lib/paywall";
+import { unsubUrl } from "@/lib/unsub";
 
 const SECTIONS = {
   banking: { label: "Banking AI", headerBg: "#0f2444", accent: "#3b82f6", iconSvg: bankIcon() },
   ai:      { label: "General AI", headerBg: "#0f2e1a", accent: "#22c55e", iconSvg: aiIcon() }
 } as const;
 
-export function renderDigestHtml(digest: DailyDigest): string {
+export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): string {
   const bankingStories = digest.bankingStories ?? digest.stories ?? [];
   const aiStories = digest.aiStories ?? [];
   const formattedDate = formatDate(digest.date);
@@ -63,9 +64,12 @@ export function renderDigestHtml(digest: DailyDigest): string {
         <tr>
           <td style="background:#f8fafc;padding:20px 36px 24px;border-top:1px solid #e5e7eb;">
             <p style="margin:0;font-size:11px;color:#9ca3af;line-height:1.7;">
-              You are receiving this because you subscribed to Meridian's daily AI digest.<br />
+              You're receiving this because you subscribed to Meridian's daily AI brief.<br />
               Curated by AI &nbsp;&middot;&nbsp; Delivered daily &nbsp;&middot;&nbsp;
-              <a href="https://news.smol.ai/issues" style="color:#9ca3af;">AINews</a>
+              ${recipientEmail
+                ? `<a href="${escapeHtml(unsubUrl(recipientEmail))}" style="color:#9ca3af;text-decoration:underline;">Unsubscribe</a>`
+                : `<a href="/" style="color:#9ca3af;">Meridian</a>`
+              }
             </p>
           </td>
         </tr>
@@ -197,11 +201,71 @@ function aiIcon(): string {
   </svg>`;
 }
 
+const BATCH_SIZE = 100;
+
+export interface BatchSendResult {
+  sent: number;
+  failed: number;
+  failures: Array<{ email: string; error: string }>;
+}
+
+/**
+ * Sends the digest to all recipients using Resend's batch API (100 per call).
+ * Each email gets a personalised one-click unsubscribe link.
+ */
+export async function batchSendDigestEmails(params: {
+  recipients: string[];
+  digest: DailyDigest;
+}): Promise<BatchSendResult> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!apiKey) throw new Error("Missing RESEND_API_KEY");
+  if (!from) throw new Error("Missing RESEND_FROM_EMAIL");
+
+  const resend = new Resend(apiKey);
+  const subject = getDigestSubject(params.digest);
+  const { recipients, digest } = params;
+
+  let sent = 0;
+  let failed = 0;
+  const failures: Array<{ email: string; error: string }> = [];
+
+  for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
+    const chunk = recipients.slice(i, i + BATCH_SIZE);
+    const batch = chunk.map((email) => ({
+      from,
+      to: email,
+      subject,
+      html: renderDigestHtml(digest, email)
+    }));
+
+    const { data, error } = await resend.batch.send(batch);
+
+    if (error || !data) {
+      // Entire batch failed — mark all as failed
+      failed += chunk.length;
+      chunk.forEach((email) =>
+        failures.push({ email, error: error?.message ?? "batch API error" })
+      );
+    } else {
+      sent += chunk.length;
+    }
+  }
+
+  return { sent, failed, failures };
+}
+
+/** Single-recipient send — kept for test emails from the admin panel. */
 export async function sendDigestEmail(params: { to: string; digest: DailyDigest }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
   if (!apiKey) throw new Error("Missing RESEND_API_KEY");
   if (!from) throw new Error("Missing RESEND_FROM_EMAIL");
   const resend = new Resend(apiKey);
-  await resend.emails.send({ from, to: params.to, subject: getDigestSubject(params.digest), html: renderDigestHtml(params.digest) });
+  await resend.emails.send({
+    from,
+    to: params.to,
+    subject: getDigestSubject(params.digest),
+    html: renderDigestHtml(params.digest, params.to)
+  });
 }
