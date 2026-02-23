@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const BASE_URL =
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body suppressHydrationWarning style={{ margin: 0, fontFamily: "system-ui, -apple-system, sans-serif" }}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
