@@ -266,26 +266,41 @@ async function callLlm(
   systemPrompt: string,
   userContent: string
 ): Promise<unknown | null> {
+  // Reasoning models (o-series, gpt-5.x) don't support the temperature parameter
+  const isReasoningOrGpt5 = /^(o\d|gpt-5)/i.test(model);
+
+  const body: Record<string, unknown> = {
+    model,
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userContent }
+    ]
+  };
+
+  if (!isReasoningOrGpt5) {
+    body.temperature = 0.2;
+  }
+
   try {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model,
-        temperature: 0.2,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userContent }
-        ]
-      })
+      body: JSON.stringify(body)
     });
-    if (!res.ok) return null;
+
+    if (!res.ok) {
+      const err = await res.text().catch(() => res.statusText);
+      console.error(`[callLlm] OpenAI API error ${res.status}: ${err}`);
+      return null;
+    }
+
     const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
     const content = json.choices?.[0]?.message?.content;
     if (!content) return null;
     return JSON.parse(content);
-  } catch {
+  } catch (e) {
+    console.error("[callLlm] Unexpected error:", e);
     return null;
   }
 }
