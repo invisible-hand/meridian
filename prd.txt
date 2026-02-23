@@ -1,0 +1,40 @@
+AI Executive Digest V1 PRD
+
+1) Product Goal
+Build a daily, automated AI market/news briefing for executives, focused on business impact over technical depth.
+
+2) Audience
+Mixed audience of tech and business executives.
+
+3) V1 Scope
+- One daily segment: Fintech/Banking.
+- Public subscribe/unsubscribe flow.
+- Admin area to add/remove subscribers and sources.
+- Automated ingestion from RSS + one discovery API.
+- Automated LLM synthesis of top 3 business-impact stories.
+- Scheduled generation, then scheduled send.
+- Optional HITL: admin may review and skip/approve before send.
+
+4) Non-Goals
+- Multi-industry personalization in V1.
+- Complex user roles/permissions.
+- Multi-database architecture.
+
+5) Functional Requirements
+- Collect subscriber emails from web UI.
+- Maintain subscriber list in one database.
+- Ingest and deduplicate source content.
+- Generate structured digest with source links.
+- Send digest to active subscribers using Resend.
+- Keep run/send logs.
+- Admin toggle for HITL requirement.
+
+6) Reliability Requirements
+- Idempotent cron endpoints.
+- Safe re-run without duplicate sends.
+- Graceful behavior if source/API errors occur.
+
+7) Success Criteria
+- Daily digest is generated and delivered on schedule.
+- Digest includes 3 high-signal fintech/banking items.
+- Admin can enable review mode and block send until approval.
