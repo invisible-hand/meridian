@@ -130,7 +130,7 @@ export default async function AdminPage() {
   if (!isAuthed) {
     return (
       <main className="admin-page">
-        <h1>Meridian Admin</h1>
+        <h1>BankingNewsAI Admin</h1>
         <p className="muted" style={{ marginBottom: "1.5rem" }}>
           Set <code>ADMIN_PASSWORD</code> in your environment to log in.
         </p>
@@ -162,7 +162,7 @@ export default async function AdminPage() {
       {/* ── Header ── */}
       <div className="admin-header">
         <div>
-          <h1>Meridian Admin</h1>
+          <h1>BankingNewsAI Admin</h1>
           <p className="muted">
             {todayDate} &middot;{" "}
             <Link href="/admin/monitor">Full monitoring →</Link>

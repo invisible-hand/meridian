@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 function secret(): string {
-  return process.env.UNSUBSCRIBE_SECRET ?? process.env.ADMIN_PASSWORD ?? "meridian-unsub-default";
+  return process.env.UNSUBSCRIBE_SECRET ?? process.env.ADMIN_PASSWORD ?? "bankingnewsai-unsub-default";
 }
 
 /** Returns a URL-safe token encoding the subscriber's email address. */

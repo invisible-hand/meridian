@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Meridian — AI News for Banking Executives",
+  title: "About BankingNewsAI — AI News for Banking Executives",
   description:
-    "Meridian was built for VPs, SVPs, and C-suite leaders in banking and fintech who need to stay current on AI without spending an hour a day sifting through noise. Here's why it exists.",
+    "BankingNewsAI was built for VPs, SVPs, and C-suite leaders in banking and fintech who need to stay current on AI without spending an hour a day sifting through noise. Here's why it exists.",
   openGraph: {
-    title: "About Meridian — AI News for Banking Executives",
+    title: "About BankingNewsAI — AI News for Banking Executives",
     description:
-      "Hundreds of AI headlines break every day. Most of them have nothing to do with banking. Meridian filters down to the six stories that actually matter — delivered before your first meeting."
+      "Hundreds of AI headlines break every day. Most of them have nothing to do with banking. BankingNewsAI filters down to the six stories that actually matter — delivered before your first meeting."
   }
 };
 
@@ -191,7 +191,7 @@ export default function AboutPage() {
 
       <div className="about-root">
         <nav className="about-nav">
-          <Link href="/" className="about-logo"><span>M</span>eridian</Link>
+          <Link href="/" className="about-logo">Banking<span>News</span>AI</Link>
           <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
             <Link href="/issues" className="about-nav-link">Past issues</Link>
             <Link href="/#subscribe" style={{
@@ -204,7 +204,7 @@ export default function AboutPage() {
         </nav>
 
         <article className="about-body">
-          <p className="about-kicker">About Meridian</p>
+          <p className="about-kicker">About BankingNewsAI</p>
 
           <h1 className="about-h1">
             The world ships<br />
@@ -247,7 +247,7 @@ export default function AboutPage() {
 
           {/* ── Who it's for ── */}
           <section className="about-section">
-            <p className="about-h2">Who Meridian is for</p>
+            <p className="about-h2">Who BankingNewsAI is for</p>
 
             <p className="about-pull">
               VPs. SVPs. Chiefs. People whose mornings are already scheduled before they wake up.
@@ -269,7 +269,7 @@ export default function AboutPage() {
             </p>
 
             <p className="about-p">
-              Meridian was built for that person. For the five minutes between getting your
+              BankingNewsAI was built for that person. For the five minutes between getting your
               coffee and your 8am call where you want to feel genuinely caught up — not
               just scrolled.
             </p>
@@ -277,12 +277,12 @@ export default function AboutPage() {
 
           <hr className="about-divider" />
 
-          {/* ── What Meridian does ── */}
+          {/* ── What BankingNewsAI does ── */}
           <section className="about-section">
-            <p className="about-h2">What Meridian does</p>
+            <p className="about-h2">What BankingNewsAI does</p>
 
             <p className="about-p">
-              Every morning, Meridian scans 20+ sources — Banking Dive, Finextra, Tearsheet,
+              Every morning, BankingNewsAI scans 20+ sources — Banking Dive, Finextra, Tearsheet,
               PYMNTS, Fintech Futures, Crowdfund Insider, and the curated AI industry
               newsletter from smol.ai, among others. An AI model trained for this specific
               task reads through every item, strips out the paywalled teasers that give you
@@ -329,7 +329,7 @@ export default function AboutPage() {
             </p>
 
             <p className="about-p">
-              Meridian is free. It takes under five minutes to read. And the goal — every
+              BankingNewsAI is free. It takes under five minutes to read. And the goal — every
               single day — is to make sure that when someone in your next meeting references
               an AI development in financial services, you already know exactly what
               they&apos;re talking about.
@@ -341,7 +341,7 @@ export default function AboutPage() {
             <h3>Start your morning smarter</h3>
             <p>Free. No spam. Unsubscribe in one click anytime.</p>
             <Link href="/#subscribe" className="about-cta-btn">
-              Subscribe to Meridian →
+              Subscribe to BankingNewsAI →
             </Link>
           </div>
         </article>

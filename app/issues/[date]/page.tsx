@@ -107,7 +107,7 @@ export default async function IssuePage({
       }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
           <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#fff", textDecoration: "none" }}>
-            <span style={{ color: "#3b82f6" }}>M</span>eridian
+            Banking<span style={{ color: "#3b82f6" }}>News</span>AI
           </Link>
           <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
             <Link href="/issues" style={{ color: "#94a3b8", fontSize: 13, textDecoration: "none" }}>
@@ -129,7 +129,7 @@ export default async function IssuePage({
         padding: "48px 2rem 44px", textAlign: "center"
       }}>
         <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3b82f6", marginBottom: 10 }}>
-          MERIDIAN DAILY AI BRIEF
+          BANKINGNEWSAI DAILY BRIEF
         </p>
         <h1 style={{ fontSize: "clamp(1.4rem,3.5vw,2rem)", fontWeight: 800, color: "#fff", margin: "0 0 10px", letterSpacing: "-0.02em" }}>
           {formatted}
@@ -226,7 +226,7 @@ export default async function IssuePage({
         padding: "24px 2rem", textAlign: "center"
       }}>
         <p style={{ color: "#475569", fontSize: 12, margin: 0 }}>
-          <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>Meridian</Link>
+          <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>BankingNewsAI</Link>
           {" "}·{" "}
           <Link href="/issues" style={{ color: "#64748b", textDecoration: "none" }}>All issues</Link>
           {" "}· Curated by AI · Delivered daily

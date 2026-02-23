@@ -3,7 +3,7 @@ import { listSentDigests, ensureSchema } from "@/lib/db";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://meridian.ai");
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://bankingnewsai.com");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await ensureSchema();

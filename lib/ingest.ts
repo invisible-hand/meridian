@@ -194,7 +194,7 @@ function isSmolIssueItem(sourceUrl: string, itemUrl: string): boolean {
 
 async function fetchSmolIssueText(issueUrl: string): Promise<string | null> {
   try {
-    const response = await fetch(issueUrl, { headers: { "User-Agent": "meridian-digest-bot/1.0" } });
+    const response = await fetch(issueUrl, { headers: { "User-Agent": "bankingnewsai-bot/1.0" } });
     if (!response.ok) {
       return null;
     }
@@ -241,7 +241,7 @@ async function tryIngestSmolIssuesFallback(sourceName: string, sourceUrl: string
 
   try {
     const response = await fetch("https://news.smol.ai/issues", {
-      headers: { "User-Agent": "meridian-digest-bot/1.0" }
+      headers: { "User-Agent": "bankingnewsai-bot/1.0" }
     });
     if (!response.ok) {
       return null;
@@ -343,7 +343,7 @@ async function ingestSmolIssuesForToday(): Promise<{
 
   try {
     const response = await fetch(sourceUrl, {
-      headers: { "User-Agent": "meridian-digest-bot/1.0" }
+      headers: { "User-Agent": "bankingnewsai-bot/1.0" }
     });
     if (!response.ok) {
       return { ok: false, attempted: 0, inserted: 0, duplicates: 0 };

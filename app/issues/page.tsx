@@ -17,7 +17,7 @@ export default async function IssuesPage() {
       }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
           <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#fff", textDecoration: "none", letterSpacing: "-0.02em" }}>
-            <span style={{ color: "#3b82f6" }}>M</span>eridian
+            Banking<span style={{ color: "#3b82f6" }}>News</span>AI
           </Link>
           <Link href="/#subscribe" style={{
             background: "#3b82f6", color: "#fff", fontSize: 13, fontWeight: 600,
@@ -97,7 +97,7 @@ export default async function IssuesPage() {
         padding: "24px 2rem", textAlign: "center"
       }}>
         <p style={{ color: "#475569", fontSize: 12, margin: 0 }}>
-          <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>Meridian</Link>
+          <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>BankingNewsAI</Link>
           {" "}· Curated by AI · Delivered daily
         </p>
       </footer>

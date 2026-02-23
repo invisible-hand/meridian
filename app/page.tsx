@@ -208,7 +208,7 @@ export default async function HomePage() {
       <div className="lp">
         {/* Nav */}
           <nav className="lp-nav">
-          <span className="lp-logo"><span>M</span>eridian</span>
+          <span className="lp-logo">Banking<span>News</span>AI</span>
           <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
             <Link href="/about" className="lp-nav-link">About</Link>
             <Link href="/issues" className="lp-nav-link">Past issues →</Link>

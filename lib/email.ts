@@ -26,7 +26,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Meridian Daily AI Brief</title>
+  <title>BankingNewsAI Daily Brief</title>
 </head>
 <body style="margin:0;padding:0;background:#eef2f7;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#eef2f7;">
@@ -42,7 +42,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
             <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
               <tr>
                 <td>
-                  <p style="margin:0 0 2px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#60a5fa;">MERIDIAN</p>
+                  <p style="margin:0 0 2px;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#60a5fa;">BANKINGNEWSAI</p>
                   <h1 style="margin:0 0 6px;font-size:26px;font-weight:800;color:#ffffff;line-height:1.15;letter-spacing:-0.02em;">Daily AI Brief</h1>
                   <p style="margin:0;font-size:13px;color:#94a3b8;">${escapeHtml(formattedDate)} &nbsp;&middot;&nbsp; Fintech &amp; Banking Edition</p>
                 </td>
@@ -64,11 +64,11 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
         <tr>
           <td style="background:#f8fafc;padding:20px 36px 24px;border-top:1px solid #e5e7eb;">
             <p style="margin:0;font-size:11px;color:#9ca3af;line-height:1.7;">
-              You're receiving this because you subscribed to Meridian's daily AI brief.<br />
+              You're receiving this because you subscribed to BankingNewsAI's daily brief.<br />
               Curated by AI &nbsp;&middot;&nbsp; Delivered daily &nbsp;&middot;&nbsp;
               ${recipientEmail
                 ? `<a href="${escapeHtml(unsubUrl(recipientEmail))}" style="color:#9ca3af;text-decoration:underline;">Unsubscribe</a>`
-                : `<a href="/" style="color:#9ca3af;">Meridian</a>`
+                : `<a href="/" style="color:#9ca3af;">BankingNewsAI</a>`
               }
             </p>
           </td>
@@ -176,7 +176,7 @@ export function getDigestSubject(digest: DailyDigest): string {
   const bankingCount = (digest.bankingStories ?? digest.stories ?? []).length;
   const aiCount = (digest.aiStories ?? []).length;
   const total = bankingCount + aiCount;
-  return `Meridian AI Brief — ${total} stor${total === 1 ? "y" : "ies"} · ${digest.date}`;
+  return `BankingNewsAI Daily Brief — ${total} stor${total === 1 ? "y" : "ies"} · ${digest.date}`;
 }
 
 function escapeHtml(input: string): string {

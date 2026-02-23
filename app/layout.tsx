@@ -3,26 +3,26 @@ import "./globals.css";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://meridian.ai");
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://bankingnewsai.com");
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Meridian — Daily AI Brief for Banking Executives",
-    template: "%s | Meridian"
+    default: "BankingNewsAI — Daily AI Brief for Banking Executives",
+    template: "%s | BankingNewsAI"
   },
   description:
-    "Every morning, Meridian delivers 6 curated AI stories — 3 banking AI, 3 general AI — to C-suite executives in banking and fintech. Free. Paywall-free.",
+    "Every morning, BankingNewsAI delivers 6 curated AI stories — 3 banking AI, 3 general AI — to C-suite executives in banking and fintech. Free. Paywall-free.",
   openGraph: {
     type: "website",
-    siteName: "Meridian",
-    title: "Meridian — Daily AI Brief for Banking Executives",
+    siteName: "BankingNewsAI",
+    title: "BankingNewsAI — Daily AI Brief for Banking Executives",
     description:
       "6 curated AI stories every morning — 3 banking AI, 3 general AI. Free. Paywall-free."
   },
   twitter: {
     card: "summary",
-    title: "Meridian — Daily AI Brief for Banking Executives",
+    title: "BankingNewsAI — Daily AI Brief for Banking Executives",
     description: "6 curated AI stories every morning — free, paywall-free."
   }
 };
