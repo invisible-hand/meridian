@@ -102,15 +102,15 @@ export default async function IssuePage({
     <>
       {/* Nav */}
       <nav style={{
-        background: "rgba(8,15,30,0.96)", borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: "#ffffff", borderBottom: "1px solid #e5e7eb",
         padding: "0 2rem", position: "sticky", top: 0, zIndex: 50
       }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
-          <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#fff", textDecoration: "none" }}>
+          <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#0f172a", textDecoration: "none" }}>
             Banking<span style={{ color: "#3b82f6" }}>News</span>AI
           </Link>
           <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-            <Link href="/issues" style={{ color: "#94a3b8", fontSize: 13, textDecoration: "none" }}>
+            <Link href="/issues" style={{ color: "#64748b", fontSize: 13, textDecoration: "none" }}>
               ← All issues
             </Link>
             <Link href="/#subscribe" style={{
@@ -125,30 +125,30 @@ export default async function IssuePage({
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(160deg,#080f1e 0%,#0f2444 100%)",
+        background: "#f8fafc", borderBottom: "1px solid #e5e7eb",
         padding: "48px 2rem 44px", textAlign: "center"
       }}>
         <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3b82f6", marginBottom: 10 }}>
-          BANKINGNEWSAI DAILY BRIEF
+          BANKINGNEWSAI DAILY BRIEF &nbsp;&middot;&nbsp; {formatted}
         </p>
-        <h1 style={{ fontSize: "clamp(1.4rem,3.5vw,2rem)", fontWeight: 800, color: "#fff", margin: "0 0 10px", letterSpacing: "-0.02em" }}>
-          {formatted}
+        <h1 style={{ fontSize: "clamp(1.2rem,3vw,1.75rem)", fontWeight: 800, color: "#0f172a", margin: "0 0 14px", letterSpacing: "-0.02em", lineHeight: 1.25, maxWidth: 680, marginLeft: "auto", marginRight: "auto" }}>
+          {content.briefSummary ?? formatted}
         </h1>
         <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
           {bankingStories.length > 0 && (
             <span style={{
-              display: "inline-block", background: "rgba(59,130,246,0.2)", color: "#93c5fd",
+              display: "inline-block", background: "#eff6ff", color: "#2563eb",
               fontSize: 11, fontWeight: 600, padding: "3px 12px", borderRadius: 999,
-              border: "1px solid rgba(59,130,246,0.3)"
+              border: "1px solid #bfdbfe"
             }}>
               🏦 {bankingStories.length} Banking AI
             </span>
           )}
           {aiStories.length > 0 && (
             <span style={{
-              display: "inline-block", background: "rgba(34,197,94,0.15)", color: "#86efac",
+              display: "inline-block", background: "#f0fdf4", color: "#16a34a",
               fontSize: 11, fontWeight: 600, padding: "3px 12px", borderRadius: 999,
-              border: "1px solid rgba(34,197,94,0.25)"
+              border: "1px solid #bbf7d0"
             }}>
               🤖 {aiStories.length} General AI
             </span>
@@ -163,11 +163,11 @@ export default async function IssuePage({
           {bankingStories.length > 0 && (
             <section style={{ marginBottom: 36 }}>
               <div style={{
-                background: "#0f2444", borderRadius: "10px 10px 0 0",
+                background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "10px 10px 0 0",
                 padding: "12px 20px", display: "flex", alignItems: "center", gap: 8, marginBottom: 0
               }}>
                 <span style={{ fontSize: 15 }}>🏦</span>
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#fff" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#2563eb" }}>
                   Banking AI
                 </span>
               </div>
@@ -182,11 +182,11 @@ export default async function IssuePage({
           {aiStories.length > 0 && (
             <section>
               <div style={{
-                background: "#0f2e1a", borderRadius: "10px 10px 0 0",
+                background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "10px 10px 0 0",
                 padding: "12px 20px", display: "flex", alignItems: "center", gap: 8
               }}>
                 <span style={{ fontSize: 15 }}>🤖</span>
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#fff" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#16a34a" }}>
                   General AI
                 </span>
               </div>
@@ -200,13 +200,13 @@ export default async function IssuePage({
 
           {/* Subscribe nudge */}
           <div style={{
-            marginTop: 40, background: "linear-gradient(135deg,#0f2444,#0a2010)",
+            marginTop: 40, background: "#f8fafc", border: "1px solid #e5e7eb",
             borderRadius: 14, padding: "32px 28px", textAlign: "center"
           }}>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#fff", margin: "0 0 8px" }}>
+            <p style={{ fontSize: 18, fontWeight: 700, color: "#0f172a", margin: "0 0 8px" }}>
               Get this in your inbox every morning
             </p>
-            <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 22px" }}>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 22px" }}>
               Free. No spam. Unsubscribe anytime.
             </p>
             <Link href="/#subscribe" style={{
@@ -222,10 +222,10 @@ export default async function IssuePage({
 
       {/* Footer */}
       <footer style={{
-        background: "#080f1e", borderTop: "1px solid rgba(255,255,255,0.06)",
+        background: "#f8fafc", borderTop: "1px solid #e5e7eb",
         padding: "24px 2rem", textAlign: "center"
       }}>
-        <p style={{ color: "#475569", fontSize: 12, margin: 0 }}>
+        <p style={{ color: "#94a3b8", fontSize: 12, margin: 0 }}>
           <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>BankingNewsAI</Link>
           {" "}·{" "}
           <Link href="/issues" style={{ color: "#64748b", textDecoration: "none" }}>All issues</Link>

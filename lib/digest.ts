@@ -163,9 +163,11 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     ...rssResult.aiStories
   ]).slice(0, 3);
 
+  const briefSummary = buildBriefSummary(bankingStories, aiStories);
+
   // Final fallback: if LLM produced nothing at all, use keyword-scored items
   const digest: DailyDigest = bankingStories.length + aiStories.length > 0
-    ? { date, category, bankingStories, aiStories }
+    ? { date, category, bankingStories, aiStories, briefSummary }
     : fallbackDigest({
         date, category,
         bankingCandidates: selectCandidateItems(rssItems),
@@ -414,4 +416,10 @@ function normalizeUrl(input: string): string {
   } catch {
     return input.trim().toLowerCase();
   }
+}
+
+function buildBriefSummary(bankingStories: DigestStory[], aiStories: DigestStory[]): string {
+  const picks = [...bankingStories.slice(0, 2), ...aiStories.slice(0, 1)];
+  if (picks.length === 0) return "";
+  return picks.map((s) => (s.title.length > 55 ? s.title.slice(0, 52) + "…" : s.title)).join(" · ");
 }

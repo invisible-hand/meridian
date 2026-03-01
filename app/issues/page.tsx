@@ -12,11 +12,11 @@ export default async function IssuesPage() {
     <>
       {/* Nav */}
       <nav style={{
-        background: "rgba(8,15,30,0.96)", borderBottom: "1px solid rgba(255,255,255,0.06)",
+        background: "#ffffff", borderBottom: "1px solid #e5e7eb",
         padding: "0 2rem"
       }}>
         <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
-          <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#fff", textDecoration: "none", letterSpacing: "-0.02em" }}>
+          <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#0f172a", textDecoration: "none", letterSpacing: "-0.02em" }}>
             Banking<span style={{ color: "#3b82f6" }}>News</span>AI
           </Link>
           <Link href="/#subscribe" style={{
@@ -30,13 +30,13 @@ export default async function IssuesPage() {
 
       {/* Header */}
       <div style={{
-        background: "linear-gradient(160deg,#080f1e 0%,#0f2444 100%)",
-        padding: "52px 2rem 48px", textAlign: "center"
+        background: "#f8fafc", borderBottom: "1px solid #e5e7eb",
+        padding: "48px 2rem 44px", textAlign: "center"
       }}>
-        <h1 style={{ fontSize: "clamp(1.6rem,4vw,2.4rem)", fontWeight: 800, color: "#fff", margin: "0 0 12px", letterSpacing: "-0.02em" }}>
+        <h1 style={{ fontSize: "clamp(1.6rem,4vw,2.4rem)", fontWeight: 800, color: "#0f172a", margin: "0 0 12px", letterSpacing: "-0.02em" }}>
           Past Issues
         </h1>
-        <p style={{ fontSize: 14, color: "#94a3b8", margin: 0 }}>
+        <p style={{ fontSize: 14, color: "#64748b", margin: 0 }}>
           {digests.length} issue{digests.length !== 1 ? "s" : ""} published
         </p>
       </div>
@@ -57,6 +57,8 @@ export default async function IssuesPage() {
                 const total = bankingCount + aiCount;
                 const formatted = formatIssueDate(digest.digest_date);
 
+                const briefSummary = content?.briefSummary;
+
                 return (
                   <Link
                     key={digest.id}
@@ -69,12 +71,12 @@ export default async function IssuesPage() {
                       justifyContent: "space-between", gap: 16,
                       transition: "border-color 0.15s", cursor: "pointer"
                     }}>
-                      <div>
-                        <p style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 700, color: "#0f172a" }}>
-                          {formatted}
+                      <div style={{ minWidth: 0 }}>
+                        <p style={{ margin: "0 0 3px", fontSize: 15, fontWeight: 700, color: "#0f172a", lineHeight: 1.35, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {briefSummary ?? formatted}
                         </p>
                         <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>
-                          {total} stor{total !== 1 ? "ies" : "y"}
+                          {formatted} &nbsp;&middot;&nbsp; {total} stor{total !== 1 ? "ies" : "y"}
                           {bankingCount > 0 ? ` · ${bankingCount} banking AI` : ""}
                           {aiCount > 0 ? ` · ${aiCount} general AI` : ""}
                         </p>
@@ -93,10 +95,10 @@ export default async function IssuesPage() {
 
       {/* Footer */}
       <footer style={{
-        background: "#080f1e", borderTop: "1px solid rgba(255,255,255,0.06)",
+        background: "#f8fafc", borderTop: "1px solid #e5e7eb",
         padding: "24px 2rem", textAlign: "center"
       }}>
-        <p style={{ color: "#475569", fontSize: 12, margin: 0 }}>
+        <p style={{ color: "#94a3b8", fontSize: 12, margin: 0 }}>
           <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>BankingNewsAI</Link>
           {" "}· Curated by AI · Delivered daily
         </p>

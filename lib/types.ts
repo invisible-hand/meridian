@@ -10,6 +10,8 @@ export type DailyDigest = {
   category: "fintech_banking";
   bankingStories: DigestStory[];
   aiStories: DigestStory[];
+  /** 2-3 headline phrases joined by " · " derived from top story titles */
+  briefSummary?: string;
   /** @deprecated kept for backwards-compat when reading old digests from DB */
   stories?: DigestStory[];
 };

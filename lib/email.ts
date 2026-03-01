@@ -173,6 +173,9 @@ function extractDomain(url: string): string {
 }
 
 export function getDigestSubject(digest: DailyDigest): string {
+  if (digest.briefSummary) {
+    return `BankingNewsAI: ${digest.briefSummary}`;
+  }
   const bankingCount = (digest.bankingStories ?? digest.stories ?? []).length;
   const aiCount = (digest.aiStories ?? []).length;
   const total = bankingCount + aiCount;

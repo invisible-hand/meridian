@@ -21,29 +21,30 @@ export default async function HomePage() {
       <style>{`
         .lp {
           min-height: 100vh;
-          background: #07101f;
+          background: #ffffff;
           background-image:
-            radial-gradient(ellipse 90% 55% at 50% -5%, rgba(59,130,246,0.13) 0%, transparent 65%),
-            radial-gradient(ellipse 50% 40% at 85% 90%, rgba(99,75,200,0.07) 0%, transparent 55%);
+            radial-gradient(ellipse 90% 55% at 50% -5%, rgba(59,130,246,0.07) 0%, transparent 65%),
+            radial-gradient(ellipse 50% 40% at 85% 90%, rgba(99,75,200,0.04) 0%, transparent 55%);
           display: flex;
           flex-direction: column;
-          color: #f8fafc;
+          color: #0f172a;
           font-family: system-ui, -apple-system, sans-serif;
           -webkit-font-smoothing: antialiased;
         }
 
         .lp-nav {
-          padding: 28px 40px;
+          padding: 20px 40px;
           display: flex;
           align-items: center;
           justify-content: space-between;
+          border-bottom: 1px solid #f1f5f9;
         }
 
         .lp-logo {
           font-size: 18px;
           font-weight: 800;
           letter-spacing: -0.03em;
-          color: #fff;
+          color: #0f172a;
           text-decoration: none;
         }
 
@@ -51,12 +52,12 @@ export default async function HomePage() {
 
         .lp-nav-link {
           font-size: 13px;
-          color: #475569;
+          color: #64748b;
           text-decoration: none;
           transition: color 0.15s;
         }
 
-        .lp-nav-link:hover { color: #94a3b8; }
+        .lp-nav-link:hover { color: #0f172a; }
 
         .lp-hero {
           flex: 1;
@@ -65,7 +66,7 @@ export default async function HomePage() {
           justify-content: center;
           align-items: center;
           text-align: center;
-          padding: 48px 24px 64px;
+          padding: 64px 24px 80px;
           max-width: 760px;
           margin: 0 auto;
           width: 100%;
@@ -79,7 +80,7 @@ export default async function HomePage() {
           font-weight: 600;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #60a5fa;
+          color: #3b82f6;
           margin-bottom: 32px;
         }
 
@@ -88,7 +89,7 @@ export default async function HomePage() {
           height: 6px;
           border-radius: 50%;
           background: #22c55e;
-          box-shadow: 0 0 8px rgba(34,197,94,0.6);
+          box-shadow: 0 0 8px rgba(34,197,94,0.5);
           animation: pulse 2s ease-in-out infinite;
         }
 
@@ -102,7 +103,7 @@ export default async function HomePage() {
           font-weight: 900;
           line-height: 1.05;
           letter-spacing: -0.04em;
-          color: #fff;
+          color: #0f172a;
           margin: 0 0 24px;
         }
 
@@ -130,27 +131,28 @@ export default async function HomePage() {
         .lp-input {
           flex: 1;
           padding: 14px 18px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 10px;
-          color: #fff;
+          color: #0f172a;
           font-size: 15px;
           outline: none;
           transition: border-color 0.2s, background 0.2s;
           font-family: inherit;
         }
 
-        .lp-input::placeholder { color: #334155; }
+        .lp-input::placeholder { color: #94a3b8; }
 
         .lp-input:focus {
-          border-color: rgba(59,130,246,0.5);
-          background: rgba(255,255,255,0.07);
+          border-color: #3b82f6;
+          background: #ffffff;
+          box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
         }
 
         .lp-btn {
           padding: 14px 24px;
-          background: #fff;
-          color: #07101f;
+          background: #0f172a;
+          color: #ffffff;
           border: none;
           border-radius: 10px;
           font-size: 14px;
@@ -161,7 +163,7 @@ export default async function HomePage() {
           font-family: inherit;
         }
 
-        .lp-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .lp-btn:hover { opacity: 0.88; transform: translateY(-1px); }
         .lp-btn:active { transform: translateY(0); }
 
         .lp-chips {
@@ -174,23 +176,24 @@ export default async function HomePage() {
         .lp-chip {
           font-size: 11px;
           font-weight: 500;
-          color: #475569;
+          color: #64748b;
           padding: 4px 12px;
-          border: 1px solid rgba(255,255,255,0.06);
+          border: 1px solid #e2e8f0;
           border-radius: 999px;
+          background: #f8fafc;
         }
 
         .lp-footer {
-          padding: 24px 40px;
+          padding: 20px 40px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-top: 1px solid rgba(255,255,255,0.04);
+          border-top: 1px solid #f1f5f9;
         }
 
         .lp-footer-link {
           font-size: 12px;
-          color: #334155;
+          color: #94a3b8;
           text-decoration: none;
           transition: color 0.15s;
         }
@@ -198,7 +201,7 @@ export default async function HomePage() {
         .lp-footer-link:hover { color: #64748b; }
 
         @media (max-width: 480px) {
-          .lp-nav { padding: 20px 20px; }
+          .lp-nav { padding: 16px 20px; }
           .lp-footer { padding: 20px; }
           .lp-form { flex-direction: column; }
           .lp-btn { width: 100%; }
@@ -261,7 +264,7 @@ export default async function HomePage() {
             <Link href="/issues" className="lp-footer-link">Past issues</Link>
             <Link href="/about" className="lp-footer-link">About</Link>
           </div>
-          <p style={{ margin: 0, fontSize: 11, color: "#1e293b" }}>
+          <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>
             Curated by AI · Delivered daily
           </p>
           <Link href="/admin" className="lp-footer-link">Admin</Link>
