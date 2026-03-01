@@ -18,27 +18,30 @@ export default function AboutPage() {
       <style>{`
         .about-root {
           min-height: 100vh;
-          background: #07101f;
-          background-image:
-            radial-gradient(ellipse 90% 55% at 50% -5%, rgba(59,130,246,0.1) 0%, transparent 65%);
-          color: #f8fafc;
+          background: #ffffff;
+          color: #0f172a;
           font-family: system-ui, -apple-system, sans-serif;
           -webkit-font-smoothing: antialiased;
         }
 
         .about-nav {
-          padding: 28px 40px;
+          padding: 0 40px;
+          height: 56px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid rgba(255,255,255,0.04);
+          border-bottom: 1px solid #e5e7eb;
+          position: sticky;
+          top: 0;
+          background: #ffffff;
+          z-index: 50;
         }
 
         .about-logo {
           font-size: 18px;
           font-weight: 800;
           letter-spacing: -0.03em;
-          color: #fff;
+          color: #0f172a;
           text-decoration: none;
         }
 
@@ -46,12 +49,13 @@ export default function AboutPage() {
 
         .about-nav-link {
           font-size: 13px;
-          color: #475569;
+          font-weight: 500;
+          color: #64748b;
           text-decoration: none;
           transition: color 0.15s;
         }
 
-        .about-nav-link:hover { color: #94a3b8; }
+        .about-nav-link:hover { color: #0f172a; }
 
         .about-body {
           max-width: 680px;
@@ -73,7 +77,7 @@ export default function AboutPage() {
           font-weight: 900;
           line-height: 1.08;
           letter-spacing: -0.035em;
-          color: #fff;
+          color: #0f172a;
           margin: 0 0 40px;
         }
 
@@ -91,19 +95,19 @@ export default function AboutPage() {
           font-weight: 700;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: #334155;
+          color: #94a3b8;
           margin: 0 0 16px;
         }
 
         .about-p {
           font-size: 16px;
           line-height: 1.78;
-          color: #94a3b8;
+          color: #374151;
           margin: 0 0 20px;
         }
 
         .about-p strong {
-          color: #e2e8f0;
+          color: #0f172a;
           font-weight: 600;
         }
 
@@ -111,7 +115,7 @@ export default function AboutPage() {
 
         .about-divider {
           border: none;
-          border-top: 1px solid rgba(255,255,255,0.05);
+          border-top: 1px solid #e5e7eb;
           margin: 52px 0;
         }
 
@@ -119,7 +123,7 @@ export default function AboutPage() {
           font-size: clamp(1.15rem, 2.5vw, 1.5rem);
           font-weight: 700;
           line-height: 1.4;
-          color: #e2e8f0;
+          color: #0f172a;
           letter-spacing: -0.02em;
           margin: 0 0 20px;
           padding-left: 20px;
@@ -127,8 +131,8 @@ export default function AboutPage() {
         }
 
         .about-cta-block {
-          background: rgba(59,130,246,0.06);
-          border: 1px solid rgba(59,130,246,0.12);
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
           border-radius: 14px;
           padding: 36px 32px;
           text-align: center;
@@ -138,7 +142,7 @@ export default function AboutPage() {
         .about-cta-block h3 {
           font-size: 1.4rem;
           font-weight: 800;
-          color: #fff;
+          color: #0f172a;
           margin: 0 0 10px;
           letter-spacing: -0.02em;
         }
@@ -151,8 +155,8 @@ export default function AboutPage() {
 
         .about-cta-btn {
           display: inline-block;
-          background: #fff;
-          color: #07101f;
+          background: #0f172a;
+          color: #ffffff;
           font-size: 14px;
           font-weight: 700;
           padding: 13px 28px;
@@ -165,25 +169,26 @@ export default function AboutPage() {
         .about-cta-btn:hover { opacity: 0.88; }
 
         .about-footer {
-          padding: 24px 40px;
-          border-top: 1px solid rgba(255,255,255,0.04);
+          padding: 20px 40px;
+          border-top: 1px solid #e5e7eb;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
           gap: 12px;
+          background: #f8fafc;
         }
 
         .about-footer-link {
           font-size: 12px;
-          color: #334155;
+          color: #94a3b8;
           text-decoration: none;
         }
 
         .about-footer-link:hover { color: #64748b; }
 
         @media (max-width: 480px) {
-          .about-nav { padding: 20px; }
+          .about-nav { padding: 0 20px; }
           .about-body { padding: 48px 20px 72px; }
           .about-footer { padding: 20px; }
         }

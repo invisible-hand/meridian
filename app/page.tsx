@@ -52,9 +52,11 @@ export default async function HomePage() {
 
         .lp-nav-link {
           font-size: 13px;
+          font-weight: 500;
           color: #64748b;
           text-decoration: none;
           transition: color 0.15s;
+          padding: 6px 10px;
         }
 
         .lp-nav-link:hover { color: #0f172a; }
@@ -212,9 +214,16 @@ export default async function HomePage() {
         {/* Nav */}
           <nav className="lp-nav">
           <span className="lp-logo">Banking<span>News</span>AI</span>
-          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
             <Link href="/about" className="lp-nav-link">About</Link>
-            <Link href="/issues" className="lp-nav-link">Past issues →</Link>
+            <Link href="/issues" style={{
+              fontSize: 13, fontWeight: 600, color: "#0f172a",
+              textDecoration: "none", padding: "6px 14px",
+              background: "#f1f5f9", border: "1px solid #e2e8f0",
+              borderRadius: 8, transition: "background 0.15s"
+            }}>
+              Past issues →
+            </Link>
           </div>
         </nav>
 
@@ -226,8 +235,7 @@ export default async function HomePage() {
           </div>
 
           <h1 className="lp-h1">
-            AI news that<br />
-            <em>actually matters</em><br />
+            AI news that <em>actually matters</em><br />
             to banking.
           </h1>
 
@@ -260,9 +268,9 @@ export default async function HomePage() {
 
         {/* Footer */}
         <footer className="lp-footer">
-          <div style={{ display: "flex", gap: "1.25rem" }}>
-            <Link href="/issues" className="lp-footer-link">Past issues</Link>
-            <Link href="/about" className="lp-footer-link">About</Link>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <Link href="/issues" className="lp-footer-link" style={{ fontWeight: 500, color: "#64748b" }}>Past issues</Link>
+            <Link href="/about" className="lp-footer-link" style={{ color: "#94a3b8" }}>About</Link>
           </div>
           <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>
             Curated by AI · Delivered daily
