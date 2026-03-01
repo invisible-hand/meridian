@@ -163,7 +163,10 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     ...rssResult.aiStories
   ]).slice(0, 3);
 
-  const briefSummary = buildBriefSummary(bankingStories, aiStories);
+  const briefSummary = apiKey
+    ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model)) ||
+      buildBriefSummary(bankingStories, aiStories)
+    : buildBriefSummary(bankingStories, aiStories);
 
   // Final fallback: if LLM produced nothing at all, use keyword-scored items
   const digest: DailyDigest = bankingStories.length + aiStories.length > 0
@@ -418,10 +421,40 @@ function normalizeUrl(input: string): string {
   }
 }
 
+/** LLM-written 10–15 word complete-sentence summary of the day's top stories. */
+export async function generateBriefSummaryLlm(
+  bankingStories: DigestStory[],
+  aiStories: DigestStory[],
+  apiKey: string,
+  model: string
+): Promise<string> {
+  const all = [...bankingStories, ...aiStories].slice(0, 6);
+  if (all.length === 0) return "";
+
+  const storyList = all.map((s, i) => `${i + 1}. ${s.title}`).join("\n");
+
+  const response = await callLlm(
+    apiKey,
+    model,
+    `You are an editor writing the subject line for a banking and AI daily newsletter. Given today's top story headlines, write ONE complete sentence of 10–15 words that captures the single most significant development of the day. Rules: (1) name the specific company, regulator, or technology, (2) active voice, (3) no hedging words like "may" or "could", (4) end with a period, (5) do not start with "Today". Return JSON: {"briefSummary": "..."}`,
+    `Today's headlines:\n${storyList}`
+  );
+
+  if (!response || typeof response !== "object" || !("briefSummary" in response)) return "";
+  const s = (response as { briefSummary: unknown }).briefSummary;
+  return typeof s === "string" ? s.trim() : "";
+}
+
+/** Mechanical fallback used when no API key is available. */
 export function buildBriefSummary(bankingStories: DigestStory[], aiStories: DigestStory[]): string {
   const top = bankingStories[0] ?? aiStories[0];
   if (!top) return "";
-  const words = top.title.trim().split(/\s+/);
-  if (words.length <= 12) return top.title.trim();
+  const title = top.title.trim();
+  const words = title.split(/\s+/);
+  if (words.length <= 15) return title;
+  // Prefer a natural break at punctuation within the first 15 words
+  const candidate = words.slice(0, 15).join(" ");
+  const m = candidate.match(/^.+?[,;:—–]/);
+  if (m) return m[0].trim();
   return words.slice(0, 12).join(" ") + "…";
 }

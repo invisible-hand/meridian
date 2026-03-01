@@ -28,10 +28,10 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
   const formattedDate = formatDate(digest.date);
 
   const bankingSection = bankingStories.length > 0
-    ? renderSection({ label: "Banking AI", accent: D.bankAccent, accentLight: D.bankLight }, bankingStories)
+    ? renderSection({ label: "Banking AI", desc: "Financial institutions & fintech technology", accent: D.bankAccent, accentLight: D.bankLight }, bankingStories)
     : "";
   const aiSection = aiStories.length > 0
-    ? renderSection({ label: "General AI", accent: D.aiAccent, accentLight: D.aiLight }, aiStories)
+    ? renderSection({ label: "General AI", desc: "Large language models & AI infrastructure", accent: D.aiAccent, accentLight: D.aiLight }, aiStories)
     : "";
   const noContent = bankingStories.length === 0 && aiStories.length === 0
     ? `<tr><td style="padding:48px 36px;text-align:center;font-family:${D.mono};font-size:12px;color:${D.textMuted};letter-spacing:0.08em;">
@@ -129,25 +129,25 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
 }
 
 function renderSection(
-  cfg: { label: string; accent: string; accentLight: string },
+  cfg: { label: string; desc: string; accent: string; accentLight: string },
   stories: DigestStory[]
 ): string {
   const items = stories.map((story, i) => renderStory(story, i + 1, cfg.accent)).join("");
+  const count = stories.length;
 
   return `
-  <!-- Section header -->
+  <!-- Section header band -->
   <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
-      <td style="padding:28px 40px 4px;">
+      <td style="background:${cfg.accent};padding:18px 40px 16px;">
         <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
           <tr>
-            <td valign="middle" style="white-space:nowrap;padding-right:14px;">
-              <span style="font-family:${D.mono};font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${cfg.accent};">${escapeHtml(cfg.label)}</span>
+            <td valign="top">
+              <p style="margin:0 0 5px;font-family:${D.mono};font-size:11px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#ffffff;">${escapeHtml(cfg.label)}</p>
+              <p style="margin:0;font-family:${D.sans};font-size:11px;color:rgba(255,255,255,0.5);">${escapeHtml(cfg.desc)}</p>
             </td>
-            <td width="100%" valign="middle">
-              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-                <tr><td style="height:1px;background:${cfg.accentLight};font-size:0;line-height:0;">&nbsp;</td></tr>
-              </table>
+            <td align="right" valign="middle" style="white-space:nowrap;padding-left:16px;">
+              <span style="font-family:${D.mono};font-size:10px;letter-spacing:0.12em;color:rgba(255,255,255,0.45);">${count} ${count === 1 ? "story" : "stories"}</span>
             </td>
           </tr>
         </table>

@@ -265,25 +265,49 @@ export default async function IssuePage({
           margin: 0 auto;
         }
 
-        .issue-section-label {
+        .issue-section-header {
+          margin: 48px -40px 0;
+          padding: 18px 40px 16px;
           display: flex;
-          align-items: center;
-          gap: 14px;
-          margin: 36px 0 0;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 16px;
         }
 
-        .issue-section-label-text {
+        .issue-section-header-left {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .issue-section-name {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #ffffff;
+          margin: 0;
+        }
+
+        .issue-section-desc {
+          font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
+          font-size: 11px;
+          color: rgba(255,255,255,0.5);
+          margin: 0;
+        }
+
+        .issue-section-count {
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: rgba(255,255,255,0.45);
           white-space: nowrap;
+          flex-shrink: 0;
         }
 
-        .issue-section-rule {
-          flex: 1;
-          height: 1px;
+        @media (max-width: 520px) {
+          .issue-section-header { margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
         }
 
         .issue-cta {
@@ -389,9 +413,12 @@ export default async function IssuePage({
 
             {bankingStories.length > 0 && (
               <section>
-                <div className="issue-section-label">
-                  <span className="issue-section-label-text" style={{ color: "#1a3fcb" }}>Banking AI</span>
-                  <div className="issue-section-rule" style={{ background: "#dce5ff" }} />
+                <div className="issue-section-header" style={{ background: "#1a3fcb" }}>
+                  <div className="issue-section-header-left">
+                    <p className="issue-section-name">Banking AI</p>
+                    <p className="issue-section-desc">Financial institutions &amp; fintech technology</p>
+                  </div>
+                  <span className="issue-section-count">{bankingStories.length} {bankingStories.length === 1 ? "story" : "stories"}</span>
                 </div>
                 {bankingStories.map((story, i) => (
                   <StoryCard key={i} story={story} index={i + 1} accent="#1a3fcb" accentLight="#dce5ff" />
@@ -401,9 +428,12 @@ export default async function IssuePage({
 
             {aiStories.length > 0 && (
               <section>
-                <div className="issue-section-label">
-                  <span className="issue-section-label-text" style={{ color: "#0d6640" }}>General AI</span>
-                  <div className="issue-section-rule" style={{ background: "#d0f0e0" }} />
+                <div className="issue-section-header" style={{ background: "#0d6640" }}>
+                  <div className="issue-section-header-left">
+                    <p className="issue-section-name">General AI</p>
+                    <p className="issue-section-desc">Large language models &amp; AI infrastructure</p>
+                  </div>
+                  <span className="issue-section-count">{aiStories.length} {aiStories.length === 1 ? "story" : "stories"}</span>
                 </div>
                 {aiStories.map((story, i) => (
                   <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" accentLight="#d0f0e0" />
