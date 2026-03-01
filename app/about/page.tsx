@@ -18,209 +18,283 @@ export default function AboutPage() {
       <style>{`
         .about-root {
           min-height: 100vh;
-          background: #ffffff;
-          color: #0f172a;
-          font-family: system-ui, -apple-system, sans-serif;
-          -webkit-font-smoothing: antialiased;
+          background: #f0ede8;
+          display: flex;
+          flex-direction: column;
         }
 
         .about-nav {
           padding: 0 40px;
-          height: 56px;
+          height: 52px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid #e5e7eb;
+          border-bottom: 1px solid #e8e4de;
+          background: #f0ede8;
           position: sticky;
           top: 0;
-          background: #ffffff;
           z-index: 50;
         }
 
         .about-logo {
-          font-size: 18px;
-          font-weight: 800;
-          letter-spacing: -0.03em;
-          color: #0f172a;
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 13px;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #111111;
           text-decoration: none;
         }
 
-        .about-logo span { color: #3b82f6; }
+        .about-logo span { color: #1a3fcb; }
 
         .about-nav-link {
-          font-size: 13px;
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
           font-weight: 500;
-          color: #64748b;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #9a9a9a;
           text-decoration: none;
           transition: color 0.15s;
         }
 
-        .about-nav-link:hover { color: #0f172a; }
+        .about-nav-link:hover { color: #111111; }
 
-        .about-body {
-          max-width: 680px;
-          margin: 0 auto;
-          padding: 72px 32px 96px;
+        .about-nav-cta {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #f0ede8;
+          background: #111111;
+          text-decoration: none;
+          padding: 7px 16px;
+          transition: opacity 0.15s;
         }
 
-        .about-kicker {
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.1em;
+        .about-nav-cta:hover { opacity: 0.8; }
+
+        /* ── Masthead ── */
+        .about-masthead {
+          background: #0c0c0c;
+          padding: 52px 40px 48px;
+          border-bottom: 1px solid #1a1a1a;
+        }
+
+        .about-masthead-inner {
+          max-width: 680px;
+          margin: 0 auto;
+        }
+
+        .about-eyebrow {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #3b82f6;
-          margin-bottom: 20px;
+          color: #444;
+          margin: 0 0 16px;
+        }
+
+        .about-masthead-rule {
+          height: 1px;
+          background: #1e1e1e;
+          margin: 0 0 22px;
         }
 
         .about-h1 {
+          font-family: var(--font-serif), Georgia, serif;
           font-size: clamp(2rem, 4.5vw, 3.25rem);
           font-weight: 900;
-          line-height: 1.08;
-          letter-spacing: -0.035em;
-          color: #0f172a;
-          margin: 0 0 40px;
+          font-style: italic;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          color: #ffffff;
+          margin: 0;
         }
 
         .about-h1 em {
           font-style: normal;
-          color: #3b82f6;
+          color: #4f7fff;
+        }
+
+        /* ── Body ── */
+        .about-body {
+          flex: 1;
+          max-width: 680px;
+          margin: 0 auto;
+          padding: 64px 40px 96px;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .about-section {
           margin-bottom: 52px;
         }
 
-        .about-h2 {
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.08em;
+        .about-section-label {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 20px;
+        }
+
+        .about-section-label-text {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #94a3b8;
-          margin: 0 0 16px;
+          color: #b0ab9a;
+          white-space: nowrap;
+        }
+
+        .about-section-rule {
+          flex: 1;
+          height: 1px;
+          background: #e8e4de;
         }
 
         .about-p {
+          font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
           font-size: 16px;
-          line-height: 1.78;
-          color: #374151;
-          margin: 0 0 20px;
-        }
-
-        .about-p strong {
-          color: #0f172a;
-          font-weight: 600;
+          line-height: 1.8;
+          color: #3a3a3a;
+          margin: 0 0 22px;
         }
 
         .about-p:last-child { margin-bottom: 0; }
 
+        .about-p strong {
+          color: #111111;
+          font-weight: 600;
+        }
+
         .about-divider {
           border: none;
-          border-top: 1px solid #e5e7eb;
+          border-top: 1px solid #e8e4de;
           margin: 52px 0;
         }
 
         .about-pull {
-          font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+          font-family: var(--font-serif), Georgia, serif;
+          font-size: clamp(1.2rem, 2.5vw, 1.55rem);
           font-weight: 700;
-          line-height: 1.4;
-          color: #0f172a;
-          letter-spacing: -0.02em;
-          margin: 0 0 20px;
-          padding-left: 20px;
-          border-left: 3px solid #3b82f6;
+          font-style: italic;
+          line-height: 1.45;
+          color: #111111;
+          margin: 0 0 24px;
+          padding-left: 22px;
+          border-left: 2px solid #1a3fcb;
         }
 
-        .about-cta-block {
-          background: #eff6ff;
-          border: 1px solid #bfdbfe;
-          border-radius: 14px;
-          padding: 36px 32px;
+        /* ── CTA block ── */
+        .about-cta {
+          background: #0c0c0c;
+          padding: 44px 40px;
           text-align: center;
           margin-top: 64px;
         }
 
-        .about-cta-block h3 {
-          font-size: 1.4rem;
-          font-weight: 800;
-          color: #0f172a;
+        .about-cta h3 {
+          font-family: var(--font-serif), Georgia, serif;
+          font-size: 1.6rem;
+          font-weight: 700;
+          font-style: italic;
+          color: #ffffff;
           margin: 0 0 10px;
-          letter-spacing: -0.02em;
         }
 
-        .about-cta-block p {
-          font-size: 14px;
-          color: #64748b;
-          margin: 0 0 24px;
+        .about-cta p {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #555;
+          margin: 0 0 26px;
         }
 
         .about-cta-btn {
-          display: inline-block;
-          background: #0f172a;
-          color: #ffffff;
-          font-size: 14px;
-          font-weight: 700;
-          padding: 13px 28px;
-          border-radius: 10px;
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #0c0c0c;
+          background: #f0ede8;
           text-decoration: none;
+          padding: 13px 30px;
+          display: inline-block;
           transition: opacity 0.15s;
-          font-family: inherit;
         }
 
-        .about-cta-btn:hover { opacity: 0.88; }
+        .about-cta-btn:hover { opacity: 0.8; }
 
+        /* ── Footer ── */
         .about-footer {
-          padding: 20px 40px;
-          border-top: 1px solid #e5e7eb;
+          padding: 18px 40px;
+          border-top: 1px solid #e8e4de;
           display: flex;
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
           gap: 12px;
-          background: #f8fafc;
         }
 
         .about-footer-link {
-          font-size: 12px;
-          color: #94a3b8;
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 9px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #b0ab9a;
           text-decoration: none;
+          transition: color 0.15s;
         }
 
-        .about-footer-link:hover { color: #64748b; }
+        .about-footer-link:hover { color: #5a5a5a; }
 
-        @media (max-width: 480px) {
+        @media (max-width: 520px) {
           .about-nav { padding: 0 20px; }
+          .about-masthead { padding: 40px 20px 36px; }
           .about-body { padding: 48px 20px 72px; }
-          .about-footer { padding: 20px; }
+          .about-footer { padding: 18px 20px; }
         }
       `}</style>
 
       <div className="about-root">
+
+        {/* Nav */}
         <nav className="about-nav">
           <Link href="/" className="about-logo">Banking<span>News</span>AI</Link>
-          <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
-            <Link href="/issues" className="about-nav-link">Past issues</Link>
-            <Link href="/#subscribe" style={{
-              background: "#3b82f6", color: "#fff", fontSize: 13, fontWeight: 600,
-              padding: "7px 18px", borderRadius: 8, textDecoration: "none"
-            }}>
-              Subscribe free
-            </Link>
+          <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+            <Link href="/issues" className="about-nav-link">Archive</Link>
+            <Link href="/#subscribe" className="about-nav-cta">Subscribe</Link>
           </div>
         </nav>
 
+        {/* Masthead */}
+        <div className="about-masthead">
+          <div className="about-masthead-inner">
+            <p className="about-eyebrow">About BankingNewsAI</p>
+            <div className="about-masthead-rule" />
+            <h1 className="about-h1">
+              The world ships hundreds of AI stories a day.<br />
+              <em>Most don&apos;t matter to banking.</em>
+            </h1>
+          </div>
+        </div>
+
+        {/* Body */}
         <article className="about-body">
-          <p className="about-kicker">About BankingNewsAI</p>
 
-          <h1 className="about-h1">
-            The world ships<br />
-            hundreds of AI stories<br />
-            a day. <em>Most don&apos;t<br />
-            matter to banking.</em>
-          </h1>
-
-          {/* ── The problem ── */}
+          {/* The problem */}
           <section className="about-section">
-            <p className="about-h2">The problem</p>
+            <div className="about-section-label">
+              <span className="about-section-label-text">The problem</span>
+              <div className="about-section-rule" />
+            </div>
 
             <p className="about-p">
               If you run a business unit, a technology function, or a risk team at a bank or
@@ -250,9 +324,12 @@ export default function AboutPage() {
 
           <hr className="about-divider" />
 
-          {/* ── Who it's for ── */}
+          {/* Who it's for */}
           <section className="about-section">
-            <p className="about-h2">Who BankingNewsAI is for</p>
+            <div className="about-section-label">
+              <span className="about-section-label-text">Who it&apos;s for</span>
+              <div className="about-section-rule" />
+            </div>
 
             <p className="about-pull">
               VPs. SVPs. Chiefs. People whose mornings are already scheduled before they wake up.
@@ -282,9 +359,12 @@ export default function AboutPage() {
 
           <hr className="about-divider" />
 
-          {/* ── What BankingNewsAI does ── */}
+          {/* What it does */}
           <section className="about-section">
-            <p className="about-h2">What BankingNewsAI does</p>
+            <div className="about-section-label">
+              <span className="about-section-label-text">What it does</span>
+              <div className="about-section-rule" />
+            </div>
 
             <p className="about-p">
               Every morning, BankingNewsAI scans 20+ sources — Banking Dive, Finextra, Tearsheet,
@@ -314,9 +394,12 @@ export default function AboutPage() {
 
           <hr className="about-divider" />
 
-          {/* ── Philosophy ── */}
+          {/* Philosophy */}
           <section className="about-section">
-            <p className="about-h2">Our philosophy</p>
+            <div className="about-section-label">
+              <span className="about-section-label-text">Philosophy</span>
+              <div className="about-section-rule" />
+            </div>
 
             <p className="about-p">
               We have one strong belief: <strong>less is worth more, if the less is actually right.</strong>
@@ -341,21 +424,24 @@ export default function AboutPage() {
             </p>
           </section>
 
-          {/* ── CTA ── */}
-          <div className="about-cta-block">
+          {/* CTA */}
+          <div className="about-cta">
             <h3>Start your morning smarter</h3>
-            <p>Free. No spam. Unsubscribe in one click anytime.</p>
+            <p>Free · No spam · Unsubscribe in one click</p>
             <Link href="/#subscribe" className="about-cta-btn">
               Subscribe to BankingNewsAI →
             </Link>
           </div>
+
         </article>
 
+        {/* Footer */}
         <footer className="about-footer">
           <Link href="/" className="about-footer-link">Home</Link>
-          <Link href="/issues" className="about-footer-link">Past issues</Link>
+          <Link href="/issues" className="about-footer-link">Archive</Link>
           <Link href="/admin" className="about-footer-link">Admin</Link>
         </footer>
+
       </div>
     </>
   );
