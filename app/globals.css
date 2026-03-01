@@ -1,8 +1,19 @@
 /* ─── Design tokens ─────────────────────────────────────────────────── */
 :root {
-  color-scheme: light dark;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color-scheme: light;
+  font-family: var(--font-sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
+  /* ── Editorial design system ── */
+  --parchment:      #f0ede8;
+  --parchment-mid:  #e8e4de;
+  --ink:            #0c0c0c;
+  --divider-warm:   #ede9e3;
+  --bank-accent:    #1a3fcb;
+  --bank-light:     #dce5ff;
+  --ai-accent:      #0d6640;
+  --ai-light:       #d0f0e0;
+
+  /* ── Admin UI tokens (unchanged) ── */
   --bg: #f8fafc;
   --surface: #ffffff;
   --surface-2: #f1f5f9;
@@ -83,6 +94,8 @@ body {
   color: var(--text);
   font-size: 14px;
   line-height: 1.5;
+  font-family: var(--font-sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ─── Layout ─────────────────────────────────────────────────────────── */

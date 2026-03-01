@@ -90,6 +90,20 @@ export async function runIngestion(): Promise<IngestStats> {
   return stats;
 }
 
+// Three targeted queries covering the angles the digest cares about most.
+// Running them separately gives the LLM cleaner, higher-signal candidates
+// than a single kitchen-sink query.
+const EXA_QUERIES = [
+  // Concrete banking/fintech AI deployments and product moves
+  "bank fintech deploying AI product launch announcement",
+  // Regulatory and compliance — hard to catch via RSS
+  "financial regulator AI guidance policy ruling compliance",
+  // General AI moves significant enough for a banking executive
+  "AI model release enterprise deployment capability announcement",
+];
+
+type ExaResult = { title?: string; url?: string; text?: string; publishedDate?: string };
+
 async function ingestFromDiscoveryApi(): Promise<{
   attempted: number;
   inserted: number;
@@ -101,49 +115,55 @@ async function ingestFromDiscoveryApi(): Promise<{
   }
 
   const startDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  let response: Response;
-  try {
-    response = await fetch("https://api.exa.ai/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey
-      },
-      body: JSON.stringify({
-        query:
-          "Most important AI news in last 24 hours for fintech, banking, payments, risk, compliance, enterprise software",
-        numResults: 25,
-        startPublishedDate: startDate,
-        type: "keyword"
-      })
-    });
-  } catch {
-    return { attempted: 0, inserted: 0, duplicates: 0 };
-  }
 
-  if (!response.ok) {
-    return { attempted: 0, inserted: 0, duplicates: 0 };
-  }
+  // Fire all queries, collect results, dedupe by URL
+  const seen = new Set<string>();
+  const allResults: ExaResult[] = [];
 
-  let data: {
-    results?: Array<{ title?: string; url?: string; text?: string; publishedDate?: string }>;
-  };
-  try {
-    data = (await response.json()) as {
-      results?: Array<{ title?: string; url?: string; text?: string; publishedDate?: string }>;
-    };
-  } catch {
-    return { attempted: 0, inserted: 0, duplicates: 0 };
-  }
+  await Promise.all(
+    EXA_QUERIES.map(async (query) => {
+      let response: Response;
+      try {
+        response = await fetch("https://api.exa.ai/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-api-key": apiKey },
+          body: JSON.stringify({
+            query,
+            type: "auto",           // neural + keyword combined — Exa's semantic mode
+            category: "news",       // restrict to news index only
+            numResults: 15,
+            startPublishedDate: startDate,
+            contents: { text: true } // fetch full article body, not just a cached snippet
+          })
+        });
+      } catch {
+        return;
+      }
+      if (!response.ok) return;
+
+      let data: { results?: ExaResult[] };
+      try {
+        data = (await response.json()) as { results?: ExaResult[] };
+      } catch {
+        return;
+      }
+
+      for (const result of data.results ?? []) {
+        if (!result.url || !result.title) continue;
+        const canonical = canonicalizeUrl(result.url);
+        if (seen.has(canonical)) continue;
+        seen.add(canonical);
+        allResults.push(result);
+      }
+    })
+  );
 
   let attempted = 0;
   let inserted = 0;
   let duplicates = 0;
 
-  for (const result of data.results ?? []) {
-    if (!result.url || !result.title) {
-      continue;
-    }
+  for (const result of allResults) {
+    if (!result.url || !result.title) continue;
     attempted += 1;
     const canonicalUrl = canonicalizeUrl(result.url);
     const wasInserted = await insertNewsItem({

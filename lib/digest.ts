@@ -418,8 +418,10 @@ function normalizeUrl(input: string): string {
   }
 }
 
-function buildBriefSummary(bankingStories: DigestStory[], aiStories: DigestStory[]): string {
-  const picks = [...bankingStories.slice(0, 2), ...aiStories.slice(0, 1)];
-  if (picks.length === 0) return "";
-  return picks.map((s) => (s.title.length > 55 ? s.title.slice(0, 52) + "…" : s.title)).join(" · ");
+export function buildBriefSummary(bankingStories: DigestStory[], aiStories: DigestStory[]): string {
+  const top = bankingStories[0] ?? aiStories[0];
+  if (!top) return "";
+  const words = top.title.trim().split(/\s+/);
+  if (words.length <= 12) return top.title.trim();
+  return words.slice(0, 12).join(" ") + "…";
 }

@@ -18,60 +18,87 @@ function extractDomain(url: string): string {
   catch { return "source"; }
 }
 
-function StoryCard({
-  story,
-  index,
-  accent
-}: {
+function StoryCard({ story, index, accent, accentLight }: {
   story: DigestStory;
   index: number;
   accent: string;
+  accentLight: string;
 }) {
   const domain = extractDomain(story.sourceUrl);
+  const num = String(index).padStart(2, "0");
+
   return (
-    <div style={{
-      background: "#fff", border: "1px solid #e5e7eb", borderRadius: 10,
-      overflow: "hidden", marginBottom: 16
-    }}>
-      <div style={{ height: 3, background: accent }} />
-      <div style={{ padding: "18px 22px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-          <span style={{
-            fontSize: 11, fontWeight: 600, color: "#6b7280",
-            textTransform: "uppercase", letterSpacing: "0.05em"
-          }}>
-            <img
-              src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`}
-              width={14} height={14}
-              alt=""
-              style={{ display: "inline-block", verticalAlign: "middle", marginRight: 5, borderRadius: 2 }}
-            />
-            {domain}
-          </span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#d1d5db" }}>#{index}</span>
-        </div>
-        <p style={{ margin: "0 0 10px", fontSize: 16, fontWeight: 700, color: "#0f172a", lineHeight: 1.35 }}>
-          {story.title}
-        </p>
-        <p style={{ margin: "0 0 12px", fontSize: 13, color: "#374151", lineHeight: 1.65 }}>
-          {story.executiveSummary}
-        </p>
-        <div style={{
-          background: "#f8fafc", borderLeft: `3px solid ${accent}`,
-          borderRadius: "0 6px 6px 0", padding: "9px 14px", marginBottom: 14
+    <div style={{ padding: "28px 0", borderBottom: "1px solid #ede9e3" }}>
+      {/* Domain + big faded number */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
+        <span style={{
+          fontFamily: "var(--font-mono), 'Courier New', monospace",
+          fontSize: 10, fontWeight: 500, letterSpacing: "0.16em",
+          textTransform: "uppercase", color: "#b0ab9a"
         }}>
-          <p style={{ margin: 0, fontSize: 12, color: "#4b5563", lineHeight: 1.55 }}>
-            <strong style={{ color: "#374151" }}>Action: </strong>{story.businessImpact}
-          </p>
-        </div>
-        <a href={story.sourceUrl} target="_blank" rel="noreferrer" style={{
-          display: "inline-block", fontSize: 12, fontWeight: 600, color: "#fff",
-          background: accent, textDecoration: "none", padding: "6px 14px",
-          borderRadius: 6
+          {domain}
+        </span>
+        <span style={{
+          fontFamily: "var(--font-serif), Georgia, serif",
+          fontSize: 44, fontWeight: 900, color: "#ede9e3", lineHeight: 1,
+          userSelect: "none", flexShrink: 0, marginLeft: 12
         }}>
-          Read article →
-        </a>
+          {num}
+        </span>
       </div>
+
+      {/* Title */}
+      <p style={{
+        margin: "0 0 12px",
+        fontFamily: "var(--font-serif), Georgia, serif",
+        fontSize: 20, fontWeight: 700, color: "#111111",
+        lineHeight: 1.3, letterSpacing: "-0.01em"
+      }}>
+        {story.title}
+      </p>
+
+      {/* Summary */}
+      <p style={{
+        margin: "0 0 16px",
+        fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
+        fontSize: 14, color: "#5a5a5a", lineHeight: 1.75
+      }}>
+        {story.executiveSummary}
+      </p>
+
+      {/* Action callout */}
+      <div style={{
+        borderLeft: `2px solid ${accent}`,
+        background: "#faf9f7",
+        padding: "10px 16px",
+        marginBottom: 16
+      }}>
+        <p style={{
+          margin: "0 0 3px",
+          fontFamily: "var(--font-mono), 'Courier New', monospace",
+          fontSize: 9, fontWeight: 500, letterSpacing: "0.18em",
+          textTransform: "uppercase", color: accent
+        }}>
+          Action
+        </p>
+        <p style={{
+          margin: 0,
+          fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
+          fontSize: 13, color: "#111111", lineHeight: 1.6
+        }}>
+          {story.businessImpact}
+        </p>
+      </div>
+
+      {/* Read link */}
+      <a href={story.sourceUrl} target="_blank" rel="noreferrer" style={{
+        fontFamily: "var(--font-mono), 'Courier New', monospace",
+        fontSize: 10, fontWeight: 500, letterSpacing: "0.1em",
+        textTransform: "uppercase", color: accent,
+        textDecoration: "underline", textUnderlineOffset: 3
+      }}>
+        Read article →
+      </a>
     </div>
   );
 }
@@ -83,7 +110,6 @@ export default async function IssuePage({
 }) {
   const { date } = await params;
 
-  // Basic date validation
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) notFound();
 
   await ensureSchema();
@@ -100,138 +126,310 @@ export default async function IssuePage({
 
   return (
     <>
-      {/* Nav */}
-      <nav style={{
-        background: "#ffffff", borderBottom: "1px solid #e5e7eb",
-        padding: "0 2rem", position: "sticky", top: 0, zIndex: 50
-      }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56 }}>
-          <Link href="/" style={{ fontWeight: 800, fontSize: 17, color: "#0f172a", textDecoration: "none" }}>
-            Banking<span style={{ color: "#3b82f6" }}>News</span>AI
-          </Link>
+      <style>{`
+        .issue-root {
+          min-height: 100vh;
+          background: #f0ede8;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .issue-nav {
+          padding: 0 40px;
+          height: 52px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: #0c0c0c;
+          position: sticky;
+          top: 0;
+          z-index: 50;
+        }
+
+        .issue-logo {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 13px;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #444;
+          text-decoration: none;
+        }
+
+        .issue-logo span { color: #4f7fff; }
+
+        .issue-nav-back {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #555;
+          text-decoration: none;
+          transition: color 0.15s;
+        }
+
+        .issue-nav-back:hover { color: #aaa; }
+
+        .issue-nav-cta {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #0c0c0c;
+          background: #f0ede8;
+          text-decoration: none;
+          padding: 7px 14px;
+          transition: opacity 0.15s;
+        }
+
+        .issue-nav-cta:hover { opacity: 0.8; }
+
+        .issue-header {
+          background: #0c0c0c;
+          padding: 40px 40px 44px;
+          border-bottom: 1px solid #1a1a1a;
+          text-align: center;
+        }
+
+        .issue-header-inner {
+          max-width: 640px;
+          margin: 0 auto;
+        }
+
+        .issue-eyebrow {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 9px;
+          font-weight: 500;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #444;
+          margin: 0 0 14px;
+        }
+
+        .issue-header-rule {
+          height: 1px;
+          background: #1e1e1e;
+          margin: 0 auto 20px;
+          max-width: 480px;
+        }
+
+        .issue-headline {
+          font-family: var(--font-serif), Georgia, serif;
+          font-size: clamp(1.4rem, 3.5vw, 2rem);
+          font-weight: 700;
+          font-style: italic;
+          color: #ffffff;
+          margin: 0 0 16px;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+        }
+
+        .issue-badges {
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .issue-badge {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 9px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          padding: 4px 12px;
+          border: 1px solid;
+        }
+
+        .issue-badge-bank {
+          color: #6b9cff;
+          border-color: #1e2e5a;
+          background: rgba(26,63,203,0.12);
+        }
+
+        .issue-badge-ai {
+          color: #5ecb97;
+          border-color: #0e3322;
+          background: rgba(13,102,64,0.12);
+        }
+
+        .issue-body {
+          flex: 1;
+          padding: 0 40px 72px;
+        }
+
+        .issue-body-inner {
+          max-width: 660px;
+          margin: 0 auto;
+        }
+
+        .issue-section-label {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin: 36px 0 0;
+        }
+
+        .issue-section-label-text {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .issue-section-rule {
+          flex: 1;
+          height: 1px;
+        }
+
+        .issue-cta {
+          margin-top: 52px;
+          background: #0c0c0c;
+          padding: 40px 36px;
+          text-align: center;
+        }
+
+        .issue-cta h3 {
+          font-family: var(--font-serif), Georgia, serif;
+          font-size: 1.5rem;
+          font-weight: 700;
+          font-style: italic;
+          color: #ffffff;
+          margin: 0 0 10px;
+        }
+
+        .issue-cta p {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #555;
+          margin: 0 0 24px;
+        }
+
+        .issue-cta-btn {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #0c0c0c;
+          background: #f0ede8;
+          text-decoration: none;
+          padding: 12px 28px;
+          display: inline-block;
+          transition: opacity 0.15s;
+        }
+
+        .issue-cta-btn:hover { opacity: 0.8; }
+
+        .issue-footer {
+          padding: 18px 40px;
+          border-top: 1px solid #e8e4de;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .issue-footer-link {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 9px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #b0ab9a;
+          text-decoration: none;
+          transition: color 0.15s;
+        }
+
+        .issue-footer-link:hover { color: #5a5a5a; }
+
+        @media (max-width: 520px) {
+          .issue-nav, .issue-header, .issue-body, .issue-footer { padding-left: 20px; padding-right: 20px; }
+        }
+      `}</style>
+
+      <div className="issue-root">
+        {/* Nav */}
+        <nav className="issue-nav">
+          <Link href="/" className="issue-logo">Banking<span>News</span>AI</Link>
           <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-            <Link href="/issues" style={{ color: "#64748b", fontSize: 13, textDecoration: "none" }}>
-              ← All issues
-            </Link>
-            <Link href="/#subscribe" style={{
-              background: "#3b82f6", color: "#fff", fontSize: 13, fontWeight: 600,
-              padding: "7px 18px", borderRadius: 8, textDecoration: "none"
-            }}>
-              Subscribe free
-            </Link>
+            <Link href="/issues" className="issue-nav-back">← Archive</Link>
+            <Link href="/#subscribe" className="issue-nav-cta">Subscribe</Link>
+          </div>
+        </nav>
+
+        {/* Header */}
+        <div className="issue-header">
+          <div className="issue-header-inner">
+            <p className="issue-eyebrow">BankingNewsAI Daily Brief &nbsp;·&nbsp; {formatted}</p>
+            <div className="issue-header-rule" />
+            <h1 className="issue-headline">{content.briefSummary ?? formatted}</h1>
+            <div className="issue-badges">
+              {bankingStories.length > 0 && (
+                <span className="issue-badge issue-badge-bank">
+                  🏦 {bankingStories.length} Banking AI
+                </span>
+              )}
+              {aiStories.length > 0 && (
+                <span className="issue-badge issue-badge-ai">
+                  🤖 {aiStories.length} General AI
+                </span>
+              )}
+            </div>
           </div>
         </div>
-      </nav>
 
-      {/* Header */}
-      <div style={{
-        background: "#f8fafc", borderBottom: "1px solid #e5e7eb",
-        padding: "48px 2rem 44px", textAlign: "center"
-      }}>
-        <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3b82f6", marginBottom: 10 }}>
-          BANKINGNEWSAI DAILY BRIEF &nbsp;&middot;&nbsp; {formatted}
-        </p>
-        <h1 style={{ fontSize: "clamp(1.2rem,3vw,1.75rem)", fontWeight: 800, color: "#0f172a", margin: "0 0 14px", letterSpacing: "-0.02em", lineHeight: 1.25, maxWidth: 680, marginLeft: "auto", marginRight: "auto" }}>
-          {content.briefSummary ?? formatted}
-        </h1>
-        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-          {bankingStories.length > 0 && (
-            <span style={{
-              display: "inline-block", background: "#eff6ff", color: "#2563eb",
-              fontSize: 11, fontWeight: 600, padding: "3px 12px", borderRadius: 999,
-              border: "1px solid #bfdbfe"
-            }}>
-              🏦 {bankingStories.length} Banking AI
-            </span>
-          )}
-          {aiStories.length > 0 && (
-            <span style={{
-              display: "inline-block", background: "#f0fdf4", color: "#16a34a",
-              fontSize: 11, fontWeight: 600, padding: "3px 12px", borderRadius: 999,
-              border: "1px solid #bbf7d0"
-            }}>
-              🤖 {aiStories.length} General AI
-            </span>
-          )}
-        </div>
-      </div>
+        {/* Stories */}
+        <div className="issue-body">
+          <div className="issue-body-inner">
 
-      {/* Stories */}
-      <div style={{ background: "#f8fafc", padding: "36px 2rem 64px" }}>
-        <div style={{ maxWidth: 740, margin: "0 auto" }}>
-
-          {bankingStories.length > 0 && (
-            <section style={{ marginBottom: 36 }}>
-              <div style={{
-                background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "10px 10px 0 0",
-                padding: "12px 20px", display: "flex", alignItems: "center", gap: 8, marginBottom: 0
-              }}>
-                <span style={{ fontSize: 15 }}>🏦</span>
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#2563eb" }}>
-                  Banking AI
-                </span>
-              </div>
-              <div style={{ paddingTop: 16 }}>
+            {bankingStories.length > 0 && (
+              <section>
+                <div className="issue-section-label">
+                  <span className="issue-section-label-text" style={{ color: "#1a3fcb" }}>Banking AI</span>
+                  <div className="issue-section-rule" style={{ background: "#dce5ff" }} />
+                </div>
                 {bankingStories.map((story, i) => (
-                  <StoryCard key={i} story={story} index={i + 1} accent="#3b82f6" />
+                  <StoryCard key={i} story={story} index={i + 1} accent="#1a3fcb" accentLight="#dce5ff" />
                 ))}
-              </div>
-            </section>
-          )}
+              </section>
+            )}
 
-          {aiStories.length > 0 && (
-            <section>
-              <div style={{
-                background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "10px 10px 0 0",
-                padding: "12px 20px", display: "flex", alignItems: "center", gap: 8
-              }}>
-                <span style={{ fontSize: 15 }}>🤖</span>
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#16a34a" }}>
-                  General AI
-                </span>
-              </div>
-              <div style={{ paddingTop: 16 }}>
+            {aiStories.length > 0 && (
+              <section>
+                <div className="issue-section-label">
+                  <span className="issue-section-label-text" style={{ color: "#0d6640" }}>General AI</span>
+                  <div className="issue-section-rule" style={{ background: "#d0f0e0" }} />
+                </div>
                 {aiStories.map((story, i) => (
-                  <StoryCard key={i} story={story} index={i + 1} accent="#22c55e" />
+                  <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" accentLight="#d0f0e0" />
                 ))}
-              </div>
-            </section>
-          )}
+              </section>
+            )}
 
-          {/* Subscribe nudge */}
-          <div style={{
-            marginTop: 40, background: "#f8fafc", border: "1px solid #e5e7eb",
-            borderRadius: 14, padding: "32px 28px", textAlign: "center"
-          }}>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#0f172a", margin: "0 0 8px" }}>
-              Get this in your inbox every morning
-            </p>
-            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 22px" }}>
-              Free. No spam. Unsubscribe anytime.
-            </p>
-            <Link href="/#subscribe" style={{
-              display: "inline-block", background: "#3b82f6", color: "#fff",
-              fontWeight: 700, fontSize: 14, padding: "11px 28px",
-              borderRadius: 8, textDecoration: "none"
-            }}>
-              Subscribe free →
-            </Link>
+            {/* Subscribe CTA */}
+            <div className="issue-cta">
+              <h3>Get this in your inbox every morning</h3>
+              <p>Free · No spam · Unsubscribe anytime</p>
+              <Link href="/#subscribe" className="issue-cta-btn">
+                Subscribe free →
+              </Link>
+            </div>
+
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer style={{
-        background: "#f8fafc", borderTop: "1px solid #e5e7eb",
-        padding: "24px 2rem", textAlign: "center"
-      }}>
-        <p style={{ color: "#94a3b8", fontSize: 12, margin: 0 }}>
-          <Link href="/" style={{ color: "#3b82f6", textDecoration: "none" }}>BankingNewsAI</Link>
-          {" "}·{" "}
-          <Link href="/issues" style={{ color: "#64748b", textDecoration: "none" }}>All issues</Link>
-          {" "}· Curated by AI · Delivered daily
-        </p>
-      </footer>
+        {/* Footer */}
+        <footer className="issue-footer">
+          <Link href="/" className="issue-footer-link">Home</Link>
+          <Link href="/issues" className="issue-footer-link">Archive</Link>
+          <span className="issue-footer-link" style={{ cursor: "default" }}>Curated by AI · Delivered daily</span>
+        </footer>
+      </div>
     </>
   );
 }
