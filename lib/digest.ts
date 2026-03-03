@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { listNewsItemsSince, upsertDailyDigest } from "@/lib/db";
+import { listNewsItemsSince, listRecentDigests, upsertDailyDigest } from "@/lib/db";
 import { DailyDigest, DigestStory } from "@/lib/types";
 import { isPaywalled } from "@/lib/paywall";
 
@@ -121,11 +121,26 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL || "gpt-4.1-mini";
 
+  // Collect URLs already published in recent digests to avoid cross-day repeats
+  const recentDigests = await listRecentDigests(3);
+  const recentlyUsedUrls = new Set<string>();
+  for (const d of recentDigests) {
+    if (d.digest_date === date) continue; // skip today's own draft if regenerating
+    const content = d.content_json as DailyDigest | null;
+    if (!content) continue;
+    for (const s of [...(content.bankingStories ?? content.stories ?? []), ...(content.aiStories ?? [])]) {
+      if (s.sourceUrl) recentlyUsedUrls.add(normalizeUrl(s.sourceUrl));
+    }
+  }
+
   // Split smol.ai items (newsletter blobs) from regular RSS items
   const smolItems = items.filter((i) => i.source_name === "Smol AI Issues" && i.summary);
-  // Remove paywalled and excluded URLs from the RSS pool entirely
+  // Remove paywalled, excluded, and already-published URLs from the RSS pool
   const rssItems = items.filter(
-    (i) => i.source_name !== "Smol AI Issues" && !isPaywalled(i.url) && !isExcludedUrl(i.url)
+    (i) => i.source_name !== "Smol AI Issues"
+      && !isPaywalled(i.url)
+      && !isExcludedUrl(i.url)
+      && !recentlyUsedUrls.has(normalizeUrl(i.url))
   );
 
   // Pass 1: extract stories from the smol.ai newsletter (primary source)
@@ -152,16 +167,26 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     rssResult = await tryLlmTwoSection(bankingCandidates, aiCandidates, apiKey, model);
   }
 
+  // Collect recently-published titles for topic-level dedup (catches smol newsletter repeats
+  // where sourceUrl is the newsletter URL, not the underlying article URL)
+  const recentTitles = recentDigests
+    .filter((d) => d.digest_date !== date)
+    .flatMap((d) => {
+      const c = d.content_json as DailyDigest | null;
+      if (!c) return [];
+      return [...(c.bankingStories ?? c.stories ?? []), ...(c.aiStories ?? [])].map((s) => s.title);
+    });
+
   // Merge: smol stories take priority, RSS fills remaining slots up to 3 each
   const bankingStories = dedupeStories([
     ...smolResult.bankingStories,
     ...rssResult.bankingStories
-  ]).slice(0, 3);
+  ]).filter((s) => !isTopicRepeat(s.title, recentTitles)).slice(0, 3);
 
   const aiStories = dedupeStories([
     ...smolResult.aiStories,
     ...rssResult.aiStories
-  ]).slice(0, 3);
+  ]).filter((s) => !isTopicRepeat(s.title, recentTitles)).slice(0, 3);
 
   const briefSummary = apiKey
     ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model)) ||
@@ -396,6 +421,43 @@ function isExcludedUrl(url: string): boolean {
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
+
+/**
+ * Extract key entities from a title: dollar/billion amounts and capitalized proper nouns.
+ * Used to detect same-story repeats across consecutive digests.
+ */
+function extractKeyEntities(title: string): Set<string> {
+  const entities = new Set<string>();
+  // "$110B", "$4.2T", "$500M", etc.
+  for (const m of title.matchAll(/\$[\d,.]+[BMKTbmkt]?/gi)) {
+    entities.add(m[0].replace(/,/g, "").toLowerCase());
+  }
+  // Capitalised proper nouns 3+ chars (skip common sentence-starters)
+  const skip = new Set(["The", "A", "An", "In", "On", "At", "For", "Of", "With", "And", "But", "Or", "As", "Is", "Are", "Its"]);
+  for (const m of title.matchAll(/\b([A-Z][a-zA-Z]{2,})\b/g)) {
+    if (!skip.has(m[1])) entities.add(m[1].toLowerCase());
+  }
+  return entities;
+}
+
+/**
+ * Returns true if `title` shares ≥2 key entities with any title in `recentTitles`,
+ * indicating the same story was already covered in a recent digest.
+ */
+function isTopicRepeat(title: string, recentTitles: string[]): boolean {
+  const these = extractKeyEntities(title);
+  if (these.size < 2) return false;
+  for (const recent of recentTitles) {
+    const those = extractKeyEntities(recent);
+    let overlap = 0;
+    for (const e of these) {
+      if (those.has(e)) overlap++;
+    }
+    if (overlap >= 2) return true;
+  }
+  return false;
+}
+
 function kwHits(haystack: string, keywords: string[]): number {
   return keywords.reduce((n, kw) => n + (haystack.includes(kw) ? 1 : 0), 0);
 }
