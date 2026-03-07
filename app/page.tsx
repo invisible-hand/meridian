@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { addOrActivateSubscriber, ensureSchema } from "@/lib/db";
 
@@ -10,11 +10,17 @@ async function subscribeAction(formData: FormData) {
   if (!email || !email.includes("@")) return;
   await ensureSchema();
   await addOrActivateSubscriber(email);
-  revalidatePath("/");
+  redirect("/?subscribed=1");
 }
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ subscribed?: string }>;
+}) {
   await ensureSchema();
+  const { subscribed } = await searchParams;
+  const didSubscribe = subscribed === "1";
 
   return (
     <>
@@ -194,6 +200,43 @@ export default async function HomePage() {
 
         .lp-btn:hover { opacity: 0.8; }
 
+        .lp-success {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 24px;
+          padding: 22px 32px;
+          border: 1px solid #b8d4c0;
+          background: #f0f8f3;
+          max-width: 440px;
+          width: 100%;
+        }
+
+        .lp-success-check {
+          font-size: 22px;
+          line-height: 1;
+        }
+
+        .lp-success-title {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #0d6640;
+          margin: 0;
+        }
+
+        .lp-success-body {
+          font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
+          font-size: 13px;
+          color: #5a5a5a;
+          margin: 0;
+          text-align: center;
+          line-height: 1.6;
+        }
+
         .lp-tags {
           display: flex;
           gap: 6px;
@@ -269,19 +312,30 @@ export default async function HomePage() {
             and noise, in your inbox before your first meeting.
           </p>
 
-          <form className="lp-form" action={subscribeAction}>
-            <input
-              className="lp-input"
-              name="email"
-              type="email"
-              required
-              placeholder="you@bank.com"
-              autoComplete="email"
-            />
-            <button className="lp-btn" type="submit">
-              Subscribe free →
-            </button>
-          </form>
+          {didSubscribe ? (
+            <div className="lp-success">
+              <span className="lp-success-check">✓</span>
+              <p className="lp-success-title">You&rsquo;re in</p>
+              <p className="lp-success-body">
+                First issue hits your inbox tomorrow morning.<br />
+                Check your spam folder if you don&rsquo;t see it.
+              </p>
+            </div>
+          ) : (
+            <form className="lp-form" action={subscribeAction}>
+              <input
+                className="lp-input"
+                name="email"
+                type="email"
+                required
+                placeholder="you@bank.com"
+                autoComplete="email"
+              />
+              <button className="lp-btn" type="submit">
+                Subscribe free →
+              </button>
+            </form>
+          )}
 
           <div className="lp-tags">
             <span className="lp-tag">🏦 Banking AI</span>
