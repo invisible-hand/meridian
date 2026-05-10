@@ -308,11 +308,17 @@ async function tryIngestSmolIssuesFallback(sourceName: string, sourceUrl: string
 }
 
 function parseDateFromIssueUrl(issueUrl: string): string | null {
-  const match = issueUrl.match(/\/issues\/(\d{4}-\d{2}-\d{2})-/);
-  if (!match?.[1]) {
+  // Accept both 4-digit (`2024-05-08`) and 2-digit (`24-05-08`) year prefixes.
+  // Current smol.ai URLs use the 2-digit form (e.g. `/issues/26-05-08-not-much`).
+  const match = issueUrl.match(/\/issues\/(\d{2}|\d{4})-(\d{2})-(\d{2})-/);
+  if (!match) {
     return null;
   }
-  return `${match[1]}T12:00:00.000Z`;
+  const yearPart = match[1];
+  const month = match[2];
+  const day = match[3];
+  const year = yearPart.length === 2 ? `20${yearPart}` : yearPart;
+  return `${year}-${month}-${day}T12:00:00.000Z`;
 }
 
 function prioritizeFeedItems(
@@ -422,9 +428,15 @@ async function ingestSmolIssuesForToday(): Promise<{
 }
 
 function extractSmolIssueUrls(html: string): string[] {
-  return Array.from(
-    new Set(
-      [...html.matchAll(/https:\/\/news\.smol\.ai\/issues\/[a-z0-9-]+/gi)].map((match) => match[0].toLowerCase())
-    )
-  );
+  // Match both absolute and relative issue paths. The smol.ai issues page
+  // renders relative links (e.g. `/issues/26-05-08-not-much`) so we capture
+  // either form and normalize to an absolute URL.
+  const slugs = new Set<string>();
+  for (const match of html.matchAll(/(?:https:\/\/news\.smol\.ai)?\/issues\/([a-z0-9][a-z0-9-]+)/gi)) {
+    const slug = match[1]?.toLowerCase();
+    if (slug) {
+      slugs.add(slug);
+    }
+  }
+  return Array.from(slugs).map((slug) => `https://news.smol.ai/issues/${slug}`);
 }
