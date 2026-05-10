@@ -1,8 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://bankingnewsai.com");
+import { BASE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -13,6 +10,10 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin", "/api/"]
       }
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`
+    sitemap: [
+      `${BASE_URL}/sitemap.xml`,
+      `${BASE_URL}/news-sitemap.xml`
+    ],
+    host: BASE_URL
   };
 }

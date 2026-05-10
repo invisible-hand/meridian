@@ -10,10 +10,15 @@ export async function GET() {
   await ensureSchema();
   const result = await runSendForToday();
 
-  // Immediately update sitemap.xml so today's issue appears in search engines
+  // After a successful send, push the new issue into search-engine-visible
+  // surfaces immediately by invalidating the relevant ISR caches.
   if ("sent" in result && result.sent > 0) {
+    const today = new Date().toISOString().slice(0, 10);
     revalidatePath("/sitemap.xml");
+    revalidatePath("/news-sitemap.xml");
+    revalidatePath("/rss.xml");
     revalidatePath("/issues");
+    revalidatePath(`/issues/${today}`);
   }
 
   return NextResponse.json(result);

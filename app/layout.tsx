@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Playfair_Display, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { BASE_URL, SITE_DESCRIPTION, SITE_DESCRIPTION_SHORT, SITE_NAME, SITE_TAGLINE } from "@/lib/seo";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -25,30 +26,50 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://bankingnewsai.com");
+const TITLE = `${SITE_NAME} — ${SITE_TAGLINE}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "BankingNewsAI — Daily AI Brief for Banking Executives",
-    template: "%s | BankingNewsAI"
+    default: TITLE,
+    template: `%s | ${SITE_NAME}`
   },
-  description:
-    "Every morning, BankingNewsAI delivers 6 curated AI stories — 3 banking AI, 3 general AI — to C-suite executives in banking and fintech. Free. Paywall-free.",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  category: "news",
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": [{ url: "/rss.xml", title: `${SITE_NAME} — Daily AI Brief` }]
+    }
+  },
   openGraph: {
     type: "website",
-    siteName: "BankingNewsAI",
-    title: "BankingNewsAI — Daily AI Brief for Banking Executives",
-    description:
-      "6 curated AI stories every morning — 3 banking AI, 3 general AI. Free. Paywall-free."
+    siteName: SITE_NAME,
+    title: TITLE,
+    description: SITE_DESCRIPTION_SHORT,
+    url: "/"
   },
   twitter: {
-    card: "summary",
-    title: "BankingNewsAI — Daily AI Brief for Banking Executives",
-    description: "6 curated AI stories every morning — free, paywall-free."
+    card: "summary_large_image",
+    title: TITLE,
+    description: SITE_DESCRIPTION_SHORT
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1
+    }
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f0ede8"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

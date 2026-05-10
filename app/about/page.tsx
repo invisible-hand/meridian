@@ -1,20 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd, aboutPageSchema } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
-  title: "About BankingNewsAI — AI News for Banking Executives",
+  title: "About — AI News for Banking Executives",
   description:
     "BankingNewsAI was built for VPs, SVPs, and C-suite leaders in banking and fintech who need to stay current on AI without spending an hour a day sifting through noise. Here's why it exists.",
+  alternates: { canonical: "/about" },
   openGraph: {
+    type: "website",
+    url: "/about",
     title: "About BankingNewsAI — AI News for Banking Executives",
     description:
       "Hundreds of AI headlines break every day. Most of them have nothing to do with banking. BankingNewsAI filters down to the six stories that actually matter — delivered before your first meeting."
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About BankingNewsAI",
+    description:
+      "Why BankingNewsAI exists, who it's for, and how the daily brief gets curated."
   }
 };
 
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={aboutPageSchema()} />
       <style>{`
         .about-root {
           min-height: 100vh;

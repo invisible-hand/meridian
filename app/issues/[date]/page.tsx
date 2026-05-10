@@ -1,16 +1,43 @@
+import { cache } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ensureSchema, getDigestForDate } from "@/lib/db";
+import { ensureSchema, getDigestForDate, listSentDigests, type Digest } from "@/lib/db";
 import { DailyDigest, DigestStory } from "@/lib/types";
+import {
+  absoluteUrl,
+  buildIssueDescription,
+  formatIssueDateLong,
+  formatIssueDateShort,
+  isoToArticleDate,
+  SITE_NAME
+} from "@/lib/seo";
+import { JsonLd, newsArticleSchema } from "@/lib/json-ld";
 
-export const dynamic = "force-dynamic";
+// Issue pages are immutable once `status === "sent"`. We let Next.js render
+// them on first request and cache. The send cron revalidates the new path
+// directly, so newly-sent issues appear within seconds; the 24h fallback
+// covers any edge cases.
+export const revalidate = 86400;
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+// Wrap DB reads in React `cache()` so `generateMetadata` and the page itself
+// share a single Supabase round-trip per render.
+const getCachedDigest = cache(async (date: string) => {
+  if (!ISO_DATE.test(date)) return null;
+  await ensureSchema();
+  return getDigestForDate({ digestDate: date, category: "fintech_banking" }).catch(() => null);
+});
+
+const getCachedRelatedIssues = cache(async (excludeDate: string): Promise<Digest[]> => {
+  await ensureSchema();
+  const digests = await listSentDigests(8).catch(() => []);
+  return digests.filter((d) => d.digest_date !== excludeDate).slice(0, 5);
+});
 
 function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleDateString("en-US", {
-      weekday: "long", year: "numeric", month: "long", day: "numeric"
-    });
-  } catch { return iso; }
+  return formatIssueDateLong(iso);
 }
 
 function extractDomain(url: string): string {
@@ -28,7 +55,7 @@ function StoryCard({ story, index, accent, accentLight }: {
   const num = String(index).padStart(2, "0");
 
   return (
-    <div style={{ padding: "28px 0", borderBottom: "1px solid #ede9e3" }}>
+    <article style={{ padding: "28px 0", borderBottom: "1px solid #ede9e3" }}>
       {/* Domain + big faded number */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
         <span style={{
@@ -38,7 +65,7 @@ function StoryCard({ story, index, accent, accentLight }: {
         }}>
           {domain}
         </span>
-        <span style={{
+        <span aria-hidden="true" style={{
           fontFamily: "var(--font-serif), Georgia, serif",
           fontSize: 44, fontWeight: 900, color: "#ede9e3", lineHeight: 1,
           userSelect: "none", flexShrink: 0, marginLeft: 12
@@ -48,14 +75,14 @@ function StoryCard({ story, index, accent, accentLight }: {
       </div>
 
       {/* Title */}
-      <p style={{
+      <h2 style={{
         margin: "0 0 12px",
         fontFamily: "var(--font-serif), Georgia, serif",
         fontSize: 20, fontWeight: 700, color: "#111111",
         lineHeight: 1.3, letterSpacing: "-0.01em"
       }}>
         {story.title}
-      </p>
+      </h2>
 
       {/* Summary */}
       <p style={{
@@ -91,7 +118,7 @@ function StoryCard({ story, index, accent, accentLight }: {
       </div>
 
       {/* Read link */}
-      <a href={story.sourceUrl} target="_blank" rel="noreferrer" style={{
+      <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{
         fontFamily: "var(--font-mono), 'Courier New', monospace",
         fontSize: 10, fontWeight: 500, letterSpacing: "0.1em",
         textTransform: "uppercase", color: accent,
@@ -99,8 +126,64 @@ function StoryCard({ story, index, accent, accentLight }: {
       }}>
         Read article →
       </a>
-    </div>
+    </article>
   );
+}
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ date: string }>;
+}): Promise<Metadata> {
+  const { date } = await params;
+  const digest = await getCachedDigest(date);
+  if (!digest || digest.status !== "sent") {
+    return { title: "Issue not found", robots: { index: false, follow: false } };
+  }
+
+  const content = digest.content_json as DailyDigest | null;
+  const bankingStories = content?.bankingStories ?? content?.stories ?? [];
+  const aiStories = content?.aiStories ?? [];
+  const formatted = formatIssueDateLong(date);
+  const formattedShort = formatIssueDateShort(date);
+  const storyTitles = [...bankingStories, ...aiStories].map((s) => s.title);
+  const storyCount = bankingStories.length + aiStories.length;
+  const description = buildIssueDescription({
+    briefSummary: content?.briefSummary,
+    storyTitles,
+    storyCount,
+    formattedDate: formatted
+  });
+  const headline = content?.briefSummary
+    ? `${content.briefSummary} — ${formattedShort}`
+    : `Banking AI Brief — ${formatted}`;
+  const url = `/issues/${date}`;
+
+  return {
+    title: headline,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: headline,
+      description,
+      siteName: SITE_NAME,
+      publishedTime: digest.sent_at
+        ? new Date(digest.sent_at).toISOString()
+        : isoToArticleDate(date),
+      modifiedTime: digest.sent_at
+        ? new Date(digest.sent_at).toISOString()
+        : isoToArticleDate(date),
+      section: "Banking & AI",
+      tags: ["banking", "fintech", "AI", "artificial intelligence", "executive brief"]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: headline,
+      description
+    }
+  };
 }
 
 export default async function IssuePage({
@@ -109,12 +192,9 @@ export default async function IssuePage({
   params: Promise<{ date: string }>;
 }) {
   const { date } = await params;
+  if (!ISO_DATE.test(date)) notFound();
 
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) notFound();
-
-  await ensureSchema();
-  const digest = await getDigestForDate({ digestDate: date, category: "fintech_banking" }).catch(() => null);
-
+  const digest = await getCachedDigest(date);
   if (!digest || digest.status !== "sent") notFound();
 
   const content = digest.content_json as DailyDigest | null;
@@ -123,6 +203,17 @@ export default async function IssuePage({
   const bankingStories = content.bankingStories ?? content.stories ?? [];
   const aiStories = content.aiStories ?? [];
   const formatted = formatDate(date);
+  const allStories = [...bankingStories, ...aiStories];
+  const issueDescription = buildIssueDescription({
+    briefSummary: content.briefSummary,
+    storyTitles: allStories.map((s) => s.title),
+    storyCount: allStories.length,
+    formattedDate: formatted
+  });
+  const publishedIso = digest.sent_at
+    ? new Date(digest.sent_at).toISOString()
+    : isoToArticleDate(date);
+  const relatedIssues = await getCachedRelatedIssues(date);
 
   return (
     <>
@@ -371,10 +462,78 @@ export default async function IssuePage({
 
         .issue-footer-link:hover { color: #5a5a5a; }
 
+        .issue-related {
+          margin-top: 36px;
+          padding: 28px 0 8px;
+          border-top: 1px solid #e8e4de;
+        }
+
+        .issue-related-label {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #9a9a9a;
+          margin: 0 0 14px;
+        }
+
+        .issue-related-list {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .issue-related-item {
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 12px 0;
+          border-bottom: 1px solid #ede9e3;
+          align-items: baseline;
+          text-decoration: none;
+        }
+
+        .issue-related-item:last-child { border-bottom: none; }
+
+        .issue-related-item-date {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 9px;
+          letter-spacing: 0.14em;
+          color: #b0ab9a;
+          text-transform: uppercase;
+          flex-shrink: 0;
+          min-width: 92px;
+        }
+
+        .issue-related-item-title {
+          font-family: var(--font-serif), Georgia, serif;
+          font-size: 14px;
+          color: #111;
+          line-height: 1.4;
+          font-weight: 700;
+          flex: 1;
+        }
+
+        .issue-related-item:hover .issue-related-item-title {
+          color: #1a3fcb;
+        }
+
         @media (max-width: 520px) {
           .issue-nav, .issue-header, .issue-body, .issue-footer { padding-left: 20px; padding-right: 20px; }
         }
       `}</style>
+
+      <JsonLd
+        data={newsArticleSchema({
+          date,
+          digest: content,
+          description: issueDescription,
+          headline: content.briefSummary ?? formatted,
+          publishedAt: publishedIso,
+          modifiedAt: publishedIso,
+          ogImageUrl: absoluteUrl(`/issues/${date}/opengraph-image`)
+        })}
+      />
 
       <div className="issue-root">
         {/* Nav */}
@@ -386,72 +545,104 @@ export default async function IssuePage({
           </div>
         </nav>
 
-        {/* Header */}
-        <div className="issue-header">
-          <div className="issue-header-inner">
-            <p className="issue-eyebrow">BankingNewsAI Daily Brief &nbsp;·&nbsp; {formatted}</p>
-            <div className="issue-header-rule" />
-            <h1 className="issue-headline">{content.briefSummary ?? formatted}</h1>
-            <div className="issue-badges">
+        <article>
+          {/* Header */}
+          <header className="issue-header">
+            <div className="issue-header-inner">
+              <p className="issue-eyebrow">
+                BankingNewsAI Daily Brief &nbsp;·&nbsp;
+                <time dateTime={publishedIso}>{formatted}</time>
+              </p>
+              <div className="issue-header-rule" />
+              <h1 className="issue-headline">{content.briefSummary ?? formatted}</h1>
+              <div className="issue-badges">
+                {bankingStories.length > 0 && (
+                  <span className="issue-badge issue-badge-bank">
+                    🏦 {bankingStories.length} Banking AI
+                  </span>
+                )}
+                {aiStories.length > 0 && (
+                  <span className="issue-badge issue-badge-ai">
+                    🤖 {aiStories.length} General AI
+                  </span>
+                )}
+              </div>
+            </div>
+          </header>
+
+          {/* Stories */}
+          <div className="issue-body">
+            <div className="issue-body-inner">
+
               {bankingStories.length > 0 && (
-                <span className="issue-badge issue-badge-bank">
-                  🏦 {bankingStories.length} Banking AI
-                </span>
+                <section aria-labelledby="banking-section-heading">
+                  <div className="issue-section-header" style={{ background: "#1a3fcb" }}>
+                    <div className="issue-section-header-left">
+                      <h2 id="banking-section-heading" className="issue-section-name">Banking AI</h2>
+                      <p className="issue-section-desc">Financial institutions &amp; fintech technology</p>
+                    </div>
+                    <span className="issue-section-count">{bankingStories.length} {bankingStories.length === 1 ? "story" : "stories"}</span>
+                  </div>
+                  {bankingStories.map((story, i) => (
+                    <StoryCard key={i} story={story} index={i + 1} accent="#1a3fcb" accentLight="#dce5ff" />
+                  ))}
+                </section>
               )}
+
               {aiStories.length > 0 && (
-                <span className="issue-badge issue-badge-ai">
-                  🤖 {aiStories.length} General AI
-                </span>
+                <section aria-labelledby="ai-section-heading">
+                  <div className="issue-section-header" style={{ background: "#0d6640" }}>
+                    <div className="issue-section-header-left">
+                      <h2 id="ai-section-heading" className="issue-section-name">General AI</h2>
+                      <p className="issue-section-desc">Large language models &amp; AI infrastructure</p>
+                    </div>
+                    <span className="issue-section-count">{aiStories.length} {aiStories.length === 1 ? "story" : "stories"}</span>
+                  </div>
+                  {aiStories.map((story, i) => (
+                    <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" accentLight="#d0f0e0" />
+                  ))}
+                </section>
               )}
+
+              {/* Recent issues — internal linking for crawl depth and topical clustering */}
+              {relatedIssues.length > 0 && (
+                <aside className="issue-related" aria-labelledby="related-issues-heading">
+                  <p id="related-issues-heading" className="issue-related-label">
+                    Recent issues
+                  </p>
+                  <nav className="issue-related-list">
+                    {relatedIssues.map((d) => {
+                      const c = d.content_json as DailyDigest | null;
+                      const dShort = formatIssueDateShort(d.digest_date);
+                      const dTitle =
+                        c?.briefSummary ?? formatIssueDateLong(d.digest_date);
+                      return (
+                        <Link
+                          key={d.id}
+                          href={`/issues/${d.digest_date}`}
+                          className="issue-related-item"
+                        >
+                          <span className="issue-related-item-date">{dShort}</span>
+                          <span className="issue-related-item-title">{dTitle}</span>
+                        </Link>
+                      );
+                    })}
+                  </nav>
+                </aside>
+              )}
+
+              {/* Subscribe CTA */}
+              <div className="issue-cta">
+                <h3>Get this in your inbox every morning</h3>
+                <p>Free · No spam · Unsubscribe anytime</p>
+                <Link href="/#subscribe" className="issue-cta-btn">
+                  Subscribe free →
+                </Link>
+              </div>
+
             </div>
           </div>
-        </div>
-
-        {/* Stories */}
-        <div className="issue-body">
-          <div className="issue-body-inner">
-
-            {bankingStories.length > 0 && (
-              <section>
-                <div className="issue-section-header" style={{ background: "#1a3fcb" }}>
-                  <div className="issue-section-header-left">
-                    <p className="issue-section-name">Banking AI</p>
-                    <p className="issue-section-desc">Financial institutions &amp; fintech technology</p>
-                  </div>
-                  <span className="issue-section-count">{bankingStories.length} {bankingStories.length === 1 ? "story" : "stories"}</span>
-                </div>
-                {bankingStories.map((story, i) => (
-                  <StoryCard key={i} story={story} index={i + 1} accent="#1a3fcb" accentLight="#dce5ff" />
-                ))}
-              </section>
-            )}
-
-            {aiStories.length > 0 && (
-              <section>
-                <div className="issue-section-header" style={{ background: "#0d6640" }}>
-                  <div className="issue-section-header-left">
-                    <p className="issue-section-name">General AI</p>
-                    <p className="issue-section-desc">Large language models &amp; AI infrastructure</p>
-                  </div>
-                  <span className="issue-section-count">{aiStories.length} {aiStories.length === 1 ? "story" : "stories"}</span>
-                </div>
-                {aiStories.map((story, i) => (
-                  <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" accentLight="#d0f0e0" />
-                ))}
-              </section>
-            )}
-
-            {/* Subscribe CTA */}
-            <div className="issue-cta">
-              <h3>Get this in your inbox every morning</h3>
-              <p>Free · No spam · Unsubscribe anytime</p>
-              <Link href="/#subscribe" className="issue-cta-btn">
-                Subscribe free →
-              </Link>
-            </div>
-
-          </div>
-        </div>
+        </article>
 
         {/* Footer */}
         <footer className="issue-footer">

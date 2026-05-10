@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { addOrActivateSubscriber, ensureSchema } from "@/lib/db";
+import { JsonLd, homeSchema } from "@/lib/json-ld";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,7 @@ export default async function HomePage({
 
   return (
     <>
+      <JsonLd data={homeSchema()} />
       <style>{`
         .lp {
           min-height: 100vh;
