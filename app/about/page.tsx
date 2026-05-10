@@ -435,6 +435,29 @@ export default function AboutPage() {
             </p>
           </section>
 
+          <hr className="about-divider" />
+
+          {/* Contact */}
+          <section className="about-section">
+            <div className="about-section-label">
+              <span className="about-section-label-text">Contact</span>
+              <div className="about-section-rule" />
+            </div>
+
+            <p className="about-p">
+              Spotted a story we missed? Have a banking-AI deployment you&apos;d like
+              covered? Disagree with how a story got framed? Want to talk about
+              what we&apos;re building? Email{" "}
+              <a
+                href="mailto:andrey@fastmail.jp?subject=BankingNewsAI"
+                style={{ color: "#1a3fcb", textDecoration: "underline", textUnderlineOffset: 3 }}
+              >
+                andrey@fastmail.jp
+              </a>
+              . Real human, every reply.
+            </p>
+          </section>
+
           {/* CTA */}
           <div className="about-cta">
             <h3>Start your morning smarter</h3>
