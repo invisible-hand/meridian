@@ -77,6 +77,7 @@ export default async function OpenGraphImage({
           </div>
           <div
             style={{
+              display: "flex",
               fontSize: 14,
               letterSpacing: "0.22em",
               color: "#666",
