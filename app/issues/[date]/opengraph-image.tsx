@@ -64,6 +64,7 @@ export default async function OpenGraphImage({
         >
           <div
             style={{
+              display: "flex",
               fontSize: 20,
               letterSpacing: "0.18em",
               fontWeight: 500,
@@ -136,6 +137,7 @@ export default async function OpenGraphImage({
             {bankingCount > 0 && (
               <div
                 style={{
+                  display: "flex",
                   fontSize: 14,
                   fontFamily: "monospace",
                   letterSpacing: "0.14em",
@@ -152,6 +154,7 @@ export default async function OpenGraphImage({
             {aiCount > 0 && (
               <div
                 style={{
+                  display: "flex",
                   fontSize: 14,
                   fontFamily: "monospace",
                   letterSpacing: "0.14em",

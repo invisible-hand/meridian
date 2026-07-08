@@ -29,6 +29,7 @@ export default function OpenGraphImage() {
         >
           <div
             style={{
+              display: "flex",
               fontSize: 22,
               letterSpacing: "0.18em",
               fontWeight: 500,
@@ -62,6 +63,8 @@ export default function OpenGraphImage() {
         >
           <div
             style={{
+              display: "flex",
+              flexWrap: "wrap",
               fontSize: 86,
               fontWeight: 900,
               fontStyle: "italic",
@@ -71,7 +74,9 @@ export default function OpenGraphImage() {
               marginBottom: 28
             }}
           >
-            AI news that <span style={{ color: "#1a3fcb", fontStyle: "normal" }}>actually matters</span> to banking.
+            <span>AI news that&nbsp;</span>
+            <span style={{ color: "#1a3fcb", fontStyle: "normal" }}>actually matters</span>
+            <span>&nbsp;to banking.</span>
           </div>
           <div
             style={{
