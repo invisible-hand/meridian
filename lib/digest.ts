@@ -16,6 +16,11 @@ const twoSectionSchema = z.object({
   aiStories: z.array(storySchema).max(3)
 });
 
+const topicRepeatSchema = z.object({
+  bankingRepeatIndices: z.array(z.number().int()).default([]),
+  aiRepeatIndices: z.array(z.number().int()).default([])
+});
+
 // ── Keyword lists ─────────────────────────────────────────────────────────────
 const AI_KEYWORDS = [
   "artificial intelligence", " ai ", "genai", "llm", "foundation model",
@@ -178,15 +183,18 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     });
 
   // Merge: smol stories take priority, RSS fills remaining slots up to 3 each
-  const bankingStories = dedupeStories([
-    ...smolResult.bankingStories,
-    ...rssResult.bankingStories
-  ]).filter((s) => !isTopicRepeat(s.title, recentTitles)).slice(0, 3);
+  const mergedBanking = dedupeStories([...smolResult.bankingStories, ...rssResult.bankingStories]);
+  const mergedAi = dedupeStories([...smolResult.aiStories, ...rssResult.aiStories]);
 
-  const aiStories = dedupeStories([
-    ...smolResult.aiStories,
-    ...rssResult.aiStories
-  ]).filter((s) => !isTopicRepeat(s.title, recentTitles)).slice(0, 3);
+  const deduped = apiKey
+    ? await filterTopicRepeatsLlm(mergedBanking, mergedAi, recentTitles, apiKey, model)
+    : {
+        bankingStories: mergedBanking.filter((s) => !isTopicRepeat(s.title, recentTitles)),
+        aiStories: mergedAi.filter((s) => !isTopicRepeat(s.title, recentTitles))
+      };
+
+  const bankingStories = deduped.bankingStories.slice(0, 3);
+  const aiStories = deduped.aiStories.slice(0, 3);
 
   const briefSummary = apiKey
     ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model)) ||
@@ -286,6 +294,50 @@ async function tryLlmTwoSection(
   return {
     bankingStories: dedupeStories(result.data.bankingStories),
     aiStories: dedupeStories(result.data.aiStories)
+  };
+}
+
+// ── Cross-day repeat filter (LLM) ────────────────────────────────────────────
+// Keyword/entity matching (isTopicRepeat below) misses repeats where the same
+// story is referred to by different names across days (e.g. "BoE" vs "Bank of
+// England"). An LLM pass catches those by reading for meaning, not tokens.
+async function filterTopicRepeatsLlm(
+  bankingCandidates: DigestStory[],
+  aiCandidates: DigestStory[],
+  recentTitles: string[],
+  apiKey: string,
+  model: string
+): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
+  if (recentTitles.length === 0 || (bankingCandidates.length === 0 && aiCandidates.length === 0)) {
+    return { bankingStories: bankingCandidates, aiStories: aiCandidates };
+  }
+
+  const prompt = `You catch repeat stories in a daily banking/AI newsletter. Below are today's candidate story titles and the titles already published in the last few days.
+
+A candidate is a REPEAT if it covers the same underlying news event as a recent title — even if worded differently, using an abbreviation or acronym for the same organization (e.g. "BoE" = "Bank of England", "ECB" = "European Central Bank", "FCA" = "Financial Conduct Authority"), or emphasizing a different angle on the same event. It is NOT a repeat if it's a genuinely new development, even about the same organization.
+
+Return strict JSON only: {"bankingRepeatIndices": [...idx numbers...], "aiRepeatIndices": [...idx numbers...]}`;
+
+  const userContent = JSON.stringify({
+    recentTitles,
+    bankingCandidates: bankingCandidates.map((s, idx) => ({ idx, title: s.title })),
+    aiCandidates: aiCandidates.map((s, idx) => ({ idx, title: s.title }))
+  });
+
+  const response = await callLlm(apiKey, model, prompt, userContent);
+  const result = topicRepeatSchema.safeParse(response);
+  if (!result.success) {
+    return {
+      bankingStories: bankingCandidates.filter((s) => !isTopicRepeat(s.title, recentTitles)),
+      aiStories: aiCandidates.filter((s) => !isTopicRepeat(s.title, recentTitles))
+    };
+  }
+
+  const bankingRepeat = new Set(result.data.bankingRepeatIndices);
+  const aiRepeat = new Set(result.data.aiRepeatIndices);
+  return {
+    bankingStories: bankingCandidates.filter((_, idx) => !bankingRepeat.has(idx)),
+    aiStories: aiCandidates.filter((_, idx) => !aiRepeat.has(idx))
   };
 }
 
