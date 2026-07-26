@@ -237,6 +237,18 @@ function escapeHtml(input: string): string {
 const BATCH_SIZE = 100;
 
 /**
+ * Where subscriber replies land.
+ *
+ * The From address (digest@bankingnewsai.com) is a Resend sending identity, not
+ * a mailbox — mail sent to it goes nowhere. Setting Reply-To routes any reply
+ * to a real inbox instead, while leaving From (and therefore SPF/DKIM/DMARC
+ * alignment) untouched.
+ */
+function replyToAddress(): string | undefined {
+  return process.env.REPLY_TO_EMAIL?.trim() || undefined;
+}
+
+/**
  * RFC 8058 one-click unsubscribe headers. Gmail and Yahoo both require these on
  * bulk mail — without them a sender's inbox placement degrades, and recipients
  * reach for "report spam" instead of the footer link. The URL accepts POST and
@@ -278,12 +290,14 @@ export async function batchSendDigestEmails(params: {
 
   for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
     const chunk = recipients.slice(i, i + BATCH_SIZE);
+    const replyTo = replyToAddress();
     const batch = chunk.map((email) => ({
       from,
       to: email,
       subject,
       html: renderDigestHtml(digest, email),
-      headers: unsubscribeHeaders(email)
+      headers: unsubscribeHeaders(email),
+      ...(replyTo ? { replyTo } : {})
     }));
 
     const { data, error } = await resend.batch.send(batch);
@@ -309,11 +323,13 @@ export async function sendDigestEmail(params: { to: string; digest: DailyDigest 
   if (!apiKey) throw new Error("Missing RESEND_API_KEY");
   if (!from) throw new Error("Missing RESEND_FROM_EMAIL");
   const resend = new Resend(apiKey);
+  const replyTo = replyToAddress();
   await resend.emails.send({
     from,
     to: params.to,
     subject: getDigestSubject(params.digest),
     html: renderDigestHtml(params.digest, params.to),
-    headers: unsubscribeHeaders(params.to)
+    headers: unsubscribeHeaders(params.to),
+    ...(replyTo ? { replyTo } : {})
   });
 }
