@@ -236,6 +236,19 @@ function escapeHtml(input: string): string {
 
 const BATCH_SIZE = 100;
 
+/**
+ * RFC 8058 one-click unsubscribe headers. Gmail and Yahoo both require these on
+ * bulk mail — without them a sender's inbox placement degrades, and recipients
+ * reach for "report spam" instead of the footer link. The URL accepts POST and
+ * unsubscribes without any further interaction.
+ */
+function unsubscribeHeaders(recipientEmail: string): Record<string, string> {
+  return {
+    "List-Unsubscribe": `<${unsubUrl(recipientEmail)}>`,
+    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"
+  };
+}
+
 export interface BatchSendResult {
   sent: number;
   failed: number;
@@ -269,7 +282,8 @@ export async function batchSendDigestEmails(params: {
       from,
       to: email,
       subject,
-      html: renderDigestHtml(digest, email)
+      html: renderDigestHtml(digest, email),
+      headers: unsubscribeHeaders(email)
     }));
 
     const { data, error } = await resend.batch.send(batch);
@@ -299,6 +313,7 @@ export async function sendDigestEmail(params: { to: string; digest: DailyDigest 
     from,
     to: params.to,
     subject: getDigestSubject(params.digest),
-    html: renderDigestHtml(params.digest, params.to)
+    html: renderDigestHtml(params.digest, params.to),
+    headers: unsubscribeHeaders(params.to)
   });
 }

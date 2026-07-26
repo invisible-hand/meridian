@@ -1,12 +1,16 @@
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
+import { authorizeOperator } from "@/lib/api-auth";
 import { ensureSchema } from "@/lib/db";
 import { runSendForToday } from "@/lib/send-digest";
 
 // Allow up to 5 minutes on Vercel Pro — enough for ~15,000 subscribers via batch API
 export const maxDuration = 300;
 
-export async function GET() {
+export async function GET(request: Request) {
+  const denied = await authorizeOperator(request);
+  if (denied) return denied;
+
   await ensureSchema();
   const result = await runSendForToday();
 

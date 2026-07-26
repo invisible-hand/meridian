@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
+import { authorizeOperator } from "@/lib/api-auth";
 import { getSupabaseAdminClient } from "@/lib/supabase";
 import { generateBriefSummaryLlm, buildBriefSummary } from "@/lib/digest";
 import { DailyDigest } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(): Promise<NextResponse> {
+export async function POST(request: Request): Promise<NextResponse> {
+  const denied = await authorizeOperator(request);
+  if (denied) return denied;
+
   const supabase = getSupabaseAdminClient();
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL || "gpt-4.1-mini";

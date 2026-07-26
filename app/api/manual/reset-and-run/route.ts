@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { authorizeOperator } from "@/lib/api-auth";
 import { ensureSchema, resetDigestForDate } from "@/lib/db";
 import { runIngestion } from "@/lib/ingest";
 import { generateFintechDigest } from "@/lib/digest";
 import { runSendForToday } from "@/lib/send-digest";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const denied = await authorizeOperator(request);
+  if (denied) return denied;
+
   await ensureSchema();
   const digestDate = new Date().toISOString().slice(0, 10);
 

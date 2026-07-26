@@ -535,6 +535,12 @@ button.btn-lg {
   color: var(--info);
 }
 
+.alert-danger {
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger);
+}
+
 /* ─── Dividers ───────────────────────────────────────────────────────── */
 .divider {
   border: none;

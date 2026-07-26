@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   addOrActivateSubscriber,
@@ -32,7 +33,8 @@ async function loginAction(formData: FormData) {
   "use server";
   const password = String(formData.get("password") || "");
   if (!isValidAdminPassword(password)) {
-    return;
+    // Previously a silent no-op — the form just re-rendered with no explanation.
+    redirect("/admin?error=1");
   }
   await setAdminAuthenticated();
   revalidatePath("/admin");
@@ -123,11 +125,16 @@ function DigestStatusBadge({ status }: { status: string }) {
   return <span className={map[status] ?? "badge badge-neutral"}>{status}</span>;
 }
 
-export default async function AdminPage() {
+export default async function AdminPage({
+  searchParams
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
   await ensureSchema();
   const isAuthed = await isAdminAuthenticated();
 
   if (!isAuthed) {
+    const { error } = await searchParams;
     return (
       <main className="admin-page">
         <h1>BankingNewsAI Admin</h1>
@@ -136,6 +143,7 @@ export default async function AdminPage() {
         </p>
         <div className="card" style={{ maxWidth: 360 }}>
           <h2>Login</h2>
+          {error ? <div className="alert alert-danger">Incorrect password.</div> : null}
           <form action={loginAction}>
             <input name="password" type="password" required placeholder="Admin password" />
             <button type="submit">Sign in</button>
