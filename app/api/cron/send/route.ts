@@ -22,6 +22,9 @@ export async function GET(request: Request) {
     revalidatePath("/news-sitemap.xml");
     revalidatePath("/rss.xml");
     revalidatePath("/issues");
+    // A new issue shifts every archive page boundary by one, so page 2+ all go
+    // stale — revalidate the whole dynamic route, not just the first page.
+    revalidatePath("/issues/page/[n]", "page");
     revalidatePath(`/issues/${today}`);
   }
 

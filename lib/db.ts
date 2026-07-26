@@ -258,6 +258,42 @@ export async function listSentDigests(limit = 365): Promise<Digest[]> {
   return (data as Digest[]) ?? [];
 }
 
+/** Total number of published issues — drives the archive's page count. */
+export async function countSentDigests(): Promise<number> {
+  await ensureSchema();
+  const supabase = getSupabaseAdminClient();
+  const { count, error } = await supabase
+    .from("digests")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "sent");
+  if (error) {
+    throw error;
+  }
+  return count ?? 0;
+}
+
+/**
+ * One page of published issues, newest first. Used instead of listSentDigests
+ * on the archive so the page size stays constant as the archive grows.
+ */
+export async function listSentDigestsPage(params: {
+  offset: number;
+  limit: number;
+}): Promise<Digest[]> {
+  await ensureSchema();
+  const supabase = getSupabaseAdminClient();
+  const { data, error } = await supabase
+    .from("digests")
+    .select("id,digest_date,category,status,content_json,created_at,approved_at,sent_at")
+    .eq("status", "sent")
+    .order("digest_date", { ascending: false })
+    .range(params.offset, params.offset + params.limit - 1);
+  if (error) {
+    throw error;
+  }
+  return (data as Digest[]) ?? [];
+}
+
 export async function listRecentDigests(limit = 7): Promise<Digest[]> {
   await ensureSchema();
   const supabase = getSupabaseAdminClient();
