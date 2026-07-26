@@ -9,7 +9,15 @@ type IngestStats = {
   failedSources: string[];
 };
 
-const parser = new Parser();
+// Some publishers (notably occ.gov) reject rss-parser's default request headers
+// with a 406 while happily serving curl. An explicit Accept header fixes it and
+// is harmless everywhere else — verified: OCC news + bulletins go 406 -> 200.
+const parser = new Parser({
+  timeout: 20000,
+  headers: {
+    Accept: "application/rss+xml, application/xml, text/xml; q=0.9, */*; q=0.8"
+  }
+});
 const SMOL_HOST = "news.smol.ai";
 const INGEST_LOOKBACK_HOURS = parsePositiveInt(process.env.INGEST_LOOKBACK_HOURS, 72);
 const INGEST_MAX_ITEMS_PER_SOURCE = parsePositiveInt(process.env.INGEST_MAX_ITEMS_PER_SOURCE, 75);
