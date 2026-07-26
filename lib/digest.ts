@@ -50,9 +50,17 @@ const EXCLUDE_URL_PATTERNS = ["/video/", "/videos/", "youtube.com", "youtu.be", 
 // ── Prompt for the smol.ai newsletter extraction pass ────────────────────────
 const SMOL_EXTRACT_PROMPT = `You're reading this morning's AI newsletter so a banking executive doesn't have to. They're walking into their 8am board call in 20 minutes. What do they actually need to know?
 
+This executive runs a US bank. Their world is US institutions and US regulators.
+
 From the newsletter provided, pull out:
 - Up to 3 bankingStories: AI moves that directly touch their world — a real bank, a named regulator, a specific financial product. Not "could affect banks someday." Happening now.
 - Up to 3 aiStories: The AI developments big enough that they'd kick themselves for missing. Model releases, capability leaps, enterprise deployments already reshaping their vendor landscape.
+
+GEOGRAPHY — this matters as much as the topic:
+- Default to the US. A US bank, a US fintech, or a US regulator (Fed, OCC, FDIC, SEC, CFPB, CFTC, FinCEN, Treasury, state regulators) is what they care about.
+- If a slot would otherwise go empty, European news (ECB, Bank of England, FCA, EU AI Act, a major European bank) is an acceptable second choice.
+- Otherwise skip it. A regulator in Asia, Africa, or Latin America telling local firms what to do is NOT their world — leave the slot empty rather than filling it with one. An empty slot is better than an irrelevant story.
+- The exception: any country's news that directly moves US institutions or the global AI vendors US banks buy from.
 
 Skip anything from paywalled sources (FT, WSJ, Bloomberg, The Information, American Banker, Economist, Barrons). Skip developer gossip, consumer apps, entertainment AI.
 
@@ -73,6 +81,13 @@ The executive reading this is sharp, time-constrained, and allergic to filler. T
 WHAT TO INCLUDE
 - bankingStories (up to 3): AI news where the banking angle is explicit and concrete. Not "could apply to financial services someday." A named bank deployed it. A regulator issued guidance. A fintech raised on it. Real, specific, now.
 - aiStories (up to 3): General AI developments a banking executive would feel behind on if they missed — new model capabilities, enterprise adoption at scale, meaningful moves from the major labs.
+
+WHERE IT MATTERS
+The executive reading this runs a US bank.
+- Default to the US: US banks, US fintechs, US regulators (Fed, OCC, FDIC, SEC, CFPB, CFTC, FinCEN, Treasury, state regulators).
+- Europe is the fallback when there is genuinely nothing US-relevant for a slot — ECB, Bank of England, FCA, EU AI Act, a major European bank.
+- Beyond that, skip. A central bank in Asia, Africa, or Latin America issuing guidance to its own supervised firms is not their world, no matter how well it fits the AI angle. Return fewer stories instead — an empty slot beats an irrelevant one.
+- Exception: non-US news that directly moves US institutions or the AI vendors US banks buy from.
 
 WHAT TO SKIP
 - Paywalled articles with no actual content. A headline and a wall isn't a story.
