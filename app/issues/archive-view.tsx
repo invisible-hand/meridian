@@ -17,6 +17,19 @@ export async function getArchivePageCount(): Promise<number> {
 }
 
 /**
+ * Newest issue date + total count, for the page title/description. The archive
+ * ranks on freshness queries ("banking ai news today", "…last 24 hours"), so
+ * the date belongs in the snippet, not just on the page.
+ */
+export async function getArchiveSummary(): Promise<{ total: number; latest: string | null }> {
+  const [total, newest] = await Promise.all([
+    countSentDigests().catch(() => 0),
+    listSentDigestsPage({ offset: 0, limit: 1 }).catch(() => [])
+  ]);
+  return { total, latest: newest[0]?.digest_date ?? null };
+}
+
+/**
  * Shared renderer for /issues (page 1) and /issues/page/[n] (pages 2+).
  * Kept in one component so the two routes can never drift visually.
  */
@@ -331,9 +344,17 @@ export default async function ArchiveView({ page }: { page: number }) {
           <div className="arc-header-inner">
             <p className="arc-eyebrow">BankingNewsAI</p>
             <div className="arc-rule" />
-            <h1 className="arc-title">Archive</h1>
+            {/* "Archive" alone matched nothing anyone searches for. This page
+                ranks on "banking ai news today"-style queries, so the H1 says
+                so, and the freshest issue date leads the subtitle. */}
+            <h1 className="arc-title">Banking AI News Archive</h1>
             <p className="arc-subtitle">
-              {total} issue{total !== 1 ? "s" : ""} published
+              {/* Only page 1 leads the newest issue — on deeper pages
+                  digests[0] is that page's newest, not the archive's. */}
+              {page === 1 && digests[0]
+                ? `Updated ${formatIssueDateShort(digests[0].digest_date)} · `
+                : ""}
+              {total} issue{total !== 1 ? "s" : ""}
               {pageCount > 1 ? ` · page ${page} of ${pageCount}` : ""}
             </p>
           </div>
@@ -415,8 +436,27 @@ export default async function ArchiveView({ page }: { page: number }) {
 
 function formatIssueDate(iso: string): string {
   try {
+    // digest_date is a bare "YYYY-MM-DD", which Date parses as UTC midnight.
+    // Formatting in local time would render the previous day anywhere west of
+    // Greenwich — correct on Vercel (UTC), wrong on a laptop. Pin it.
     return new Date(iso).toLocaleDateString("en-US", {
+      timeZone: "UTC",
       weekday: "long", year: "numeric", month: "long", day: "numeric"
+    });
+  } catch {
+    return iso;
+  }
+}
+
+/** "July 28, 2026" — for titles and snippets, where the weekday is dead weight. */
+export function formatIssueDateShort(iso: string): string {
+  try {
+    // digest_date is a bare "YYYY-MM-DD", which Date parses as UTC midnight.
+    // Formatting in local time would render the previous day anywhere west of
+    // Greenwich — correct on Vercel (UTC), wrong on a laptop. Pin it.
+    return new Date(iso).toLocaleDateString("en-US", {
+      timeZone: "UTC",
+      year: "numeric", month: "long", day: "numeric"
     });
   } catch {
     return iso;

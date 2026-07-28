@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { listSentDigests, ensureSchema } from "@/lib/db";
 import { BASE_URL } from "@/lib/seo";
-import { ARCHIVE_PAGE_SIZE } from "@/app/issues/archive-view";
 
 // Revalidate at most every hour as a fallback. The send cron route invalidates
 // /sitemap.xml immediately after each successful send, so in practice the
@@ -41,19 +40,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   ];
 
-  // Paginated archive pages. Every issue is already listed individually below,
-  // so these exist for crawl paths rather than discovery — hence the low
-  // priority. Page 1 is the /issues entry above.
-  const archivePageCount = Math.ceil(digests.length / ARCHIVE_PAGE_SIZE);
-  const archiveRoutes: MetadataRoute.Sitemap = [];
-  for (let p = 2; p <= archivePageCount; p++) {
-    archiveRoutes.push({
-      url: `${BASE_URL}/issues/page/${p}`,
-      lastModified: homeLastModified,
-      changeFrequency: "weekly",
-      priority: 0.3
-    });
-  }
+  // /issues/page/2..N is deliberately NOT listed. Those pages are noindex, and
+  // a sitemap entry is a request to index — listing them contradicts the meta
+  // robots tag and shows up in Search Console as "excluded by noindex". They
+  // still get crawled: the pager on /issues links to them, and every issue URL
+  // is enumerated individually below anyway.
 
   // The newest issue gets a slight priority bump (0.8 vs 0.7) to signal
   // freshness to crawlers when they're deciding which URLs to refetch first.
@@ -64,5 +55,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: idx === 0 ? 0.8 : 0.6
   }));
 
-  return [...staticRoutes, ...archiveRoutes, ...issueRoutes];
+  return [...staticRoutes, ...issueRoutes];
 }
