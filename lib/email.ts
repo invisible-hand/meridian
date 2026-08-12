@@ -49,6 +49,19 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
     ? `<span style="font-family:${D.mono};font-size:10px;color:#333;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`
     : "";
 
+  // Optional one-off note from the developer — a visually flagged box that sits
+  // between the masthead and the stories.
+  const developerNoteBlock = digest.developerNote
+    ? `<tr>
+        <td style="background:#fff8e6;border-left:4px solid #d97706;border-bottom:1px solid ${D.divider};padding:20px 40px 22px;">
+          <p style="margin:0 0 8px;font-family:${D.mono};font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#b45309;">
+            ✉️ Message from the developer
+          </p>
+          <p style="margin:0;font-family:${D.sans};font-size:14px;color:${D.textPrimary};line-height:1.7;">${escapeHtml(digest.developerNote).replace(/\n/g, "<br />")}</p>
+        </td>
+      </tr>`
+    : "";
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,6 +111,9 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
 
           </td>
         </tr>
+
+        <!-- ── DEVELOPER NOTE (optional) ── -->
+        ${developerNoteBlock}
 
         <!-- ── BODY ── -->
         <tr>

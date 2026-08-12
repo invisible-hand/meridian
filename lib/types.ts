@@ -14,4 +14,6 @@ export type DailyDigest = {
   briefSummary?: string;
   /** @deprecated kept for backwards-compat when reading old digests from DB */
   stories?: DigestStory[];
+  /** One-off note from the developer, rendered in a highlighted box at the top of the email */
+  developerNote?: string;
 };

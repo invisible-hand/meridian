@@ -11,9 +11,14 @@ const storySchema = z.object({
   sourceUrl: z.string().url()
 });
 
+// Cap sections by truncating rather than z.array().max(3): a hard max is a
+// validation, so a model returning 4 stories would fail the whole parse and
+// silently discard every story in the response.
+const cappedStories = z.array(storySchema).transform((a) => a.slice(0, 3));
+
 const twoSectionSchema = z.object({
-  bankingStories: z.array(storySchema).max(3),
-  aiStories: z.array(storySchema).max(3)
+  bankingStories: cappedStories.default([]),
+  aiStories: cappedStories.default([])
 });
 
 const topicRepeatSchema = z.object({
@@ -141,6 +146,11 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL || "gpt-4.1-mini";
 
+  // Collects failures from every LLM call/parse so generation_meta records WHY
+  // a pass came back empty (API error vs. schema rejection vs. no API key).
+  const llmErrors: string[] = [];
+  if (!apiKey) llmErrors.push("OPENAI_API_KEY not set");
+
   // Collect URLs already published in recent digests to avoid cross-day repeats
   const recentDigests = await listRecentDigests(3);
   const recentlyUsedUrls = new Set<string>();
@@ -165,7 +175,7 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
 
   // Pass 1: extract stories from the smol.ai newsletter (primary source)
   const smolResult = apiKey && smolItems.length > 0
-    ? await extractFromSmolNewsletter(smolItems, apiKey, model)
+    ? await extractFromSmolNewsletter(smolItems, apiKey, model, llmErrors)
     : { bankingStories: [], aiStories: [] };
 
   // Pass 2: supplementary stories from RSS candidates (fill remaining slots)
@@ -184,7 +194,7 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   if (apiKey && rssItems.length > 0 && (neededBanking > 0 || neededAi > 0)) {
     const bankingCandidates = selectCandidateItems(rssItems).filter((i) => !usedUrls.has(i.url));
     const aiCandidates = selectAiItems(rssItems).filter((i) => !usedUrls.has(i.url));
-    rssResult = await tryLlmTwoSection(bankingCandidates, aiCandidates, apiKey, model);
+    rssResult = await tryLlmTwoSection(bankingCandidates, aiCandidates, apiKey, model, llmErrors);
   }
 
   // Collect recently-published titles for topic-level dedup (catches smol newsletter repeats
@@ -202,7 +212,7 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   const mergedAi = dedupeStories([...smolResult.aiStories, ...rssResult.aiStories]);
 
   const deduped = apiKey
-    ? await filterTopicRepeatsLlm(mergedBanking, mergedAi, recentTitles, apiKey, model)
+    ? await filterTopicRepeatsLlm(mergedBanking, mergedAi, recentTitles, apiKey, model, llmErrors)
     : {
         bankingStories: mergedBanking.filter((s) => !isTopicRepeat(s.title, recentTitles)),
         aiStories: mergedAi.filter((s) => !isTopicRepeat(s.title, recentTitles))
@@ -212,18 +222,14 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   const aiStories = deduped.aiStories.slice(0, 3);
 
   const briefSummary = apiKey
-    ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model)) ||
+    ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model, llmErrors)) ||
       buildBriefSummary(bankingStories, aiStories)
     : buildBriefSummary(bankingStories, aiStories);
 
-  // Final fallback: if LLM produced nothing at all, use keyword-scored items
-  const digest: DailyDigest = bankingStories.length + aiStories.length > 0
-    ? { date, category, bankingStories, aiStories, briefSummary }
-    : fallbackDigest({
-        date, category,
-        bankingCandidates: selectCandidateItems(rssItems),
-        aiCandidates: selectAiItems(rssItems)
-      });
+  // If the LLM pipeline produced nothing, store the digest empty. The send
+  // step refuses to email an empty digest, so a broken/quiet day means no
+  // email rather than a keyword-scored dump of raw scraped text.
+  const digest: DailyDigest = { date, category, bankingStories, aiStories, briefSummary };
 
   await upsertDailyDigest({
     digestDate: date,
@@ -236,7 +242,8 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
       smolBanking: smolResult.bankingStories.length,
       smolAi: smolResult.aiStories.length,
       rssBanking: rssResult.bankingStories.length,
-      rssAi: rssResult.aiStories.length
+      rssAi: rssResult.aiStories.length,
+      llmErrors
     }
   });
 
@@ -247,7 +254,8 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
 async function extractFromSmolNewsletter(
   smolItems: ItemRow[],
   apiKey: string,
-  model: string
+  model: string,
+  llmErrors?: string[]
 ): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
   // Use the most recent smol issue (DB already orders by published_at desc)
   const issue = smolItems[0];
@@ -257,11 +265,14 @@ async function extractFromSmolNewsletter(
 
   const prompt = `${SMOL_EXTRACT_PROMPT} The newsletter URL (use as sourceUrl for all stories) is: ${issueUrl}`;
 
-  const response = await callLlm(apiKey, model, prompt, `Newsletter content:\n\n${newsletterText}`);
+  const response = await callLlm(apiKey, model, prompt, `Newsletter content:\n\n${newsletterText}`, llmErrors, "smol");
   if (!response) return { bankingStories: [], aiStories: [] };
 
   const result = twoSectionSchema.safeParse(response);
-  if (!result.success) return { bankingStories: [], aiStories: [] };
+  if (!result.success) {
+    llmErrors?.push(`smol: schema rejected response: ${result.error.message.slice(0, 300)}`);
+    return { bankingStories: [], aiStories: [] };
+  }
 
   return {
     bankingStories: dedupeStories(result.data.bankingStories),
@@ -274,7 +285,8 @@ async function tryLlmTwoSection(
   bankingItems: ItemRow[],
   aiItems: ItemRow[],
   apiKey: string,
-  model: string
+  model: string,
+  llmErrors?: string[]
 ): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
   if (bankingItems.length === 0 && aiItems.length === 0) {
     return { bankingStories: [], aiStories: [] };
@@ -299,12 +311,16 @@ async function tryLlmTwoSection(
 
   const response = await callLlm(
     apiKey, model, LLM_PROMPT,
-    JSON.stringify({ items: compactItems })
+    JSON.stringify({ items: compactItems }),
+    llmErrors, "rss"
   );
   if (!response) return { bankingStories: [], aiStories: [] };
 
   const result = twoSectionSchema.safeParse(response);
-  if (!result.success) return { bankingStories: [], aiStories: [] };
+  if (!result.success) {
+    llmErrors?.push(`rss: schema rejected response: ${result.error.message.slice(0, 300)}`);
+    return { bankingStories: [], aiStories: [] };
+  }
 
   return {
     bankingStories: dedupeStories(result.data.bankingStories),
@@ -321,7 +337,8 @@ async function filterTopicRepeatsLlm(
   aiCandidates: DigestStory[],
   recentTitles: string[],
   apiKey: string,
-  model: string
+  model: string,
+  llmErrors?: string[]
 ): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
   if (recentTitles.length === 0 || (bankingCandidates.length === 0 && aiCandidates.length === 0)) {
     return { bankingStories: bankingCandidates, aiStories: aiCandidates };
@@ -339,9 +356,10 @@ Return strict JSON only: {"bankingRepeatIndices": [...idx numbers...], "aiRepeat
     aiCandidates: aiCandidates.map((s, idx) => ({ idx, title: s.title }))
   });
 
-  const response = await callLlm(apiKey, model, prompt, userContent);
+  const response = await callLlm(apiKey, model, prompt, userContent, llmErrors, "repeat-filter");
   const result = topicRepeatSchema.safeParse(response);
   if (!result.success) {
+    llmErrors?.push("repeat-filter: schema rejected response, falling back to keyword dedup");
     return {
       bankingStories: bankingCandidates.filter((s) => !isTopicRepeat(s.title, recentTitles)),
       aiStories: aiCandidates.filter((s) => !isTopicRepeat(s.title, recentTitles))
@@ -361,7 +379,9 @@ async function callLlm(
   apiKey: string,
   model: string,
   systemPrompt: string,
-  userContent: string
+  userContent: string,
+  llmErrors?: string[],
+  pass?: string
 ): Promise<unknown | null> {
   // Reasoning models (o-series, gpt-5.x) don't support the temperature parameter
   const isReasoningOrGpt5 = /^(o\d|gpt-5)/i.test(model);
@@ -389,55 +409,22 @@ async function callLlm(
     if (!res.ok) {
       const err = await res.text().catch(() => res.statusText);
       console.error(`[callLlm] OpenAI API error ${res.status}: ${err}`);
+      llmErrors?.push(`${pass ?? "llm"}: OpenAI API error ${res.status}: ${err.slice(0, 300)}`);
       return null;
     }
 
     const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
     const content = json.choices?.[0]?.message?.content;
-    if (!content) return null;
+    if (!content) {
+      llmErrors?.push(`${pass ?? "llm"}: empty completion`);
+      return null;
+    }
     return JSON.parse(content);
   } catch (e) {
     console.error("[callLlm] Unexpected error:", e);
+    llmErrors?.push(`${pass ?? "llm"}: ${e instanceof Error ? e.message.slice(0, 300) : "unexpected error"}`);
     return null;
   }
-}
-
-// ── Keyword-based fallback (no LLM) ──────────────────────────────────────────
-function fallbackDigest(params: {
-  date: string;
-  category: "fintech_banking";
-  bankingCandidates: ItemRow[];
-  aiCandidates: ItemRow[];
-}): DailyDigest {
-  return {
-    date: params.date,
-    category: params.category,
-    bankingStories: pickFallbackStories(params.bankingCandidates, 3),
-    aiStories: pickFallbackStories(
-      params.aiCandidates.filter(
-        (a) => !params.bankingCandidates.some((b) => b.url === a.url)
-      ),
-      3
-    )
-  };
-}
-
-function pickFallbackStories(items: ItemRow[], max: number): DigestStory[] {
-  const stories: DigestStory[] = [];
-  const used = new Set<string>();
-  for (const item of items) {
-    const key = normalizeUrl(item.url) || item.title.toLowerCase().trim();
-    if (!key || used.has(key)) continue;
-    used.add(key);
-    stories.push({
-      title: item.title,
-      executiveSummary: item.summary?.slice(0, 300) || "No summary available.",
-      businessImpact: "Review for strategic relevance and potential operational impact.",
-      sourceUrl: item.url
-    });
-    if (stories.length === max) break;
-  }
-  return stories;
 }
 
 // ── Candidate selectors ───────────────────────────────────────────────────────
@@ -555,7 +542,8 @@ export async function generateBriefSummaryLlm(
   bankingStories: DigestStory[],
   aiStories: DigestStory[],
   apiKey: string,
-  model: string
+  model: string,
+  llmErrors?: string[]
 ): Promise<string> {
   const all = [...bankingStories, ...aiStories].slice(0, 6);
   if (all.length === 0) return "";
@@ -566,7 +554,8 @@ export async function generateBriefSummaryLlm(
     apiKey,
     model,
     `You are an editor writing the subject line for a banking and AI daily newsletter. Given today's top story headlines, write ONE complete sentence of 10–15 words that captures the single most significant development of the day. Rules: (1) name the specific company, regulator, or technology, (2) active voice, (3) no hedging words like "may" or "could", (4) end with a period, (5) do not start with "Today". Return JSON: {"briefSummary": "..."}`,
-    `Today's headlines:\n${storyList}`
+    `Today's headlines:\n${storyList}`,
+    llmErrors, "brief-summary"
   );
 
   if (!response || typeof response !== "object" || !("briefSummary" in response)) return "";

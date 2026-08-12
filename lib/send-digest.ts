@@ -5,11 +5,11 @@ import {
   listActiveSubscriberEmails,
   markDigestSent
 } from "@/lib/db";
-import { batchSendDigestEmails, sendDigestEmail } from "@/lib/email";
+import { batchSendDigestEmails } from "@/lib/email";
 import { DailyDigest } from "@/lib/types";
 
 export type SendResult =
-  | { ok: true; skipped: "no_digest" | "already_sent" | "awaiting_approval" | "no_recipients" }
+  | { ok: true; skipped: "no_digest" | "empty_digest" | "already_sent" | "awaiting_approval" | "no_recipients" }
   | { ok: true; sent: number; failed: number };
 
 export async function runSendForToday(options?: {
@@ -30,6 +30,17 @@ export async function runSendForToday(options?: {
   if (!digest) {
     return { ok: true, skipped: "no_digest" };
   }
+
+  // Never email an empty digest. A quiet (or broken-pipeline) day produces a
+  // digest with zero stories; subscribers should get nothing rather than filler.
+  const content = digest.content_json as DailyDigest | null;
+  const storyCount =
+    (content?.bankingStories ?? content?.stories ?? []).length +
+    (content?.aiStories ?? []).length;
+  if (!content || storyCount === 0) {
+    return { ok: true, skipped: "empty_digest" };
+  }
+
   if (!forceResend && digest.status === "sent") {
     return { ok: true, skipped: "already_sent" };
   }
@@ -44,10 +55,8 @@ export async function runSendForToday(options?: {
     return { ok: true, skipped: "no_recipients" };
   }
 
-  const digestPayload = digest.content_json as DailyDigest;
-
   const { sent: successCount, failed: failCount, failures } =
-    await batchSendDigestEmails({ recipients, digest: digestPayload });
+    await batchSendDigestEmails({ recipients, digest: content });
 
   // Log failures individually so they're visible in the admin monitor
   for (const { email, error } of failures) {
