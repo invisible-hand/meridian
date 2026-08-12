@@ -153,6 +153,12 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
 
   // Collect URLs already published in recent digests to avoid cross-day repeats
   const recentDigests = await listRecentDigests(3);
+
+  // Preserve a one-off developer note already set on today's draft: the cron
+  // regenerates content_json wholesale, and the note (set manually for a single
+  // date) must survive that. It never carries across dates.
+  const existingToday = recentDigests.find((d) => d.digest_date === date);
+  const developerNote = (existingToday?.content_json as DailyDigest | null)?.developerNote;
   const recentlyUsedUrls = new Set<string>();
   for (const d of recentDigests) {
     if (d.digest_date === date) continue; // skip today's own draft if regenerating
@@ -229,7 +235,10 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   // If the LLM pipeline produced nothing, store the digest empty. The send
   // step refuses to email an empty digest, so a broken/quiet day means no
   // email rather than a keyword-scored dump of raw scraped text.
-  const digest: DailyDigest = { date, category, bankingStories, aiStories, briefSummary };
+  const digest: DailyDigest = {
+    date, category, bankingStories, aiStories, briefSummary,
+    ...(developerNote ? { developerNote } : {})
+  };
 
   await upsertDailyDigest({
     digestDate: date,
