@@ -56,7 +56,7 @@ export type Regulator = {
 
 export const TRACKER_LAST_REVIEWED = "2026-08-19";
 
-export const REGULATORS: Regulator[] = [
+const REGULATOR_ENTRIES: Regulator[] = [
   {
     slug: "eu-ai-act",
     name: "EU AI Act",
@@ -794,6 +794,31 @@ export const REGULATORS: Regulator[] = [
     lastUpdated: "2026-08-19"
   }
 ];
+
+// Display order everywhere (hub table, ItemList, sitemap): US authorities
+// first, then rest of world. Entries above can stay in any physical order —
+// new ones not listed here sort last until added.
+const DISPLAY_ORDER = [
+  "federal-reserve",
+  "occ",
+  "cfpb",
+  "nist",
+  "eu-ai-act",
+  "ecb",
+  "eba",
+  "uk",
+  "fsb",
+  "basel-committee"
+];
+
+function displayIndex(slug: string): number {
+  const idx = DISPLAY_ORDER.indexOf(slug);
+  return idx === -1 ? DISPLAY_ORDER.length : idx;
+}
+
+export const REGULATORS: Regulator[] = [...REGULATOR_ENTRIES].sort(
+  (a, b) => displayIndex(a.slug) - displayIndex(b.slug)
+);
 
 export function getRegulator(slug: string): Regulator | undefined {
   return REGULATORS.find((r) => r.slug === slug);
