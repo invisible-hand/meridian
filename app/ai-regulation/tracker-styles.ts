@@ -114,11 +114,11 @@ export const trackerCss = `
   }
 
   .trk-answer {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
-    font-weight: 500;
-    line-height: 1.65;
-    color: #111111;
+    font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
+    font-size: clamp(0.98rem, 1.6vw, 1.08rem);
+    font-weight: 400;
+    line-height: 1.75;
+    color: #1c1c1c;
     margin: 0 0 40px;
     padding: 26px 28px;
     background: #ffffff;

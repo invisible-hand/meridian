@@ -88,36 +88,40 @@ export const REGULATORS: Regulator[] = [
         title: "Prohibited practices and AI-literacy obligations apply",
         docType: "Milestone",
         summary:
-          "Bans on unacceptable-risk AI (e.g., social scoring) take effect, along with the duty to ensure staff AI literacy — which applies to banks as deployers."
+          "Bans on unacceptable-risk AI (e.g., social scoring) take effect, along with the duty to ensure staff AI literacy — which applies to banks as deployers.",
+        link: "https://artificialintelligenceact.eu/implementation-timeline/"
       },
       {
         date: "2025-08-02",
         title: "General-purpose AI (GPAI) obligations apply",
         docType: "Milestone",
         summary:
-          "Transparency and documentation duties for GPAI model providers begin; relevant to banks consuming foundation models through vendors."
+          "Transparency and documentation duties for GPAI model providers begin; relevant to banks consuming foundation models through vendors.",
+        link: "https://artificialintelligenceact.eu/implementation-timeline/"
       },
       {
-        date: "2025-11-24",
+        date: "2025-11-21",
         title: "EBA factsheet on the AI Act for banking and payments",
         docType: "Guidance",
         summary:
-          "The European Banking Authority maps AI Act obligations onto the existing EU banking framework for institutions and payment providers.",
-        link: "https://www.eba.europa.eu/regulation-and-policy/digital-finance"
+          "The European Banking Authority maps AI Act obligations onto the existing EU banking framework, finding the Act complementary to — not contradicting — existing banking and payments legislation.",
+        link: "https://www.eba.europa.eu/sites/default/files/2025-11/d8b999ce-a1d9-4964-9606-971bbc2aaf89/AI%20Act%20implications%20for%20the%20EU%20banking%20sector.pdf"
       },
       {
         date: "2026-08-02",
         title: "High-risk AI obligations become applicable",
         docType: "Milestone",
         summary:
-          "Annex III high-risk systems — including credit scoring — must comply with risk management, data governance, documentation, logging, human oversight, accuracy, and post-market monitoring requirements. Fines up to €15M / 3% of turnover."
+          "Annex III high-risk systems — including credit scoring — must comply with risk management, data governance, documentation, logging, human oversight, accuracy, and post-market monitoring requirements. Fines up to €15M / 3% of turnover.",
+        link: "https://artificialintelligenceact.eu/implementation-timeline/"
       },
       {
         date: "2027-08-02",
         title: "Extended deadline for high-risk AI embedded in regulated products",
         docType: "Milestone",
         summary:
-          "Article 6(1) high-risk systems tied to EU product-safety legislation get an additional year."
+          "Article 6(1) high-risk systems tied to EU product-safety legislation get an additional year.",
+        link: "https://artificialintelligenceact.eu/implementation-timeline/"
       }
     ],
     watchNext: [
@@ -249,14 +253,16 @@ export const REGULATORS: Regulator[] = [
         title: "Supervisory Guidance on Model Risk Management (OCC 2011-12)",
         docType: "Guidance",
         summary:
-          "The framework that governed bank AI/ML models for 15 years: validation, governance, and effective challenge. Superseded April 2026."
+          "The framework that governed bank AI/ML models for 15 years: validation, governance, and effective challenge. Superseded April 2026.",
+        link: "https://www.federalreserve.gov/boarddocs/srletters/2011/sr1107.htm"
       },
       {
         date: "2021-03-31",
         title: "Interagency RFI on AI and machine learning in financial services",
         docType: "Consultation",
         summary:
-          "OCC, Fed, FDIC, CFPB, and NCUA jointly sought comment on bank AI use — the first coordinated federal look at bank AI."
+          "OCC, Fed, FDIC, CFPB, and NCUA jointly sought comment on bank AI use — the first coordinated federal look at bank AI.",
+        link: "https://www.federalregister.gov/documents/2021/03/31/2021-06607/request-for-information-and-comment-on-financial-institutions-use-of-artificial-intelligence-including-machine-learning"
       },
       {
         date: "2026-04-17",
@@ -267,11 +273,12 @@ export const REGULATORS: Regulator[] = [
         link: "https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-13.html"
       },
       {
-        date: "2026-05-19",
+        date: "2026-05-07",
         title: "Semiannual Risk Perspective highlights AI risks",
         docType: "Report",
         summary:
-          "Warns that AI is amplifying fraud and the speed, scale, and sophistication of cyberattacks; signals forthcoming AI governance guidance."
+          "Warns that AI is amplifying fraud and the speed, scale, and sophistication of cyberattacks; signals forthcoming AI governance guidance.",
+        link: "https://www.occ.treas.gov/news-issuances/news-releases/2026/nr-occ-2026-35.html"
       }
     ],
     watchNext: [
@@ -311,7 +318,7 @@ export const REGULATORS: Regulator[] = [
       "SR 11-7 was arguably the most influential model-governance document in world banking — the template for how banks validated any quantitative model, including ML. Its April 2026 replacement keeps the core disciplines (validation, effective challenge, governance) while modernizing for machine learning and deliberately leaving generative and agentic AI to enterprise risk management pending further guidance.",
       "Vice Chair for Supervision remarks in May 2026 framed AI as a technology the financial system should adopt with appropriate controls, positioning the Fed against pre-emptive AI-specific rulemaking. Banks should expect examination focus on governance, third-party (foundation-model vendor) risk, and data controls rather than new AI rules."
     ],
-    keyDocument: "Revised interagency Model Risk Management guidance (Apr 2026, supersedes SR 11-7)",
+    keyDocument: "SR 26-2 — Revised interagency Model Risk Management guidance (Apr 2026, supersedes SR 11-7)",
     latestMove: "Apr 2026 revised model risk guidance; May 2026 Vice Chair speech on AI in the financial system",
     timeline: [
       {
@@ -319,21 +326,24 @@ export const REGULATORS: Regulator[] = [
         title: "SR 11-7: Supervisory Guidance on Model Risk Management",
         docType: "Guidance",
         summary:
-          "The foundational model-governance framework used globally for bank models, including early ML. Superseded April 2026."
+          "The foundational model-governance framework used globally for bank models, including early ML. Superseded April 2026.",
+        link: "https://www.federalreserve.gov/boarddocs/srletters/2011/sr1107.htm"
       },
       {
         date: "2021-03-31",
         title: "Interagency RFI on AI in financial services",
         docType: "Consultation",
         summary:
-          "Joint request for information with OCC, FDIC, CFPB, and NCUA on bank use of AI and machine learning."
+          "Joint request for information with OCC, FDIC, CFPB, and NCUA on bank use of AI and machine learning.",
+        link: "https://www.federalregister.gov/documents/2021/03/31/2021-06607/request-for-information-and-comment-on-financial-institutions-use-of-artificial-intelligence-including-machine-learning"
       },
       {
         date: "2026-04-17",
-        title: "Revised interagency Model Risk Management guidance",
+        title: "SR 26-2: Revised interagency Model Risk Management guidance",
         docType: "Guidance",
         summary:
-          "Fed, OCC, and FDIC jointly supersede SR 11-7; generative and agentic AI are excluded from scope as novel and rapidly evolving."
+          "Fed, OCC, and FDIC jointly supersede SR 11-7 with a principles-based framework, most relevant to banks over $30B in assets; generative and agentic AI are excluded from scope as novel and rapidly evolving.",
+        link: "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm"
       },
       {
         date: "2026-05-01",
@@ -397,7 +407,8 @@ export const REGULATORS: Regulator[] = [
         title: "Report on AI chatbots in consumer finance",
         docType: "Report",
         summary:
-          "Warns that poorly deployed chatbots can obstruct customers, give inaccurate information, and create legal risk for institutions."
+          "Warns that poorly deployed chatbots can obstruct customers, give inaccurate information, and create legal risk for institutions.",
+        link: "https://www.consumerfinance.gov/data-research/research-reports/chatbots-in-consumer-finance/"
       },
       {
         date: "2026-05-05",
@@ -452,7 +463,8 @@ export const REGULATORS: Regulator[] = [
         title: "Financial Stability Review examines AI in the financial system",
         docType: "Report",
         summary:
-          "ECB analysis of AI adoption, concentration among providers, and potential herding in euro-area finance."
+          "ECB analysis of AI adoption, concentration among providers, and potential herding in euro-area finance.",
+        link: "https://www.ecb.europa.eu/press/financial-stability-publications/fsr/html/index.en.html"
       },
       {
         date: "2025-11-01",
@@ -523,28 +535,32 @@ export const REGULATORS: Regulator[] = [
         title: "Discussion paper on machine learning for IRB models",
         docType: "Consultation",
         summary:
-          "Opens the question of how ML can be used in regulatory capital models; followed by 2023 follow-up setting expectations."
+          "Opens the question of how ML can be used in regulatory capital models; followed by 2023 follow-up setting expectations.",
+        link: "https://www.eba.europa.eu/sites/default/files/document_library/Publications/Discussions/2022/Discussion%20on%20machine%20learning%20for%20IRB%20models/1023883/Discussion%20paper%20on%20machine%20learning%20for%20IRB%20models.pdf"
       },
       {
-        date: "2025-11-24",
+        date: "2025-09-01",
+        title: "Report: rising application of AI in EU banking and payments",
+        docType: "Report",
+        summary:
+          "Official snapshot of AI across EU banks — 92% already deploying AI, led by credit scoring, fraud detection, and customer support, with general-purpose and agentic AI under monitoring.",
+        link: "https://www.eba.europa.eu/sites/default/files/2025-09/146b3558-d026-47bf-a872-f05e93ed30d2/Rising%20application%20of%20AI%20in%20EU%20banking%20and%20payments%20sector.pdf"
+      },
+      {
+        date: "2025-11-21",
         title: "Factsheet: AI Act implications for banking and payments",
         docType: "Guidance",
         summary:
-          "Maps AI Act obligations (especially high-risk credit scoring) onto the existing EU banking framework."
-      },
-      {
-        date: "2025-12-01",
-        title: "Report on AI adoption in EU banking and payments",
-        docType: "Report",
-        summary:
-          "Official snapshot of AI use cases across EU banks — credit scoring, fraud detection, customer support, and general-purpose AI — with efficiency gains and regulatory challenges."
+          "Maps AI Act obligations (especially high-risk credit scoring) onto the existing EU banking framework; finds the Act complementary, with no significant contradictions.",
+        link: "https://www.eba.europa.eu/sites/default/files/2025-11/d8b999ce-a1d9-4964-9606-971bbc2aaf89/AI%20Act%20implications%20for%20the%20EU%20banking%20sector.pdf"
       },
       {
         date: "2026-01-01",
         title: "2026–27 AI Act implementation workplan",
         docType: "Framework",
         summary:
-          "Supervisory-convergence activities among national competent authorities, input to the European AI Office, and participation in the AI Board Subgroup on Financial Services."
+          "Supervisory-convergence activities among national competent authorities, input to the European AI Office, and participation in the AI Board Subgroup on Financial Services.",
+        link: "https://www.eba.europa.eu/sites/default/files/2025-10/b9fe2713-117b-440f-aae0-bdcb8832c3e0/EBA%20Work%20programme%202026.pdf"
       }
     ],
     watchNext: [
@@ -591,28 +607,32 @@ export const REGULATORS: Regulator[] = [
         title: "DP5/22: Artificial Intelligence and Machine Learning",
         docType: "Consultation",
         summary:
-          "Joint BoE/PRA/FCA discussion paper asking whether existing regulation is sufficient for AI in financial services."
+          "Joint BoE/PRA/FCA discussion paper asking whether existing regulation is sufficient for AI in financial services.",
+        link: "https://www.bankofengland.co.uk/prudential-regulation/publication/2022/october/artificial-intelligence"
       },
       {
         date: "2023-10-26",
         title: "FS2/23 feedback statement",
         docType: "Report",
         summary:
-          "Concludes existing frameworks largely suffice; regulators will remain technology-agnostic and monitor via surveys."
+          "Concludes existing frameworks largely suffice; regulators will remain technology-agnostic and monitor via surveys.",
+        link: "https://www.bankofengland.co.uk/prudential-regulation/publication/2023/october/artificial-intelligence-and-machine-learning"
       },
       {
         date: "2024-11-21",
         title: "Third BoE/FCA AI survey in UK financial services",
         docType: "Survey",
         summary:
-          "Finds 75% of firms already using AI; foundation models a fast-growing share; third-party exposure concentrated."
+          "Finds 75% of firms already using AI; foundation models a fast-growing share; third-party exposure concentrated.",
+        link: "https://www.bankofengland.co.uk/report/2024/artificial-intelligence-in-uk-financial-services-2024"
       },
       {
         date: "2026-01-01",
         title: "Government strategic letters on AI to 19 regulators",
         docType: "Framework",
         summary:
-          "DSIT and DBT direct regulators including the FCA and Bank of England to publish AI-innovation plans and report annually."
+          "DSIT and DBT direct regulators including the FCA and Bank of England to publish plans by May 2026 for enabling safe AI-powered innovation and to report annually.",
+        link: "https://www.gov.uk/government/publications/how-will-regulators-enable-safe-ai-powered-innovation-joint-letter-from-dsit-secretary-of-state-and-dbt-secretary-of-state"
       },
       {
         date: "2026-04-01",
@@ -675,7 +695,8 @@ export const REGULATORS: Regulator[] = [
         title: "Newsletter on artificial intelligence and machine learning",
         docType: "Guidance",
         summary:
-          "Supervisory observations on bank AI/ML use: explainability, governance, and resilience themes for internationally active banks."
+          "Supervisory observations on bank AI/ML use: explainability, governance, and resilience themes for internationally active banks.",
+        link: "https://www.bis.org/publ/bcbs_nl27.htm"
       },
       {
         date: "2024-05-16",
@@ -742,14 +763,16 @@ export const REGULATORS: Regulator[] = [
         title: "Generative AI Profile (NIST AI 600-1)",
         docType: "Framework",
         summary:
-          "Companion profile enumerating generative-AI-specific risks — confabulation, information leakage, prompt injection — with suggested mitigations."
+          "Companion profile enumerating generative-AI-specific risks — confabulation, information leakage, prompt injection — with suggested mitigations.",
+        link: "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
       },
       {
         date: "2026-04-17",
         title: "US model-risk revision amplifies the RMF's role",
         docType: "Milestone",
         summary:
-          "With generative and agentic AI excluded from formal interagency model-risk guidance, NIST's framework becomes the leading reference for how banks govern those systems."
+          "With generative and agentic AI excluded from formal interagency model-risk guidance (SR 26-2), NIST's framework becomes the leading reference for how banks govern those systems.",
+        link: "https://www.federalreserve.gov/supervisionreg/srletters/SR2602.htm"
       }
     ],
     watchNext: [
