@@ -291,6 +291,7 @@ export default async function HomePage({
         <nav className="lp-nav">
           <span className="lp-logo">Banking<span>News</span>AI</span>
           <div className="lp-nav-links">
+            <Link href="/ai-regulation" className="lp-nav-link">Regulation</Link>
             <Link href="/about" className="lp-nav-link">About</Link>
             <Link href="/issues" className="lp-nav-link">Archive</Link>
             <Link href="/#subscribe" className="lp-nav-cta">Subscribe</Link>
@@ -351,6 +352,7 @@ export default async function HomePage({
         <footer className="lp-footer">
           <div style={{ display: "flex", gap: "1.5rem" }}>
             <Link href="/issues" className="lp-footer-link">Archive</Link>
+            <Link href="/ai-regulation" className="lp-footer-link">AI Regulation Tracker</Link>
             <Link href="/about" className="lp-footer-link">About</Link>
           </div>
           <span className="lp-footer-link" style={{ cursor: "default" }}>Curated by AI · Delivered daily</span>

@@ -473,6 +473,7 @@ export default function AboutPage() {
         <footer className="about-footer">
           <Link href="/" className="about-footer-link">Home</Link>
           <Link href="/issues" className="about-footer-link">Archive</Link>
+          <Link href="/ai-regulation" className="about-footer-link">AI Regulation Tracker</Link>
           <Link href="/admin" className="about-footer-link">Admin</Link>
         </footer>
 

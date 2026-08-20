@@ -334,6 +334,7 @@ export default async function ArchiveView({ page }: { page: number }) {
         <nav className="arc-nav">
           <Link href="/" className="arc-logo">Banking<span>News</span>AI</Link>
           <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
+            <Link href="/ai-regulation" className="arc-nav-link">Regulation</Link>
             <Link href="/about" className="arc-nav-link">About</Link>
             <Link href="/#subscribe" className="arc-nav-cta">Subscribe</Link>
           </div>
