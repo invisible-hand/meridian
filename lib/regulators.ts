@@ -54,7 +54,7 @@ export type Regulator = {
   lastUpdated: string;
 };
 
-export const TRACKER_LAST_REVIEWED = "2026-08-19";
+export const TRACKER_LAST_REVIEWED = "2026-08-24";
 
 const REGULATOR_ENTRIES: Regulator[] = [
   {
@@ -67,13 +67,13 @@ const REGULATOR_ENTRIES: Regulator[] = [
     appliesTo:
       "Any bank, lender, or fintech that develops or uses AI systems in the EU — including non-EU firms whose AI outputs are used in the EU",
     answerFirst:
-      "The EU AI Act is the only binding, cross-sector AI law that directly regulates banks today. Its high-risk obligations began applying on August 2, 2026, and credit scoring is explicitly listed as high-risk (Annex III, point 5(b)) — meaning AI creditworthiness systems now require risk management, data governance, technical documentation, logging, human oversight, and post-market monitoring. Penalties for non-compliance with high-risk obligations reach €15 million or 3% of global annual turnover.",
+      "The EU AI Act is the only binding, cross-sector AI law that directly regulates banks — but its high-risk timeline shifted in mid-2026. The 'Digital Omnibus on AI' (Regulation (EU) 2026/1744, in force since July 27, 2026) deferred Chapter III obligations for Annex III high-risk systems — including AI credit scoring (Annex III, point 5(b)) — from August 2, 2026 to December 2, 2027. Banks now have until that later date to meet the risk management, data governance, technical documentation, logging, human oversight, and post-market monitoring requirements for credit-scoring AI; separately, Article 50 AI-content transparency duties still took effect on August 2, 2026 as originally scheduled. Penalties for eventual non-compliance with high-risk obligations remain up to €15 million or 3% of global annual turnover.",
     overview: [
-      "The AI Act entered into force on August 1, 2024 and applies in stages. Prohibited practices (such as social scoring) and AI-literacy duties took effect February 2, 2025; obligations for general-purpose AI models followed on August 2, 2025; and the core high-risk regime — the part that matters most to banks — became applicable on August 2, 2026.",
-      "For banks the two headline classifications are credit scoring of natural persons (Annex III 5(b)) and risk assessment and pricing in life and health insurance (5(c)). High-risk systems already on the market before August 2, 2026 are generally caught when they undergo significant modification — but supervisors have signalled they expect remediation of legacy ML portfolios, not indefinite grandfathering. The EBA published a factsheet on what the Act means for the banking and payments sector in November 2025 and is coordinating supervisory implementation across national authorities through 2026–27."
+      "The AI Act entered into force on August 1, 2024 and applies in stages. Prohibited practices (such as social scoring) and AI-literacy duties took effect February 2, 2025; obligations for general-purpose AI models followed on August 2, 2025; and Article 50 transparency and AI-content-labeling duties took effect August 2, 2026 as scheduled. The core high-risk regime — the part that matters most to banks — was originally due to apply from August 2, 2026, but the Digital Omnibus on AI (Regulation (EU) 2026/1744, in force since July 27, 2026) deferred Chapter III obligations for Annex III systems to December 2, 2027, and pushed the Annex I product-embedded deadline from August 2027 to August 2, 2028.",
+      "For banks the two headline classifications remain credit scoring of natural persons (Annex III 5(b)) and risk assessment and pricing in life and health insurance (5(c)) — the Digital Omnibus changed the compliance timeline, not the classification itself. High-risk systems already on the market will still generally be caught when they undergo significant modification once the December 2027 deadline arrives; supervisors have signalled they expect eventual remediation of legacy ML portfolios, not indefinite grandfathering, even with the extra runway. The EBA published a factsheet on what the Act means for the banking and payments sector in November 2025 and is coordinating supervisory implementation across national authorities through 2026–27."
     ],
-    keyDocument: "Regulation (EU) 2024/1689 (in force Aug 1, 2024)",
-    latestMove: "High-risk obligations, including for credit scoring, became applicable Aug 2, 2026",
+    keyDocument: "Regulation (EU) 2024/1689 (in force Aug 1, 2024), as amended by Regulation (EU) 2026/1744 (Digital Omnibus on AI, in force Jul 27, 2026)",
+    latestMove: "Digital Omnibus on AI (Reg 2026/1744) deferred Annex III high-risk obligations, including credit scoring, from Aug 2026 to Dec 2, 2027",
     timeline: [
       {
         date: "2024-08-01",
@@ -108,47 +108,55 @@ const REGULATOR_ENTRIES: Regulator[] = [
         link: "https://www.eba.europa.eu/sites/default/files/2025-11/d8b999ce-a1d9-4964-9606-971bbc2aaf89/AI%20Act%20implications%20for%20the%20EU%20banking%20sector.pdf"
       },
       {
+        date: "2026-07-27",
+        title: "Digital Omnibus on AI enters into force, deferring high-risk deadlines",
+        docType: "Regulation",
+        summary:
+          "Regulation (EU) 2026/1744 amends the AI Act to defer Chapter III obligations for Annex III high-risk systems — including credit scoring (5(b)) and insurance pricing (5(c)) — from August 2, 2026 to December 2, 2027, and pushes the Annex I product-embedded deadline from August 2027 to August 2, 2028. GPAI, prohibited-practice, and Article 50 transparency obligations are unaffected.",
+        link: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng"
+      },
+      {
         date: "2026-08-02",
-        title: "High-risk AI obligations become applicable",
+        title: "Article 50 transparency obligations apply as scheduled",
         docType: "Milestone",
         summary:
-          "Annex III high-risk systems — including credit scoring — must comply with risk management, data governance, documentation, logging, human oversight, accuracy, and post-market monitoring requirements. Fines up to €15M / 3% of turnover.",
+          "AI-content transparency and labeling duties under Article 50 take effect on schedule. The Annex III high-risk regime that would otherwise have applied this date — including credit scoring — was deferred to December 2, 2027 by the Digital Omnibus on AI, which entered into force three weeks earlier.",
         link: "https://artificialintelligenceact.eu/implementation-timeline/"
       },
       {
-        date: "2027-08-02",
+        date: "2028-08-02",
         title: "Extended deadline for high-risk AI embedded in regulated products",
         docType: "Milestone",
         summary:
-          "Article 6(1) high-risk systems tied to EU product-safety legislation get an additional year.",
+          "Article 6(1) high-risk systems tied to EU product-safety legislation (Annex I) must comply. This date was itself pushed back a year, from August 2027, by the Digital Omnibus on AI (Regulation (EU) 2026/1744).",
         link: "https://artificialintelligenceact.eu/implementation-timeline/"
       }
     ],
     watchNext: [
-      "National market-surveillance authorities beginning enforcement of the high-risk regime that started Aug 2, 2026",
+      "Whether banks and national supervisors treat the extra runway to Dec 2, 2027 as a genuine compliance delay or keep remediating on the original Aug 2026 timeline",
       "EBA-coordinated supervisory convergence on how AI Act duties interact with existing model governance (CRD/CRR, EBA guidelines) through 2026–27",
-      "Treatment of legacy credit-scoring models: how strictly 'significant modification' is read for systems deployed before Aug 2026"
+      "Treatment of legacy credit-scoring models: how 'significant modification' will be read for systems deployed before the new Dec 2, 2027 deadline"
     ],
     faq: [
       {
         q: "Is credit scoring high-risk under the EU AI Act?",
-        a: "Yes. AI systems used to evaluate the creditworthiness of natural persons or establish their credit score are listed in Annex III, point 5(b), and are high-risk regardless of whether the AI makes the final decision or supports a human decision-maker. A narrow exception exists for systems used solely to detect financial fraud."
+        a: "Yes. AI systems used to evaluate the creditworthiness of natural persons or establish their credit score are listed in Annex III, point 5(b), and are high-risk regardless of whether the AI makes the final decision or supports a human decision-maker. A narrow exception exists for systems used solely to detect financial fraud. The classification is unchanged by the 2026 Digital Omnibus — only the compliance deadline moved."
       },
       {
         q: "When did the AI Act start applying to banks?",
-        a: "In stages: AI-literacy and prohibited-practice rules from February 2, 2025; general-purpose AI rules from August 2, 2025; and the high-risk regime — the one covering credit scoring — from August 2, 2026."
+        a: "In stages: AI-literacy and prohibited-practice rules from February 2, 2025; general-purpose AI rules from August 2, 2025; Article 50 transparency duties from August 2, 2026. The high-risk regime covering credit scoring was originally due August 2, 2026 too, but the Digital Omnibus on AI (Regulation (EU) 2026/1744, in force July 27, 2026) deferred it to December 2, 2027."
       },
       {
         q: "What are the penalties for banks under the AI Act?",
         a: "Non-compliance with high-risk system obligations carries administrative fines of up to €15 million or 3% of global annual turnover, whichever is higher. Prohibited-practice violations carry up to €35 million or 7%."
       },
       {
-        q: "Do models deployed before August 2026 have to comply?",
-        a: "High-risk systems placed on the market before August 2, 2026 are generally brought into scope when they undergo a significant modification. In practice, EU banks began remediating legacy ML credit portfolios ahead of the deadline, because retraining and material model changes can trigger full compliance."
+        q: "Do models deployed before the high-risk deadline have to comply?",
+        a: "High-risk systems placed on the market before the compliance deadline are generally brought into scope when they undergo a significant modification. That deadline is now December 2, 2027 for Annex III systems like credit scoring (deferred from August 2026 by the 2026 Digital Omnibus), giving banks more runway — but retraining and material model changes can still trigger full compliance before then."
       }
     ],
     related: ["eba", "ecb", "fsb"],
-    lastUpdated: "2026-08-19"
+    lastUpdated: "2026-08-24"
   },
   {
     slug: "fsb",
