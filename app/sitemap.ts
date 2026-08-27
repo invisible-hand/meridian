@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { listSentDigests, ensureSchema } from "@/lib/db";
-import { REGULATORS, TRACKER_LAST_REVIEWED } from "@/lib/regulators";
+import { REGULATORS } from "@/lib/regulators";
+import { DOCUMENTS, documentPath, latestDocumentUpdate } from "@/lib/tracker";
 import { BASE_URL } from "@/lib/seo";
 
 // Revalidate at most every hour as a fallback. The send cron route invalidates
@@ -34,14 +35,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/ai-regulation`,
-      lastModified: new Date(TRACKER_LAST_REVIEWED),
+      lastModified: new Date(latestDocumentUpdate()),
       changeFrequency: "weekly",
       priority: 0.8
     },
+    ...["documents", "deadlines", "by-use-case"].map((p) => ({
+      url: `${BASE_URL}/ai-regulation/${p}`,
+      lastModified: new Date(latestDocumentUpdate()),
+      changeFrequency: "weekly" as const,
+      priority: 0.7
+    })),
     ...REGULATORS.map((r) => ({
       url: `${BASE_URL}/ai-regulation/${r.slug}`,
       lastModified: new Date(r.lastUpdated),
       changeFrequency: "weekly" as const,
+      priority: 0.7
+    })),
+    ...DOCUMENTS.map((d) => ({
+      url: `${BASE_URL}${documentPath(d)}`,
+      lastModified: new Date(d.lastUpdated),
+      changeFrequency: "monthly" as const,
       priority: 0.7
     })),
     {

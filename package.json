@@ -5,10 +5,12 @@
   "description": "AI executive digest on Vercel",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run tracker:check && next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "tracker:check": "tsx scripts/validate-tracker.ts",
+    "tracker:indexnow": "tsx --env-file=.env.local scripts/tracker-indexnow.ts"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.3",
     "eslint-config-next": "^16.1.6",
+    "tsx": "^4.23.12",
     "typescript": "^5.9.3"
   }
 }

@@ -13,6 +13,7 @@ import {
   SITE_NAME
 } from "@/lib/seo";
 import { JsonLd, newsArticleSchema } from "@/lib/json-ld";
+import { digestText, documentPath, findMentions } from "@/lib/tracker";
 
 // Issue pages are immutable once `status === "sent"`. We let Next.js render
 // them on first request and cache. The send cron revalidates the new path
@@ -214,6 +215,9 @@ export default async function IssuePage({
     ? new Date(digest.sent_at).toISOString()
     : isoToArticleDate(date);
   const relatedIssues = await getCachedRelatedIssues(date);
+  // Read-time cross-links into the regulation tracker: documents/authorities
+  // whose aliases literally appear in this issue's stories.
+  const mentions = findMentions(digestText(content)).slice(0, 6);
 
   return (
     <>
@@ -462,6 +466,26 @@ export default async function IssuePage({
 
         .issue-footer-link:hover { color: #5a5a5a; }
 
+        .issue-tracker {
+          margin-top: 36px;
+          padding: 22px 24px;
+          background: #ffffff;
+          border-left: 3px solid #1a3fcb;
+        }
+        .issue-tracker-label {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 9px; font-weight: 500; letter-spacing: 0.18em;
+          text-transform: uppercase; color: #1a3fcb; margin: 0 0 12px;
+        }
+        .issue-tracker a {
+          display: block; text-decoration: none; padding: 6px 0;
+          font-family: var(--font-serif), Georgia, serif; font-size: 14px; font-weight: 700; color: #111; line-height: 1.4;
+        }
+        .issue-tracker a span {
+          font-family: var(--font-sans), 'Helvetica Neue', sans-serif; font-size: 12px; font-weight: 400; color: #6a6a6a;
+        }
+        .issue-tracker a:hover { color: #1a3fcb; }
+
         .issue-related {
           margin-top: 36px;
           padding: 28px 0 8px;
@@ -602,6 +626,23 @@ export default async function IssuePage({
                     <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" accentLight="#d0f0e0" />
                   ))}
                 </section>
+              )}
+
+              {mentions.length > 0 && (
+                <aside className="issue-tracker" aria-labelledby="tracker-refs-heading">
+                  <p id="tracker-refs-heading" className="issue-tracker-label">Referenced in the AI Regulation Tracker</p>
+                  {mentions.map((m) =>
+                    m.kind === "document" ? (
+                      <Link key={m.doc.slug} href={documentPath(m.doc)}>
+                        {m.doc.shortName} — {m.doc.title} <span>· {m.authority.name}</span>
+                      </Link>
+                    ) : (
+                      <Link key={m.authority.slug} href={`/ai-regulation/${m.authority.slug}`}>
+                        How the {m.authority.name} regulates AI in banking <span>· authority page</span>
+                      </Link>
+                    )
+                  )}
+                </aside>
               )}
 
               {/* Recent issues — internal linking for crawl depth and topical clustering */}

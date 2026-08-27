@@ -4,6 +4,7 @@ import { authorizeOperator } from "@/lib/api-auth";
 import { ensureSchema } from "@/lib/db";
 import { pingIndexNow } from "@/lib/indexnow";
 import { runSendForToday } from "@/lib/send-digest";
+import { trackerPathsUpdatedSince } from "@/lib/tracker";
 
 // Allow up to 5 minutes on Vercel Pro — enough for ~15,000 subscribers via batch API
 export const maxDuration = 300;
@@ -39,5 +40,20 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({ ...result, indexNow });
+  // The regulation tracker is maintained by a cloud routine that pushes to
+  // main but has no IndexNow key. This cron runs daily on Vercel where the key
+  // exists, so it submits any tracker URL whose content changed in the last 7
+  // days. IndexNow tolerates repeat submissions; a week of overlap guarantees
+  // nothing is missed even if a day's send is skipped.
+  const weekAgo = new Date(Date.now() - 7 * 86400_000).toISOString().slice(0, 10);
+  const trackerPaths = trackerPathsUpdatedSince(weekAgo);
+  let trackerIndexNow: Awaited<ReturnType<typeof pingIndexNow>> | null = null;
+  if (trackerPaths.length > 0) {
+    trackerIndexNow = await pingIndexNow(trackerPaths);
+    if (!trackerIndexNow.ok) {
+      console.error("[cron/send] tracker IndexNow ping failed:", trackerIndexNow.reason);
+    }
+  }
+
+  return NextResponse.json({ ...result, indexNow, trackerIndexNow: { paths: trackerPaths.length, result: trackerIndexNow } });
 }

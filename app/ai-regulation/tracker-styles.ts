@@ -224,6 +224,63 @@ export const trackerCss = `
   .trk-tag-guidance { background: #e4e0d8; color: #55503f; }
   .trk-tag-standards { background: #d9d4c9; color: #55503f; }
   .trk-tag-voluntary { background: #efece5; color: #8a8471; border: 1px solid #ddd8cd; }
+  .trk-tag-open { background: #0d6640; color: #ffffff; }
+
+  .trk-nav-links { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+  @media (max-width: 720px) { .trk-nav-links .trk-nav-link:nth-child(n+3):not(:last-of-type) { display: none; } }
+
+  .trk-kicker {
+    font-family: var(--font-mono), 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #b0ab9a;
+    margin: 0 0 10px;
+  }
+
+  .trk-h2-q {
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #111111;
+    margin: 0 0 10px;
+    line-height: 1.3;
+  }
+
+  .trk-sub {
+    font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #6a6a6a;
+    margin: 0 0 16px;
+  }
+
+  .trk-coverage { display: flex; flex-direction: column; }
+  .trk-coverage a {
+    display: flex; gap: 16px; align-items: baseline;
+    padding: 11px 0; border-bottom: 1px solid #ede9e3; text-decoration: none;
+  }
+  .trk-coverage a:last-child { border-bottom: none; }
+  .trk-coverage-date {
+    font-family: var(--font-mono), 'Courier New', monospace;
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #b0ab9a;
+    flex-shrink: 0; min-width: 92px;
+  }
+  .trk-coverage-title {
+    font-family: var(--font-serif), Georgia, serif;
+    font-size: 14px; font-weight: 700; color: #111; line-height: 1.4;
+  }
+  .trk-coverage a:hover .trk-coverage-title { color: #1a3fcb; }
+
+  .trk-source {
+    display: inline-block;
+    font-family: var(--font-mono), 'Courier New', monospace;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #1a3fcb; text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  .trk-past { color: #9a9a9a; }
 
   .trk-list {
     font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
