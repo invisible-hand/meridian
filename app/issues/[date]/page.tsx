@@ -46,11 +46,10 @@ function extractDomain(url: string): string {
   catch { return "source"; }
 }
 
-function StoryCard({ story, index, accent, accentLight }: {
+function StoryCard({ story, index, accent }: {
   story: DigestStory;
   index: number;
   accent: string;
-  accentLight: string;
 }) {
   const domain = extractDomain(story.sourceUrl);
   const num = String(index).padStart(2, "0");
@@ -608,7 +607,7 @@ export default async function IssuePage({
                     <span className="issue-section-count">{bankingStories.length} {bankingStories.length === 1 ? "story" : "stories"}</span>
                   </div>
                   {bankingStories.map((story, i) => (
-                    <StoryCard key={i} story={story} index={i + 1} accent="#1a3fcb" accentLight="#dce5ff" />
+                    <StoryCard key={i} story={story} index={i + 1} accent="#1a3fcb" />
                   ))}
                 </section>
               )}
@@ -623,7 +622,7 @@ export default async function IssuePage({
                     <span className="issue-section-count">{aiStories.length} {aiStories.length === 1 ? "story" : "stories"}</span>
                   </div>
                   {aiStories.map((story, i) => (
-                    <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" accentLight="#d0f0e0" />
+                    <StoryCard key={i} story={story} index={i + 1} accent="#0d6640" />
                   ))}
                 </section>
               )}

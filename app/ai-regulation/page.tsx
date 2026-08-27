@@ -97,6 +97,39 @@ function hubSchema(): Record<string, unknown>[] {
   ];
 }
 
+function AuthorityTable({ rows }: { rows: typeof REGULATORS }) {
+return (
+  <div className="trk-table-wrap">
+    <table className="trk-table">
+      <thead>
+        <tr>
+          <th>Authority</th>
+          <th>Jurisdiction</th>
+          <th>Force</th>
+          <th>Key document</th>
+          <th>Latest move</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr key={r.slug}>
+            <td className="trk-td-nowrap">
+              <Link href={`/ai-regulation/${r.slug}`} className="trk-td-strong" style={{ color: "#1a3fcb", textDecoration: "none" }}>
+                {r.name}
+              </Link>
+            </td>
+            <td>{r.jurisdiction}</td>
+            <td><span className={BINDING_TAG[r.binding]}>{r.binding}</span></td>
+            <td>{r.keyDocument}</td>
+            <td>{r.latestMove}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+}
+
 export default function AiRegulationHub() {
   const newest = recentDevelopments("2025-10-01", 12);
   const open = openConsultations();
@@ -105,36 +138,6 @@ export default function AiRegulationHub() {
   const us = REGULATORS.filter((r) => isUsAuthority(r.slug));
   const world = REGULATORS.filter((r) => !isUsAuthority(r.slug));
 
-  const AuthorityTable = ({ rows }: { rows: typeof REGULATORS }) => (
-    <div className="trk-table-wrap">
-      <table className="trk-table">
-        <thead>
-          <tr>
-            <th>Authority</th>
-            <th>Jurisdiction</th>
-            <th>Force</th>
-            <th>Key document</th>
-            <th>Latest move</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.slug}>
-              <td className="trk-td-nowrap">
-                <Link href={`/ai-regulation/${r.slug}`} className="trk-td-strong" style={{ color: "#1a3fcb", textDecoration: "none" }}>
-                  {r.name}
-                </Link>
-              </td>
-              <td>{r.jurisdiction}</td>
-              <td><span className={BINDING_TAG[r.binding]}>{r.binding}</span></td>
-              <td>{r.keyDocument}</td>
-              <td>{r.latestMove}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
 
   return (
     <TrackerShell

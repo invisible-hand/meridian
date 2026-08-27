@@ -5,9 +5,9 @@
   "description": "AI executive digest on Vercel",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run tracker:check && next build",
+    "build": "npm run tracker:check && npm run lint && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "tracker:check": "tsx scripts/validate-tracker.ts",
     "tracker:indexnow": "tsx --env-file=.env.local scripts/tracker-indexnow.ts"

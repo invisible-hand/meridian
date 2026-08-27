@@ -23,7 +23,6 @@ export function JsonLd({ data }: { data: JsonLdValue }) {
     <script
       type="application/ld+json"
       // Schema.org payload — safe to inject because we control all fields.
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{
         __html: JSON.stringify(data).replace(/</g, "\\u003c")
       }}

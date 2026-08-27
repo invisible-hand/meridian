@@ -11,7 +11,7 @@ import {
   effectiveStatus,
   formatDate,
   latestDocumentUpdate,
-  useCaseByAuthority
+  documentsByAuthorityForUseCase
 } from "@/lib/tracker";
 import { Section, TrackerShell } from "../shell";
 
@@ -50,7 +50,7 @@ export default function ByUseCasePage() {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       mainEntity: covered.map((u) => {
-        const rows = useCaseByAuthority(u);
+        const rows = documentsByAuthorityForUseCase(u);
         const answer = `${USE_CASE_LABELS[u].blurb} Governing documents: ${rows
           .map((r) => `${r.authority.name} — ${r.docs.map((d) => d.shortName).join(", ")}`)
           .join("; ")}.`;
@@ -86,7 +86,7 @@ export default function ByUseCasePage() {
       </Section>
 
       {covered.map((u) => {
-        const rows = useCaseByAuthority(u);
+        const rows = documentsByAuthorityForUseCase(u);
         const meta = USE_CASE_LABELS[u];
         return (
           <Section key={u} label={meta.label}>

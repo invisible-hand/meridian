@@ -390,7 +390,7 @@ export default function AboutPage() {
               The result lands in your inbox as two sections. <strong>Banking AI</strong> covers
               AI developments with a direct, explicit connection to your world — real
               institutions, named regulators, specific financial products. No tenuous links,
-              no "this could someday affect banks" speculation. <strong>General AI</strong>
+              no &ldquo;this could someday affect banks&rdquo; speculation. <strong>General AI</strong>
               covers the broader AI landscape: model releases, capability shifts, enterprise
               adoption trends — the developments significant enough that a banking executive
               would feel behind on if they missed them.

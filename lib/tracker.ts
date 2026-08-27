@@ -245,7 +245,7 @@ export function documentsForUseCase(useCase: UseCase): RegDocument[] {
 }
 
 /** authority slug → documents, in authority display order, for one use case. */
-export function useCaseByAuthority(useCase: UseCase): { authority: Regulator; docs: RegDocument[] }[] {
+export function documentsByAuthorityForUseCase(useCase: UseCase): { authority: Regulator; docs: RegDocument[] }[] {
   const docs = documentsForUseCase(useCase);
   return REGULATORS.map((authority) => ({
     authority,
