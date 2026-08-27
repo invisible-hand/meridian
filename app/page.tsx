@@ -169,14 +169,19 @@ export default async function HomePage({
 
         .lp-input {
           flex: 1;
+          min-width: 0;
           padding: 14px 18px;
           background: transparent;
           border: none;
+          border-radius: 0;
+          box-shadow: none;
           color: #111111;
           font-size: 14px;
           outline: none;
           font-family: var(--font-sans), sans-serif;
         }
+
+        .lp-input:focus { outline: none; border-color: transparent; box-shadow: none; }
 
         .lp-input::placeholder {
           color: #b0ab9a;
@@ -190,6 +195,9 @@ export default async function HomePage({
           background: #111111;
           color: #f0ede8;
           border: none;
+          border-radius: 0;
+          box-sizing: border-box;
+          flex-shrink: 0;
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 10px;
           font-weight: 500;
@@ -200,7 +208,7 @@ export default async function HomePage({
           transition: opacity 0.15s;
         }
 
-        .lp-btn:hover { opacity: 0.8; }
+        .lp-btn:hover { opacity: 0.8; background: #111111; }
 
         .lp-success {
           display: flex;
