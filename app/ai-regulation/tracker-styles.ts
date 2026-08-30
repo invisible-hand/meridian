@@ -208,6 +208,8 @@ export const trackerCss = `
 
   .trk-td-strong { color: #111111; font-weight: 600; }
   .trk-td-nowrap { white-space: nowrap; }
+  .trk-td-min { min-width: 300px; }
+  .trk-td-mid { min-width: 200px; }
 
   .trk-tag {
     display: inline-block;

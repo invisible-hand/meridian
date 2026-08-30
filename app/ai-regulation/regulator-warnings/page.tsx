@@ -6,7 +6,7 @@ import {
   STATUS_TAG,
   documentPath,
   effectiveStatus,
-  firstSentence,
+  oneLine,
   formatDate,
   latestDocumentUpdate,
   warningDocuments,
@@ -143,9 +143,9 @@ export default function RegulatorWarningsPage() {
                       <tr key={d.slug}>
                         <td className="trk-td-nowrap">{formatDate(d.date)}</td>
                         <td className="trk-td-nowrap"><Link href={`/ai-regulation/${d.authority}`}>{reg?.name ?? d.authority}</Link></td>
-                        <td>
+                        <td className="trk-td-min">
                           <Link href={documentPath(d)} className="trk-td-strong">{d.shortName}</Link>
-                          {" — "}{firstSentence(d.answerFirst)}
+                          {" — "}{oneLine(d.answerFirst, 220)}
                         </td>
                         <td className="trk-td-nowrap"><span className={STATUS_TAG[effectiveStatus(d)]}>{effectiveStatus(d)}</span></td>
                       </tr>

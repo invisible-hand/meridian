@@ -171,6 +171,18 @@ export function firstSentence(text: string): string {
   return (m ? m[0] : text).trim();
 }
 
+/**
+ * One readable line for table cells: the first sentence, hard-capped at
+ * `max` chars on a word boundary. Some answerFirst blocks are single
+ * 60-word sentences — without the cap they wreck table layouts.
+ */
+export function oneLine(text: string, max = 180): string {
+  const s = firstSentence(text);
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
 /** Newest dated rows across every authority, for the hub. */
 export function recentDevelopments(since: string, limit: number) {
   return REGULATORS.flatMap((r) =>

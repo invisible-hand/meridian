@@ -5,7 +5,7 @@ import { absoluteUrl } from "@/lib/seo";
 import {
   allDeadlines,
   documentPath,
-  firstSentence,
+  oneLine,
   formatDate,
   getDocument,
   inForceDocuments,
@@ -138,7 +138,7 @@ export default function ComplianceChecklistPage() {
           </h2>
           <div className="trk-table-wrap">
             <table className="trk-table">
-              <thead><tr><th>Date</th><th>Authority</th><th>Obligation / event</th><th>Who must act</th></tr></thead>
+              <thead><tr><th>Date</th><th>Authority</th><th className="trk-td-min">Obligation / event</th><th>Who must act</th></tr></thead>
               <tbody>
                 {ds.map((d, i) => {
                   const doc = d.docSlug ? getDocument(d.docSlug) : undefined;
@@ -156,7 +156,7 @@ export default function ComplianceChecklistPage() {
                         )}
                         {" · "}{d.kind}
                       </td>
-                      <td>{doc ? doc.appliesTo : d.authority.appliesTo}</td>
+                      <td className="trk-td-mid">{oneLine(doc ? doc.appliesTo : d.authority.appliesTo, 130)}</td>
                     </tr>
                   );
                 })}
@@ -179,8 +179,8 @@ export default function ComplianceChecklistPage() {
               {inForce.map((d) => (
                 <tr key={d.slug}>
                   <td className="trk-td-nowrap">{formatDate(d.effectiveDate ?? d.date)}</td>
-                  <td className="trk-td-nowrap"><Link href={documentPath(d)} className="trk-td-strong">{d.shortName}</Link></td>
-                  <td>{firstSentence(d.answerFirst)}</td>
+                  <td className="trk-td-mid"><Link href={documentPath(d)} className="trk-td-strong">{d.shortName}</Link></td>
+                  <td className="trk-td-min">{oneLine(d.answerFirst, 200)}</td>
                 </tr>
               ))}
             </tbody>

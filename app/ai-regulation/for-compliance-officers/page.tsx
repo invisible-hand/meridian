@@ -6,7 +6,7 @@ import { REGULATORS, getRegulator } from "@/lib/regulators";
 import {
   DOCUMENTS,
   documentPath,
-  firstSentence,
+  oneLine,
   formatDate,
   getDocument,
   inForceDocuments,
@@ -112,7 +112,7 @@ export default function ForComplianceOfficersPage() {
               {firstReads.map((f, i) => (
                 <tr key={f.slug}>
                   <td className="trk-td-nowrap trk-td-strong">{i + 1}</td>
-                  <td className="trk-td-nowrap">
+                  <td className="trk-td-mid">
                     <Link href={documentPath(f.slug)} className="trk-td-strong">{f.doc!.shortName}</Link>
                     <br /><span style={{ color: "#9a9a9a", fontSize: "12px" }}>{getRegulator(f.doc!.authority)?.name}</span>
                   </td>
@@ -154,7 +154,7 @@ export default function ForComplianceOfficersPage() {
               {warnings.map((d) => (
                 <tr key={d.slug}>
                   <td className="trk-td-nowrap">{formatDate(d.date)}</td>
-                  <td><Link href={documentPath(d)} className="trk-td-strong">{d.shortName}</Link> — {firstSentence(d.answerFirst)}</td>
+                  <td className="trk-td-min"><Link href={documentPath(d)} className="trk-td-strong">{d.shortName}</Link> — {oneLine(d.answerFirst, 200)}</td>
                 </tr>
               ))}
             </tbody>
