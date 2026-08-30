@@ -60,7 +60,7 @@ export default async function ArchiveView({ page }: { page: number }) {
       <style>{`
         .arc-root {
           min-height: 100vh;
-          background: #f0ede8;
+          background: #fbfbf9;
           display: flex;
           flex-direction: column;
         }
@@ -71,8 +71,8 @@ export default async function ArchiveView({ page }: { page: number }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid #e8e4de;
-          background: #f0ede8;
+          border-bottom: 1px solid #e4e4df;
+          background: #fbfbf9;
           position: sticky;
           top: 0;
           z-index: 50;
@@ -109,19 +109,18 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-weight: 500;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #f0ede8;
-          background: #111111;
+          color: #111111;
           text-decoration: none;
-          padding: 7px 16px;
-          transition: opacity 0.15s;
+          border-bottom: 1px solid #111111;
+          padding-bottom: 2px;
         }
 
-        .arc-nav-cta:hover { opacity: 0.8; }
+        .arc-nav-cta:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         .arc-header {
-          background: #0c0c0c;
+          background: #fbfbf9;
           padding: 44px 40px 40px;
-          border-bottom: 1px solid #1a1a1a;
+          border-bottom: 1px solid #e4e4df;
         }
 
         .arc-header-inner {
@@ -135,21 +134,21 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-weight: 500;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #444;
+          color: #b3b3ae;
           margin: 0 0 14px;
         }
 
         .arc-rule {
           height: 1px;
-          background: #1e1e1e;
+          background: #e4e4df;
           margin: 0 0 18px;
         }
 
         .arc-title {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: clamp(2rem, 4vw, 3rem);
-          font-weight: 900;
-          color: #ffffff;
+          font-weight: 300;
+          color: #111111;
           margin: 0 0 8px;
           letter-spacing: -0.02em;
           line-height: 1.05;
@@ -161,7 +160,7 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-weight: 400;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #555;
+          color: #b3b3ae;
           margin: 0;
         }
 
@@ -180,7 +179,7 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-size: 11px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           text-align: center;
           padding: 72px 0;
         }
@@ -188,13 +187,13 @@ export default async function ArchiveView({ page }: { page: number }) {
         .arc-item {
           display: block;
           text-decoration: none;
-          border-bottom: 1px solid #e8e4de;
+          border-bottom: 1px solid #e4e4df;
           padding: 26px 0;
           transition: background 0.1s;
         }
 
         .arc-item:first-child {
-          border-top: 1px solid #e8e4de;
+          border-top: 1px solid #e4e4df;
         }
 
         .arc-item-inner {
@@ -215,14 +214,14 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-weight: 500;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           margin: 0 0 6px;
         }
 
         .arc-item-title {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: 17px;
-          font-weight: 700;
+          font-weight: 500;
           color: #111111;
           margin: 0 0 6px;
           line-height: 1.35;
@@ -240,14 +239,14 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-size: 9px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           margin: 0;
         }
 
         .arc-item-arrow {
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 12px;
-          color: #c8c3bb;
+          color: #e4e4df;
           flex-shrink: 0;
           transition: color 0.15s, transform 0.15s;
         }
@@ -275,14 +274,14 @@ export default async function ArchiveView({ page }: { page: number }) {
           text-transform: uppercase;
           color: #111111;
           text-decoration: none;
-          border: 1px solid #c8c3bb;
+          border: 1px solid #e4e4df;
           padding: 9px 18px;
           transition: background 0.15s, color 0.15s, border-color 0.15s;
         }
 
         .arc-pager-link:hover {
           background: #111111;
-          color: #f0ede8;
+          color: #fbfbf9;
           border-color: #111111;
         }
 
@@ -297,13 +296,13 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-size: 9px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           white-space: nowrap;
         }
 
         .arc-footer {
           padding: 18px 40px;
-          border-top: 1px solid #e8e4de;
+          border-top: 1px solid #e4e4df;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -314,7 +313,7 @@ export default async function ArchiveView({ page }: { page: number }) {
           font-size: 9px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           text-decoration: none;
           transition: color 0.15s;
         }

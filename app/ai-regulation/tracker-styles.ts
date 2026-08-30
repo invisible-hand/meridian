@@ -1,46 +1,44 @@
-// Shared CSS for the AI-regulation tracker pages (hub + per-body pages).
-// Follows the same visual language as /about: parchment ground, dark
-// masthead, mono eyebrows, serif italic headlines.
+// Shared CSS for the AI-regulation tracker pages (hub + authority + document +
+// derived pages). Follows the site-wide "2050" language: near-white ground,
+// light Epilogue display type, IBM Plex Mono data labels, #1a3fcb as the only
+// accent, hairlines instead of boxes, no dark bands.
 export const trackerCss = `
   .trk-root {
     min-height: 100vh;
-    background: #f0ede8;
+    background: #fbfbf9;
+    color: #111111;
     display: flex;
     flex-direction: column;
   }
 
   .trk-nav {
-    padding: 0 40px;
-    height: 52px;
+    padding: 22px 56px 0;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    border-bottom: 1px solid #e8e4de;
-    background: #f0ede8;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    gap: 16px;
+    background: #fbfbf9;
   }
 
   .trk-logo {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: #111111;
     text-decoration: none;
   }
 
   .trk-logo span { color: #1a3fcb; }
 
+  .trk-nav-links { display: flex; gap: 20px; align-items: baseline; flex-wrap: wrap; }
+  @media (max-width: 720px) { .trk-nav-links .trk-nav-link:nth-child(n+3):not(:last-of-type) { display: none; } }
+
   .trk-nav-link {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #9a9a9a;
+    letter-spacing: 0.1em;
+    color: #b3b3ae;
     text-decoration: none;
     transition: color 0.15s;
   }
@@ -50,82 +48,77 @@ export const trackerCss = `
   .trk-nav-cta {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #f0ede8;
-    background: #111111;
+    letter-spacing: 0.1em;
+    color: #111111;
     text-decoration: none;
-    padding: 7px 16px;
-    transition: opacity 0.15s;
+    border-bottom: 1px solid #111111;
+    padding-bottom: 2px;
   }
 
-  .trk-nav-cta:hover { opacity: 0.8; }
+  .trk-nav-cta:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
   .trk-masthead {
-    background: #0c0c0c;
-    padding: 48px 40px 44px;
-    border-bottom: 1px solid #1a1a1a;
+    background: #fbfbf9;
+    padding: clamp(44px, 7vw, 84px) 56px 0;
   }
 
-  .trk-masthead-inner { max-width: 860px; margin: 0 auto; }
+  .trk-masthead-inner { max-width: 1100px; margin: 0 auto; }
 
   .trk-eyebrow {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #444;
-    margin: 0 0 16px;
+    letter-spacing: 0.14em;
+    color: #b3b3ae;
+    margin: 0 0 18px;
   }
 
-  .trk-masthead-rule { height: 1px; background: #1e1e1e; margin: 0 0 22px; }
+  .trk-eyebrow a:hover { color: #111111 !important; }
+
+  .trk-masthead-rule { display: none; }
 
   .trk-h1 {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: clamp(1.7rem, 4vw, 2.75rem);
-    font-weight: 900;
-    font-style: italic;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-    color: #ffffff;
+    font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+    font-size: clamp(2.2rem, 5.4vw, 4.6rem);
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: #111111;
     margin: 0;
   }
 
-  .trk-h1 em { font-style: normal; color: #4f7fff; }
+  .trk-h1 em { font-style: normal; font-weight: 600; color: #1a3fcb; }
 
   .trk-updated {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #666;
-    margin: 18px 0 0;
+    letter-spacing: 0.1em;
+    color: #b3b3ae;
+    margin: 22px 0 0;
   }
 
   .trk-body {
     flex: 1;
-    max-width: 860px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 56px 40px 96px;
+    padding: clamp(36px, 5vw, 60px) 56px 96px;
     width: 100%;
     box-sizing: border-box;
   }
 
   .trk-answer {
     font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
-    font-size: clamp(0.98rem, 1.6vw, 1.08rem);
+    font-size: clamp(1rem, 1.6vw, 1.12rem);
     font-weight: 400;
     line-height: 1.75;
-    color: #1c1c1c;
-    margin: 0 0 40px;
-    padding: 26px 28px;
-    background: #ffffff;
-    border-left: 3px solid #1a3fcb;
+    color: #111111;
+    margin: 0 0 52px;
+    padding: 0 0 0 24px;
+    border-left: 2px solid #1a3fcb;
+    max-width: 860px;
   }
 
-  .trk-section { margin-bottom: 52px; }
+  .trk-section { margin-bottom: 56px; }
 
   .trk-section-label {
     display: flex;
@@ -136,24 +129,25 @@ export const trackerCss = `
 
   .trk-section-label-text {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
+    font-size: 9px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #b0ab9a;
+    color: #b3b3ae;
     white-space: nowrap;
   }
 
-  .trk-section-rule { flex: 1; height: 1px; background: #e8e4de; }
+  .trk-section-rule { flex: 1; height: 1px; background: #e4e4df; }
 
-  .trk-h2 {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    font-style: italic;
+  .trk-h2,
+  .trk-h2-q {
+    font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: -0.025em;
     color: #111111;
     margin: 0 0 14px;
-    line-height: 1.3;
+    line-height: 1.25;
   }
 
   .trk-p {
@@ -162,15 +156,34 @@ export const trackerCss = `
     line-height: 1.75;
     color: #3a3a3a;
     margin: 0 0 20px;
+    max-width: 860px;
   }
 
   .trk-p:last-child { margin-bottom: 0; }
   .trk-p strong { color: #111111; font-weight: 600; }
 
+  .trk-kicker {
+    font-family: var(--font-mono), 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #b3b3ae;
+    margin: 0 0 10px;
+  }
+
+  .trk-sub {
+    font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #6a6a6a;
+    margin: 0 0 16px;
+    max-width: 860px;
+  }
+
   .trk-table-wrap {
     overflow-x: auto;
     background: #ffffff;
-    border: 1px solid #e8e4de;
+    border: 1px solid #e4e4df;
   }
 
   .trk-table {
@@ -183,20 +196,20 @@ export const trackerCss = `
 
   .trk-table th {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 9.5px;
+    font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #b0ab9a;
+    color: #b3b3ae;
     text-align: left;
     padding: 12px 16px;
-    border-bottom: 1px solid #e8e4de;
+    border-bottom: 1px solid #e4e4df;
     white-space: nowrap;
   }
 
   .trk-table td {
     padding: 13px 16px;
-    border-bottom: 1px solid #f0ede8;
+    border-bottom: 1px solid #f0f0ec;
     color: #3a3a3a;
     vertical-align: top;
   }
@@ -223,66 +236,10 @@ export const trackerCss = `
   }
 
   .trk-tag-law { background: #1a3fcb; color: #ffffff; }
-  .trk-tag-guidance { background: #e4e0d8; color: #55503f; }
-  .trk-tag-standards { background: #d9d4c9; color: #55503f; }
-  .trk-tag-voluntary { background: #efece5; color: #8a8471; border: 1px solid #ddd8cd; }
+  .trk-tag-guidance { background: #ecece7; color: #5a5a56; }
+  .trk-tag-standards { background: #f2f2ee; color: #5a5a56; border: 1px solid #e4e4df; }
+  .trk-tag-voluntary { background: #fbfbf9; color: #9a9a96; border: 1px solid #e4e4df; }
   .trk-tag-open { background: #0d6640; color: #ffffff; }
-
-  .trk-nav-links { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
-  @media (max-width: 720px) { .trk-nav-links .trk-nav-link:nth-child(n+3):not(:last-of-type) { display: none; } }
-
-  .trk-kicker {
-    font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #b0ab9a;
-    margin: 0 0 10px;
-  }
-
-  .trk-h2-q {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    font-style: italic;
-    color: #111111;
-    margin: 0 0 10px;
-    line-height: 1.3;
-  }
-
-  .trk-sub {
-    font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-    line-height: 1.65;
-    color: #6a6a6a;
-    margin: 0 0 16px;
-  }
-
-  .trk-coverage { display: flex; flex-direction: column; }
-  .trk-coverage a {
-    display: flex; gap: 16px; align-items: baseline;
-    padding: 11px 0; border-bottom: 1px solid #ede9e3; text-decoration: none;
-  }
-  .trk-coverage a:last-child { border-bottom: none; }
-  .trk-coverage-date {
-    font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #b0ab9a;
-    flex-shrink: 0; min-width: 92px;
-  }
-  .trk-coverage-title {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 14px; font-weight: 700; color: #111; line-height: 1.4;
-  }
-  .trk-coverage a:hover .trk-coverage-title { color: #1a3fcb; }
-
-  .trk-source {
-    display: inline-block;
-    font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-    color: #1a3fcb; text-decoration: underline; text-underline-offset: 3px;
-  }
-
-  .trk-past { color: #9a9a9a; }
 
   .trk-list {
     font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
@@ -291,14 +248,16 @@ export const trackerCss = `
     color: #3a3a3a;
     margin: 0;
     padding-left: 22px;
+    max-width: 860px;
   }
 
   .trk-list li { margin-bottom: 10px; }
 
   .trk-faq-q {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 1.05rem;
-    font-weight: 700;
+    font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
     color: #111111;
     margin: 0 0 8px;
   }
@@ -309,6 +268,7 @@ export const trackerCss = `
     line-height: 1.7;
     color: #3a3a3a;
     margin: 0 0 26px;
+    max-width: 860px;
   }
 
   .trk-related {
@@ -320,68 +280,91 @@ export const trackerCss = `
   .trk-related a {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.1em;
     color: #111111;
     background: #ffffff;
-    border: 1px solid #e8e4de;
+    border: 1px solid #e4e4df;
     text-decoration: none;
     padding: 9px 16px;
-    transition: border-color 0.15s;
+    transition: border-color 0.15s, color 0.15s;
   }
 
   .trk-related a:hover { border-color: #1a3fcb; color: #1a3fcb; }
 
+  .trk-coverage { display: flex; flex-direction: column; }
+  .trk-coverage a {
+    display: flex; gap: 16px; align-items: baseline;
+    padding: 11px 0; border-bottom: 1px solid #e9e9e5; text-decoration: none;
+  }
+  .trk-coverage a:last-child { border-bottom: none; }
+  .trk-coverage-date {
+    font-family: var(--font-mono), 'Courier New', monospace;
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #b3b3ae;
+    flex-shrink: 0; min-width: 92px;
+  }
+  .trk-coverage-title {
+    font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+    font-size: 14.5px; font-weight: 500; color: #111; line-height: 1.4;
+  }
+  .trk-coverage a:hover .trk-coverage-title { color: #1a3fcb; }
+
+  .trk-source {
+    display: inline-block;
+    font-family: var(--font-mono), 'Courier New', monospace;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #1a3fcb; text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  .trk-past td { color: #9a9a96; }
+  .trk-past .trk-td-strong, .trk-past a { color: #9a9a96; }
+
   .trk-cta {
-    background: #0c0c0c;
-    padding: 40px;
-    text-align: center;
-    margin-top: 60px;
+    border-top: 2px solid #111111;
+    padding: 36px 0 0;
+    margin-top: 64px;
   }
 
   .trk-cta h3 {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    font-style: italic;
-    color: #ffffff;
-    margin: 0 0 10px;
+    font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    font-weight: 300;
+    font-style: normal;
+    letter-spacing: -0.03em;
+    color: #111111;
+    margin: 0 0 8px;
   }
 
   .trk-cta p {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 10px;
     letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #555;
-    margin: 0 0 24px;
+    color: #b3b3ae;
+    margin: 0 0 22px;
   }
 
   .trk-cta-btn {
-    font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #0c0c0c;
-    background: #f0ede8;
+    font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #111111;
     text-decoration: none;
-    padding: 13px 30px;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 3px;
     display: inline-block;
-    transition: opacity 0.15s;
+    transition: color 0.15s, border-color 0.15s;
   }
 
-  .trk-cta-btn:hover { opacity: 0.8; }
+  .trk-cta-btn:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
   .trk-footer {
-    padding: 18px 40px;
-    border-top: 1px solid #e8e4de;
+    padding: 16px 56px 22px;
+    border-top: 1px solid #e4e4df;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: baseline;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 18px;
   }
 
   .trk-footer-link {
@@ -389,18 +372,18 @@ export const trackerCss = `
     font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #b0ab9a;
+    color: #b3b3ae;
     text-decoration: none;
     transition: color 0.15s;
   }
 
-  .trk-footer-link:hover { color: #5a5a5a; }
+  .trk-footer-link:hover { color: #111111; }
 
-  @media (max-width: 520px) {
-    .trk-nav { padding: 0 20px; }
-    .trk-masthead { padding: 36px 20px 32px; }
-    .trk-body { padding: 44px 20px 72px; }
-    .trk-footer { padding: 18px 20px; }
-    .trk-answer { padding: 20px; }
+  @media (max-width: 720px) {
+    .trk-nav { padding: 18px 24px 0; }
+    .trk-masthead { padding-left: 24px; padding-right: 24px; }
+    .trk-body { padding-left: 24px; padding-right: 24px; padding-bottom: 72px; }
+    .trk-footer { padding: 14px 24px 18px; }
+    .trk-answer { padding-left: 16px; }
   }
 `;

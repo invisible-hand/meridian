@@ -29,342 +29,310 @@ export default async function HomePage({
       <style>{`
         .lp {
           min-height: 100vh;
-          background: #f0ede8;
+          background: #fbfbf9;
+          color: #111111;
           display: flex;
           flex-direction: column;
         }
 
-        .lp-nav {
-          padding: 0 40px;
-          height: 52px;
+        /* ambient top line — the only chrome */
+        .lp-top {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid #e8e4de;
-          background: #f0ede8;
+          gap: 16px;
+          padding: 22px 56px 0;
         }
 
         .lp-logo {
           font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 500;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
+          letter-spacing: 0.08em;
           color: #111111;
           text-decoration: none;
         }
 
         .lp-logo span { color: #1a3fcb; }
 
-        .lp-nav-links {
+        .lp-top-data {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          letter-spacing: 0.1em;
+          color: #b3b3ae;
+        }
+
+        .lp-top-links {
           display: flex;
-          align-items: center;
-          gap: 6px;
+          gap: 22px;
+          align-items: baseline;
         }
 
-        .lp-nav-link {
+        .lp-top-link {
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #9a9a9a;
+          letter-spacing: 0.1em;
+          color: #111111;
           text-decoration: none;
-          padding: 6px 12px;
-          transition: color 0.15s;
+          border-bottom: 1px solid #111111;
+          padding-bottom: 2px;
         }
 
-        .lp-nav-link:hover { color: #111111; }
+        .lp-top-link:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
-        .lp-nav-cta {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #f0ede8;
-          background: #111111;
-          text-decoration: none;
-          padding: 7px 16px;
-          transition: opacity 0.15s;
-        }
-
-        .lp-nav-cta:hover { opacity: 0.8; }
-
+        /* the sentence */
         .lp-hero {
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          align-items: center;
-          text-align: center;
-          padding: 72px 24px 88px;
-          max-width: 820px;
-          margin: 0 auto;
+          padding: 48px 56px;
+          max-width: 1440px;
           width: 100%;
-        }
-
-        .lp-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 10px;
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: #9a9a9a;
-          margin-bottom: 28px;
-        }
-
-        .lp-eyebrow-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #0d6640;
-          box-shadow: 0 0 7px rgba(13,102,64,0.5);
-          animation: pulse 2.5s ease-in-out infinite;
-          flex-shrink: 0;
-        }
-
-        @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(0.85); }
+          margin: 0 auto;
+          box-sizing: border-box;
         }
 
         .lp-h1 {
-          font-family: var(--font-serif), Georgia, serif;
-          font-size: clamp(2.8rem, 7vw, 5.5rem);
-          font-weight: 900;
-          font-style: italic;
-          line-height: 1.03;
-          letter-spacing: -0.02em;
+          margin: 0;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: clamp(2.6rem, 7.2vw, 6.75rem);
+          font-weight: 300;
+          line-height: 1.04;
+          letter-spacing: -0.045em;
           color: #111111;
-          margin: 0 0 28px;
         }
 
-        .lp-h1 em {
-          font-style: normal;
-          color: #1a3fcb;
-        }
+        .lp-h1 strong { font-weight: 600; }
+        .lp-h1 em { font-style: normal; color: #1a3fcb; }
 
-        .lp-sub {
-          font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
-          font-size: clamp(0.9rem, 1.8vw, 1.05rem);
-          color: #5a5a5a;
-          line-height: 1.7;
-          margin: 0 0 48px;
-          max-width: 400px;
-        }
-
+        /* the interface is one line */
         .lp-form {
           display: flex;
-          gap: 0;
-          width: 100%;
-          max-width: 440px;
-          margin-bottom: 24px;
-          border: 1px solid #c8c3bb;
-          background: #ffffff;
+          align-items: baseline;
+          gap: 18px;
+          margin-top: clamp(40px, 6vw, 72px);
+          max-width: 760px;
+          border-bottom: 2px solid #111111;
+          padding-bottom: 14px;
+        }
+
+        .lp-arrow {
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 13px;
+          color: #1a3fcb;
+          flex-shrink: 0;
         }
 
         .lp-input {
           flex: 1;
           min-width: 0;
-          padding: 14px 18px;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: 22px;
+          font-weight: 300;
+          color: #111111;
           background: transparent;
           border: none;
           border-radius: 0;
-          box-shadow: none;
-          color: #111111;
-          font-size: 14px;
+          padding: 0;
           outline: none;
-          font-family: var(--font-sans), sans-serif;
+          box-shadow: none;
         }
 
-        .lp-input:focus { outline: none; border-color: transparent; box-shadow: none; }
-
-        .lp-input::placeholder {
-          color: #b0ab9a;
-          font-family: var(--font-mono), monospace;
-          font-size: 11px;
-          letter-spacing: 0.06em;
-        }
+        .lp-input:focus { outline: none; border: none; box-shadow: none; }
+        .lp-input::placeholder { color: #b3b3ae; font-weight: 300; }
 
         .lp-btn {
-          padding: 14px 22px;
-          background: #111111;
-          color: #f0ede8;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: 13px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          color: #111111;
+          background: transparent;
           border: none;
           border-radius: 0;
-          box-sizing: border-box;
-          flex-shrink: 0;
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
+          padding: 0;
           cursor: pointer;
           white-space: nowrap;
-          transition: opacity 0.15s;
+          flex-shrink: 0;
         }
 
-        .lp-btn:hover { opacity: 0.8; background: #111111; }
+        .lp-btn:hover { color: #1a3fcb; background: transparent; }
+
+        .lp-fine {
+          margin-top: 18px;
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          color: #b3b3ae;
+        }
 
         .lp-success {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 24px;
-          padding: 22px 32px;
-          border: 1px solid #b8d4c0;
-          background: #f0f8f3;
-          max-width: 440px;
-          width: 100%;
-        }
-
-        .lp-success-check {
-          font-size: 22px;
-          line-height: 1;
+          margin-top: clamp(40px, 6vw, 72px);
+          max-width: 760px;
+          border-bottom: 2px solid #1a3fcb;
+          padding-bottom: 14px;
         }
 
         .lp-success-title {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: #0d6640;
           margin: 0;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: 22px;
+          font-weight: 600;
+          color: #1a3fcb;
         }
 
         .lp-success-body {
-          font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
-          font-size: 13px;
-          color: #5a5a5a;
-          margin: 0;
-          text-align: center;
-          line-height: 1.6;
+          margin: 8px 0 0;
+          font-family: var(--font-mono), 'Courier New', monospace;
+          font-size: 11px;
+          letter-spacing: 0.06em;
+          line-height: 1.7;
+          color: #6a6a6a;
         }
 
-        .lp-tags {
+        /* the brief, as data */
+        .lp-strip {
           display: flex;
-          gap: 6px;
-          flex-wrap: wrap;
-          justify-content: center;
+          padding: 0 56px 40px;
+          max-width: 1440px;
+          width: 100%;
+          margin: 0 auto;
+          box-sizing: border-box;
         }
 
-        .lp-tag {
+        .lp-col {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          padding: 0 40px;
+          border-right: 1px solid #e4e4df;
+        }
+
+        .lp-col:first-child { padding-left: 0; }
+        .lp-col:last-child { border-right: none; }
+
+        .lp-col-label {
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 9px;
-          font-weight: 500;
           letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #9a9a9a;
-          padding: 4px 10px;
-          border: 1px solid #d8d3cb;
+          color: #b3b3ae;
         }
 
+        .lp-col-text {
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: 14px;
+          font-weight: 400;
+          color: #111111;
+        }
+
+        .lp-col-text a { color: #111111; text-decoration: none; border-bottom: 1px solid #e4e4df; }
+        .lp-col-text a:hover { color: #1a3fcb; border-color: #1a3fcb; }
+
         .lp-footer {
-          padding: 18px 40px;
           display: flex;
-          align-items: center;
+          align-items: baseline;
           justify-content: space-between;
-          border-top: 1px solid #e8e4de;
+          gap: 16px;
+          padding: 16px 56px 22px;
+          border-top: 1px solid #e4e4df;
         }
 
         .lp-footer-link {
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 9px;
           letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           text-decoration: none;
-          transition: color 0.15s;
         }
 
-        .lp-footer-link:hover { color: #5a5a5a; }
+        .lp-footer-link:hover { color: #111111; }
 
-        @media (max-width: 520px) {
-          .lp-nav { padding: 0 20px; }
-          .lp-footer { padding: 16px 20px; flex-wrap: wrap; gap: 10px; }
-          .lp-form { flex-direction: column; border: none; gap: 8px; }
-          .lp-input { border: 1px solid #c8c3bb; }
-          .lp-btn { width: 100%; }
+        @media (max-width: 720px) {
+          .lp-top { padding: 18px 24px 0; flex-wrap: wrap; }
+          .lp-top-data { display: none; }
+          .lp-hero { padding: 40px 24px; }
+          .lp-strip { flex-direction: column; padding: 0 24px 32px; }
+          .lp-col { padding: 12px 0; border-right: none; border-bottom: 1px solid #e4e4df; }
+          .lp-col:last-child { border-bottom: none; }
+          .lp-footer { padding: 14px 24px 18px; flex-wrap: wrap; }
         }
       `}</style>
 
       <div className="lp">
-        {/* Nav */}
-        <nav className="lp-nav">
-          <span className="lp-logo">Banking<span>News</span>AI</span>
-          <div className="lp-nav-links">
-            <Link href="/ai-regulation" className="lp-nav-link">Regulation</Link>
-            <Link href="/about" className="lp-nav-link">About</Link>
-            <Link href="/issues" className="lp-nav-link">Archive</Link>
-            <Link href="/#subscribe" className="lp-nav-cta">Subscribe</Link>
+        {/* ambient top line */}
+        <div className="lp-top">
+          <Link href="/" className="lp-logo">banking<span>news</span>ai</Link>
+          <span className="lp-top-data">daily · six stories · in your inbox by 7 am ET</span>
+          <div className="lp-top-links">
+            <Link href="/ai-regulation" className="lp-top-link">regulation</Link>
+            <Link href="/about" className="lp-top-link">about</Link>
+            <Link href="/issues" className="lp-top-link">archive</Link>
           </div>
-        </nav>
+        </div>
 
-        {/* Hero */}
+        {/* the sentence */}
         <div className="lp-hero" id="subscribe">
-          <div className="lp-eyebrow">
-            <span className="lp-eyebrow-dot" />
-            Daily · Banking &amp; AI
-          </div>
-
           <h1 className="lp-h1">
-            AI news that <em>actually matters</em><br />
-            to banking.
+            Everything AI did<br />
+            to banking <strong>yesterday</strong>,<br />
+            read by <em>7 am</em>.
           </h1>
-
-          <p className="lp-sub">
-            6 curated stories — 3 banking AI, 3 general AI — stripped of paywalls
-            and noise, in your inbox before your first meeting.
-          </p>
 
           {didSubscribe ? (
             <div className="lp-success">
-              <span className="lp-success-check">✓</span>
-              <p className="lp-success-title">You&rsquo;re in</p>
+              <p className="lp-success-title">You&rsquo;re in.</p>
               <p className="lp-success-body">
-                First issue hits your inbox tomorrow morning.<br />
-                Check your spam folder if you don&rsquo;t see it.
+                first issue lands tomorrow morning · check spam if it doesn&rsquo;t
               </p>
             </div>
           ) : (
             <form className="lp-form" action={subscribeAction}>
+              <span className="lp-arrow">→</span>
               <input
                 className="lp-input"
                 name="email"
                 type="email"
                 required
-                placeholder="you@bank.com"
+                placeholder="your work address"
                 autoComplete="email"
+                aria-label="Email address"
               />
               <button className="lp-btn" type="submit">
-                Subscribe free →
+                subscribe — free
               </button>
             </form>
           )}
 
-          <div className="lp-tags">
-            <span className="lp-tag">🏦 Banking AI</span>
-            <span className="lp-tag">🤖 General AI</span>
-            <span className="lp-tag">🔓 No paywalls</span>
-            <span className="lp-tag">Free forever</span>
+          <p className="lp-fine">no paywalls · no noise · leave any morning</p>
+        </div>
+
+        {/* the brief, as data */}
+        <div className="lp-strip">
+          <div className="lp-col">
+            <span className="lp-col-label">BANKING AI</span>
+            <span className="lp-col-text">3 stories · institutions, regulators, deals</span>
+          </div>
+          <div className="lp-col">
+            <span className="lp-col-label">GENERAL AI</span>
+            <span className="lp-col-text">3 stories · models, vendors, infrastructure</span>
+          </div>
+          <div className="lp-col">
+            <span className="lp-col-label">STANDING</span>
+            <span className="lp-col-text">
+              <Link href="/ai-regulation">18 regulators tracked, updated as rules change</Link>
+            </span>
           </div>
         </div>
 
         {/* Footer */}
         <footer className="lp-footer">
-          <div style={{ display: "flex", gap: "1.5rem" }}>
-            <Link href="/issues" className="lp-footer-link">Archive</Link>
-            <Link href="/ai-regulation" className="lp-footer-link">AI Regulation Tracker</Link>
-            <Link href="/about" className="lp-footer-link">About</Link>
+          <div style={{ display: "flex", gap: "18px" }}>
+            <Link href="/issues" className="lp-footer-link">ARCHIVE</Link>
+            <Link href="/ai-regulation" className="lp-footer-link">AI REGULATION TRACKER</Link>
+            <Link href="/about" className="lp-footer-link">ABOUT</Link>
           </div>
-          <span className="lp-footer-link" style={{ cursor: "default" }}>Curated by AI · Delivered daily</span>
-          <Link href="/admin" className="lp-footer-link">Admin</Link>
+          <span className="lp-footer-link" style={{ cursor: "default" }}>CURATED BY AI · DELIVERED DAILY</span>
         </footer>
       </div>
     </>

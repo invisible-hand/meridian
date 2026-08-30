@@ -29,7 +29,7 @@ export default function AboutPage() {
       <style>{`
         .about-root {
           min-height: 100vh;
-          background: #f0ede8;
+          background: #fbfbf9;
           display: flex;
           flex-direction: column;
         }
@@ -40,8 +40,8 @@ export default function AboutPage() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid #e8e4de;
-          background: #f0ede8;
+          border-bottom: 1px solid #e4e4df;
+          background: #fbfbf9;
           position: sticky;
           top: 0;
           z-index: 50;
@@ -78,20 +78,19 @@ export default function AboutPage() {
           font-weight: 500;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #f0ede8;
-          background: #111111;
+          color: #111111;
           text-decoration: none;
-          padding: 7px 16px;
-          transition: opacity 0.15s;
+          border-bottom: 1px solid #111111;
+          padding-bottom: 2px;
         }
 
-        .about-nav-cta:hover { opacity: 0.8; }
+        .about-nav-cta:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         /* ── Masthead ── */
         .about-masthead {
-          background: #0c0c0c;
+          background: #fbfbf9;
           padding: 52px 40px 48px;
-          border-bottom: 1px solid #1a1a1a;
+          border-bottom: 1px solid #e4e4df;
         }
 
         .about-masthead-inner {
@@ -105,30 +104,30 @@ export default function AboutPage() {
           font-weight: 500;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #444;
+          color: #b3b3ae;
           margin: 0 0 16px;
         }
 
         .about-masthead-rule {
           height: 1px;
-          background: #1e1e1e;
+          background: #e4e4df;
           margin: 0 0 22px;
         }
 
         .about-h1 {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: clamp(2rem, 4.5vw, 3.25rem);
-          font-weight: 900;
-          font-style: italic;
+          font-weight: 300;
+          
           line-height: 1.1;
           letter-spacing: -0.02em;
-          color: #ffffff;
+          color: #111111;
           margin: 0;
         }
 
         .about-h1 em {
           font-style: normal;
-          color: #4f7fff;
+          color: #1a3fcb;
         }
 
         /* ── Body ── */
@@ -158,14 +157,14 @@ export default function AboutPage() {
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           white-space: nowrap;
         }
 
         .about-section-rule {
           flex: 1;
           height: 1px;
-          background: #e8e4de;
+          background: #e4e4df;
         }
 
         .about-p {
@@ -185,15 +184,15 @@ export default function AboutPage() {
 
         .about-divider {
           border: none;
-          border-top: 1px solid #e8e4de;
+          border-top: 1px solid #e4e4df;
           margin: 52px 0;
         }
 
         .about-pull {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: clamp(1.2rem, 2.5vw, 1.55rem);
-          font-weight: 700;
-          font-style: italic;
+          font-weight: 500;
+          
           line-height: 1.45;
           color: #111111;
           margin: 0 0 24px;
@@ -203,18 +202,18 @@ export default function AboutPage() {
 
         /* ── CTA block ── */
         .about-cta {
-          background: #0c0c0c;
+          background: #fbfbf9;
           padding: 44px 40px;
           text-align: center;
           margin-top: 64px;
         }
 
         .about-cta h3 {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: 1.6rem;
-          font-weight: 700;
-          font-style: italic;
-          color: #ffffff;
+          font-weight: 500;
+          
+          color: #111111;
           margin: 0 0 10px;
         }
 
@@ -223,30 +222,27 @@ export default function AboutPage() {
           font-size: 10px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #555;
+          color: #b3b3ae;
           margin: 0 0 26px;
         }
 
         .about-cta-btn {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #0c0c0c;
-          background: #f0ede8;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #111111;
           text-decoration: none;
-          padding: 13px 30px;
+          border-bottom: 2px solid #111111;
+          padding-bottom: 3px;
           display: inline-block;
-          transition: opacity 0.15s;
         }
 
-        .about-cta-btn:hover { opacity: 0.8; }
+        .about-cta-btn:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         /* ── Footer ── */
         .about-footer {
           padding: 18px 40px;
-          border-top: 1px solid #e8e4de;
+          border-top: 1px solid #e4e4df;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -259,7 +255,7 @@ export default function AboutPage() {
           font-size: 9px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           text-decoration: none;
           transition: color 0.15s;
         }

@@ -55,19 +55,19 @@ function StoryCard({ story, index, accent }: {
   const num = String(index).padStart(2, "0");
 
   return (
-    <article style={{ padding: "28px 0", borderBottom: "1px solid #ede9e3" }}>
+    <article style={{ padding: "28px 0", borderBottom: "1px solid #e9e9e5" }}>
       {/* Domain + big faded number */}
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
         <span style={{
           fontFamily: "var(--font-mono), 'Courier New', monospace",
           fontSize: 10, fontWeight: 500, letterSpacing: "0.16em",
-          textTransform: "uppercase", color: "#b0ab9a"
+          textTransform: "uppercase", color: "#b3b3ae"
         }}>
           {domain}
         </span>
         <span aria-hidden="true" style={{
-          fontFamily: "var(--font-serif), Georgia, serif",
-          fontSize: 44, fontWeight: 900, color: "#ede9e3", lineHeight: 1,
+          fontFamily: "var(--font-serif), 'Helvetica Neue', sans-serif",
+          fontSize: 44, fontWeight: 900, color: "#e9e9e5", lineHeight: 1,
           userSelect: "none", flexShrink: 0, marginLeft: 12
         }}>
           {num}
@@ -77,7 +77,7 @@ function StoryCard({ story, index, accent }: {
       {/* Title */}
       <h2 style={{
         margin: "0 0 12px",
-        fontFamily: "var(--font-serif), Georgia, serif",
+        fontFamily: "var(--font-serif), 'Helvetica Neue', sans-serif",
         fontSize: 20, fontWeight: 700, color: "#111111",
         lineHeight: 1.3, letterSpacing: "-0.01em"
       }}>
@@ -96,7 +96,7 @@ function StoryCard({ story, index, accent }: {
       {/* Action callout */}
       <div style={{
         borderLeft: `2px solid ${accent}`,
-        background: "#faf9f7",
+        background: "#ffffff",
         padding: "10px 16px",
         marginBottom: 16
       }}>
@@ -223,7 +223,7 @@ export default async function IssuePage({
       <style>{`
         .issue-root {
           min-height: 100vh;
-          background: #f0ede8;
+          background: #fbfbf9;
           display: flex;
           flex-direction: column;
         }
@@ -234,7 +234,7 @@ export default async function IssuePage({
           display: flex;
           align-items: center;
           justify-content: space-between;
-          background: #0c0c0c;
+          background: #fbfbf9;
           position: sticky;
           top: 0;
           z-index: 50;
@@ -246,11 +246,11 @@ export default async function IssuePage({
           font-weight: 500;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: #444;
+          color: #b3b3ae;
           text-decoration: none;
         }
 
-        .issue-logo span { color: #4f7fff; }
+        .issue-logo span { color: #1a3fcb; }
 
         .issue-nav-back {
           font-family: var(--font-mono), 'Courier New', monospace;
@@ -258,7 +258,7 @@ export default async function IssuePage({
           font-weight: 500;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #555;
+          color: #b3b3ae;
           text-decoration: none;
           transition: color 0.15s;
         }
@@ -271,19 +271,18 @@ export default async function IssuePage({
           font-weight: 500;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #0c0c0c;
-          background: #f0ede8;
+          color: #111111;
           text-decoration: none;
-          padding: 7px 14px;
-          transition: opacity 0.15s;
+          border-bottom: 1px solid #111111;
+          padding-bottom: 2px;
         }
 
-        .issue-nav-cta:hover { opacity: 0.8; }
+        .issue-nav-cta:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         .issue-header {
-          background: #0c0c0c;
+          background: #fbfbf9;
           padding: 40px 40px 44px;
-          border-bottom: 1px solid #1a1a1a;
+          border-bottom: 1px solid #e4e4df;
           text-align: center;
         }
 
@@ -298,23 +297,23 @@ export default async function IssuePage({
           font-weight: 500;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #444;
+          color: #b3b3ae;
           margin: 0 0 14px;
         }
 
         .issue-header-rule {
           height: 1px;
-          background: #1e1e1e;
+          background: #e4e4df;
           margin: 0 auto 20px;
           max-width: 480px;
         }
 
         .issue-headline {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: clamp(1.4rem, 3.5vw, 2rem);
-          font-weight: 700;
-          font-style: italic;
-          color: #ffffff;
+          font-weight: 500;
+          
+          color: #111111;
           margin: 0 0 16px;
           line-height: 1.25;
           letter-spacing: -0.01em;
@@ -338,15 +337,15 @@ export default async function IssuePage({
         }
 
         .issue-badge-bank {
-          color: #6b9cff;
-          border-color: #1e2e5a;
-          background: rgba(26,63,203,0.12);
+          color: #1a3fcb;
+          border-color: #1a3fcb;
+          background: transparent;
         }
 
         .issue-badge-ai {
-          color: #5ecb97;
-          border-color: #0e3322;
-          background: rgba(13,102,64,0.12);
+          color: #0d6640;
+          border-color: #0d6640;
+          background: transparent;
         }
 
         .issue-body {
@@ -360,8 +359,9 @@ export default async function IssuePage({
         }
 
         .issue-section-header {
-          margin: 48px -40px 0;
-          padding: 18px 40px 16px;
+          margin: 48px 0 0;
+          padding: 14px 0 12px;
+          border-top: 2px solid #111111;
           display: flex;
           align-items: baseline;
           justify-content: space-between;
@@ -380,14 +380,16 @@ export default async function IssuePage({
           font-weight: 500;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #ffffff;
+          color: #111111;
           margin: 0;
         }
+        .issue-section-bank .issue-section-name { color: #1a3fcb; }
+        .issue-section-ai .issue-section-name { color: #0d6640; }
 
         .issue-section-desc {
           font-family: var(--font-sans), 'Helvetica Neue', sans-serif;
           font-size: 11px;
-          color: rgba(255,255,255,0.5);
+          color: #6a6a6a;
           margin: 0;
         }
 
@@ -395,7 +397,7 @@ export default async function IssuePage({
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 10px;
           letter-spacing: 0.12em;
-          color: rgba(255,255,255,0.45);
+          color: #b3b3ae;
           white-space: nowrap;
           flex-shrink: 0;
         }
@@ -406,17 +408,17 @@ export default async function IssuePage({
 
         .issue-cta {
           margin-top: 52px;
-          background: #0c0c0c;
-          padding: 40px 36px;
-          text-align: center;
+          border-top: 2px solid #111111;
+          padding: 32px 0 0;
+          text-align: left;
         }
 
         .issue-cta h3 {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: 1.5rem;
-          font-weight: 700;
-          font-style: italic;
-          color: #ffffff;
+          font-weight: 500;
+          
+          color: #111111;
           margin: 0 0 10px;
         }
 
@@ -425,29 +427,26 @@ export default async function IssuePage({
           font-size: 10px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #555;
+          color: #b3b3ae;
           margin: 0 0 24px;
         }
 
         .issue-cta-btn {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #0c0c0c;
-          background: #f0ede8;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #111111;
           text-decoration: none;
-          padding: 12px 28px;
+          border-bottom: 2px solid #111111;
+          padding-bottom: 3px;
           display: inline-block;
-          transition: opacity 0.15s;
         }
 
-        .issue-cta-btn:hover { opacity: 0.8; }
+        .issue-cta-btn:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         .issue-footer {
           padding: 18px 40px;
-          border-top: 1px solid #e8e4de;
+          border-top: 1px solid #e4e4df;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -458,7 +457,7 @@ export default async function IssuePage({
           font-size: 9px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #b0ab9a;
+          color: #b3b3ae;
           text-decoration: none;
           transition: color 0.15s;
         }
@@ -478,7 +477,7 @@ export default async function IssuePage({
         }
         .issue-tracker a {
           display: block; text-decoration: none; padding: 6px 0;
-          font-family: var(--font-serif), Georgia, serif; font-size: 14px; font-weight: 700; color: #111; line-height: 1.4;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif; font-size: 14px; font-weight: 500; color: #111; line-height: 1.4;
         }
         .issue-tracker a span {
           font-family: var(--font-sans), 'Helvetica Neue', sans-serif; font-size: 12px; font-weight: 400; color: #6a6a6a;
@@ -488,7 +487,7 @@ export default async function IssuePage({
         .issue-related {
           margin-top: 36px;
           padding: 28px 0 8px;
-          border-top: 1px solid #e8e4de;
+          border-top: 1px solid #e4e4df;
         }
 
         .issue-related-label {
@@ -511,7 +510,7 @@ export default async function IssuePage({
           justify-content: space-between;
           gap: 16px;
           padding: 12px 0;
-          border-bottom: 1px solid #ede9e3;
+          border-bottom: 1px solid #e9e9e5;
           align-items: baseline;
           text-decoration: none;
         }
@@ -522,18 +521,18 @@ export default async function IssuePage({
           font-family: var(--font-mono), 'Courier New', monospace;
           font-size: 9px;
           letter-spacing: 0.14em;
-          color: #b0ab9a;
+          color: #b3b3ae;
           text-transform: uppercase;
           flex-shrink: 0;
           min-width: 92px;
         }
 
         .issue-related-item-title {
-          font-family: var(--font-serif), Georgia, serif;
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: 14px;
           color: #111;
           line-height: 1.4;
-          font-weight: 700;
+          font-weight: 500;
           flex: 1;
         }
 
@@ -599,7 +598,7 @@ export default async function IssuePage({
 
               {bankingStories.length > 0 && (
                 <section aria-labelledby="banking-section-heading">
-                  <div className="issue-section-header" style={{ background: "#1a3fcb" }}>
+                  <div className="issue-section-header issue-section-bank" style={{ borderTopColor: "#1a3fcb" }}>
                     <div className="issue-section-header-left">
                       <h2 id="banking-section-heading" className="issue-section-name">Banking AI</h2>
                       <p className="issue-section-desc">Financial institutions &amp; fintech technology</p>
@@ -614,7 +613,7 @@ export default async function IssuePage({
 
               {aiStories.length > 0 && (
                 <section aria-labelledby="ai-section-heading">
-                  <div className="issue-section-header" style={{ background: "#0d6640" }}>
+                  <div className="issue-section-header issue-section-ai" style={{ borderTopColor: "#0d6640" }}>
                     <div className="issue-section-header-left">
                       <h2 id="ai-section-heading" className="issue-section-name">General AI</h2>
                       <p className="issue-section-desc">Large language models &amp; AI infrastructure</p>

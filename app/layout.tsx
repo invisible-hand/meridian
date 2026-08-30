@@ -1,16 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
-import { Playfair_Display, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Epilogue, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { BASE_URL, SITE_DESCRIPTION, SITE_DESCRIPTION_SHORT, SITE_NAME, SITE_TAGLINE } from "@/lib/seo";
 
-const playfair = Playfair_Display({
+// Display face for the whole site (the "--font-serif" variable name is
+// historical — every page's display type reads it).
+const epilogue = Epilogue({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
-  weight: ["700", "900"],
-  style: ["normal", "italic"],
+  weight: ["200", "300", "400", "600", "800"],
 });
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -75,7 +76,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
+    <html lang="en" className={`${epilogue.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable}`}>
       <body suppressHydrationWarning>
         {/* Google Analytics */}
         <Script
