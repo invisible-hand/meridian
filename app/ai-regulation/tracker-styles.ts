@@ -22,7 +22,7 @@ export const trackerCss = `
 
   .trk-logo {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.08em;
     color: #111111;
@@ -36,9 +36,9 @@ export const trackerCss = `
 
   .trk-nav-link {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.1em;
-    color: #b3b3ae;
+    color: #6a6a6a;
     text-decoration: none;
     transition: color 0.15s;
   }
@@ -47,7 +47,7 @@ export const trackerCss = `
 
   .trk-nav-cta {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.1em;
     color: #111111;
     text-decoration: none;
@@ -369,10 +369,10 @@ export const trackerCss = `
 
   .trk-footer-link {
     font-family: var(--font-mono), 'Courier New', monospace;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #b3b3ae;
+    color: #6a6a6a;
     text-decoration: none;
     transition: color 0.15s;
   }

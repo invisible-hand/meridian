@@ -46,7 +46,7 @@ export default async function HomePage({
 
         .lp-logo {
           font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 11px;
+          font-size: 13px;
           font-weight: 500;
           letter-spacing: 0.08em;
           color: #111111;
@@ -57,9 +57,9 @@ export default async function HomePage({
 
         .lp-top-data {
           font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
+          font-size: 11px;
           letter-spacing: 0.1em;
-          color: #b3b3ae;
+          color: #9a9a96;
         }
 
         .lp-top-links {
@@ -70,7 +70,7 @@ export default async function HomePage({
 
         .lp-top-link {
           font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 10px;
+          font-size: 13px;
           letter-spacing: 0.1em;
           color: #111111;
           text-decoration: none;
@@ -78,6 +78,7 @@ export default async function HomePage({
           padding-bottom: 2px;
         }
 
+        .lp-top-link { padding-bottom: 3px; }
         .lp-top-link:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         /* the sentence */
@@ -240,9 +241,9 @@ export default async function HomePage({
 
         .lp-footer-link {
           font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 9px;
+          font-size: 11px;
           letter-spacing: 0.12em;
-          color: #b3b3ae;
+          color: #6a6a6a;
           text-decoration: none;
         }
 
