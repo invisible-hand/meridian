@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FOOTER_NAV, SiteFooter, SiteHeader, chromeCss } from "../site-chrome";
 import { JsonLd, aboutPageSchema } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={aboutPageSchema()} />
+      <style>{chromeCss}</style>
       <style>{`
         .about-root {
           min-height: 100vh;
@@ -273,13 +275,13 @@ export default function AboutPage() {
       <div className="about-root">
 
         {/* Nav */}
-        <nav className="about-nav">
-          <Link href="/" className="about-logo">Banking<span>News</span>AI</Link>
-          <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-            <Link href="/issues" className="about-nav-link">Archive</Link>
-            <Link href="/#subscribe" className="about-nav-cta">Subscribe</Link>
-          </div>
-        </nav>
+        <SiteHeader
+          links={[
+            { href: "/ai-regulation", label: "regulation" },
+            { href: "/issues", label: "archive" },
+            { href: "/#subscribe", label: "subscribe" }
+          ]}
+        />
 
         {/* Masthead */}
         <div className="about-masthead">
@@ -466,12 +468,7 @@ export default function AboutPage() {
         </article>
 
         {/* Footer */}
-        <footer className="about-footer">
-          <Link href="/" className="about-footer-link">Home</Link>
-          <Link href="/issues" className="about-footer-link">Archive</Link>
-          <Link href="/ai-regulation" className="about-footer-link">AI Regulation Tracker</Link>
-          <Link href="/admin" className="about-footer-link">Admin</Link>
-        </footer>
+        <SiteFooter links={FOOTER_NAV} />
 
       </div>
     </>

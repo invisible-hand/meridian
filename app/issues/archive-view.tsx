@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FOOTER_NAV, PRIMARY_NAV, SiteFooter, SiteHeader, chromeCss } from "../site-chrome";
 import { notFound } from "next/navigation";
 import { countSentDigests, ensureSchema, listSentDigestsPage } from "@/lib/db";
 import { DailyDigest } from "@/lib/types";
@@ -57,6 +58,7 @@ export default async function ArchiveView({ page }: { page: number }) {
   return (
     <>
       <JsonLd data={archiveCollectionSchema({ digests })} />
+      <style>{chromeCss}</style>
       <style>{`
         .arc-root {
           min-height: 100vh;
@@ -330,14 +332,7 @@ export default async function ArchiveView({ page }: { page: number }) {
 
       <div className="arc-root">
         {/* Nav */}
-        <nav className="arc-nav">
-          <Link href="/" className="arc-logo">Banking<span>News</span>AI</Link>
-          <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-            <Link href="/ai-regulation" className="arc-nav-link">Regulation</Link>
-            <Link href="/about" className="arc-nav-link">About</Link>
-            <Link href="/#subscribe" className="arc-nav-cta">Subscribe</Link>
-          </div>
-        </nav>
+        <SiteHeader links={PRIMARY_NAV.filter((l) => l.label !== "archive")} />
 
         {/* Header */}
         <div className="arc-header">
@@ -424,11 +419,7 @@ export default async function ArchiveView({ page }: { page: number }) {
         </div>
 
         {/* Footer */}
-        <footer className="arc-footer">
-          <Link href="/" className="arc-footer-link">Home</Link>
-          <span className="arc-footer-link" style={{ cursor: "default" }}>Curated by AI · Delivered daily</span>
-          <Link href="/admin" className="arc-footer-link">Admin</Link>
-        </footer>
+        <SiteFooter links={FOOTER_NAV} />
       </div>
     </>
   );

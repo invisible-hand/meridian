@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { addOrActivateSubscriber, ensureSchema } from "@/lib/db";
 import { JsonLd, homeSchema } from "@/lib/json-ld";
+import { FOOTER_NAV, SiteFooter, SiteHeader, chromeCss } from "./site-chrome";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,7 @@ export default async function HomePage({
   return (
     <>
       <JsonLd data={homeSchema()} />
+      <style>{chromeCss}</style>
       <style>{`
         .lp {
           min-height: 100vh;
@@ -36,50 +38,6 @@ export default async function HomePage({
         }
 
         /* ambient top line — the only chrome */
-        .lp-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-          padding: 22px 56px 0;
-        }
-
-        .lp-logo {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.08em;
-          color: #111111;
-          text-decoration: none;
-        }
-
-        .lp-logo span { color: #1a3fcb; }
-
-        .lp-top-data {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 11px;
-          letter-spacing: 0.1em;
-          color: #9a9a96;
-        }
-
-        .lp-top-links {
-          display: flex;
-          gap: 22px;
-          align-items: baseline;
-        }
-
-        .lp-top-link {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 13px;
-          letter-spacing: 0.1em;
-          color: #111111;
-          text-decoration: none;
-          border-bottom: 1px solid #111111;
-          padding-bottom: 2px;
-        }
-
-        .lp-top-link { padding-bottom: 3px; }
-        .lp-top-link:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
         /* the sentence */
         .lp-hero {
@@ -230,47 +188,23 @@ export default async function HomePage({
         .lp-col-text a { color: #111111; text-decoration: none; border-bottom: 1px solid #e4e4df; }
         .lp-col-text a:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
-        .lp-footer {
-          display: flex;
-          align-items: baseline;
-          justify-content: space-between;
-          gap: 16px;
-          padding: 16px 56px 22px;
-          border-top: 1px solid #e4e4df;
-        }
-
-        .lp-footer-link {
-          font-family: var(--font-mono), 'Courier New', monospace;
-          font-size: 11px;
-          letter-spacing: 0.12em;
-          color: #6a6a6a;
-          text-decoration: none;
-        }
-
-        .lp-footer-link:hover { color: #111111; }
-
         @media (max-width: 720px) {
-          .lp-top { padding: 18px 24px 0; flex-wrap: wrap; }
-          .lp-top-data { display: none; }
           .lp-hero { padding: 40px 24px; }
           .lp-strip { flex-direction: column; padding: 0 24px 32px; }
           .lp-col { padding: 12px 0; border-right: none; border-bottom: 1px solid #e4e4df; }
           .lp-col:last-child { border-bottom: none; }
-          .lp-footer { padding: 14px 24px 18px; flex-wrap: wrap; }
         }
       `}</style>
 
       <div className="lp">
-        {/* ambient top line */}
-        <div className="lp-top">
-          <Link href="/" className="lp-logo">banking<span>news</span>ai</Link>
-          <span className="lp-top-data">daily · six stories · in your inbox by 7 am ET</span>
-          <div className="lp-top-links">
-            <Link href="/ai-regulation" className="lp-top-link">regulation</Link>
-            <Link href="/about" className="lp-top-link">about</Link>
-            <Link href="/issues" className="lp-top-link">archive</Link>
-          </div>
-        </div>
+        <SiteHeader
+          center="daily · six stories · in your inbox by 7 am ET"
+          links={[
+            { href: "/ai-regulation", label: "regulation" },
+            { href: "/about", label: "about" },
+            { href: "/issues", label: "archive" }
+          ]}
+        />
 
         {/* the sentence */}
         <div className="lp-hero" id="subscribe">
@@ -326,15 +260,7 @@ export default async function HomePage({
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="lp-footer">
-          <div style={{ display: "flex", gap: "18px" }}>
-            <Link href="/issues" className="lp-footer-link">ARCHIVE</Link>
-            <Link href="/ai-regulation" className="lp-footer-link">AI REGULATION TRACKER</Link>
-            <Link href="/about" className="lp-footer-link">ABOUT</Link>
-          </div>
-          <span className="lp-footer-link" style={{ cursor: "default" }}>CURATED BY AI · DELIVERED DAILY</span>
-        </footer>
+        <SiteFooter links={FOOTER_NAV} />
       </div>
     </>
   );

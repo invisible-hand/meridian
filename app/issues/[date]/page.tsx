@@ -13,6 +13,7 @@ import {
   SITE_NAME
 } from "@/lib/seo";
 import { JsonLd, newsArticleSchema } from "@/lib/json-ld";
+import { FOOTER_NAV, SiteFooter, SiteHeader, chromeCss } from "../../site-chrome";
 import { digestText, documentPath, findMentions } from "@/lib/tracker";
 
 // Issue pages are immutable once `status === "sent"`. We let Next.js render
@@ -220,6 +221,7 @@ export default async function IssuePage({
 
   return (
     <>
+      <style>{chromeCss}</style>
       <style>{`
         .issue-root {
           min-height: 100vh;
@@ -559,13 +561,13 @@ export default async function IssuePage({
 
       <div className="issue-root">
         {/* Nav */}
-        <nav className="issue-nav">
-          <Link href="/" className="issue-logo">Banking<span>News</span>AI</Link>
-          <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-            <Link href="/issues" className="issue-nav-back">← Archive</Link>
-            <Link href="/#subscribe" className="issue-nav-cta">Subscribe</Link>
-          </div>
-        </nav>
+        <SiteHeader
+          links={[
+            { href: "/ai-regulation", label: "regulation" },
+            { href: "/issues", label: "archive" },
+            { href: "/#subscribe", label: "subscribe" }
+          ]}
+        />
 
         <article>
           {/* Header */}
@@ -683,12 +685,7 @@ export default async function IssuePage({
           </div>
         </article>
 
-        {/* Footer */}
-        <footer className="issue-footer">
-          <Link href="/" className="issue-footer-link">Home</Link>
-          <Link href="/issues" className="issue-footer-link">Archive</Link>
-          <span className="issue-footer-link" style={{ cursor: "default" }}>Curated by AI · Delivered daily</span>
-        </footer>
+        <SiteFooter links={FOOTER_NAV} />
       </div>
     </>
   );
