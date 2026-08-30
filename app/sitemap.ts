@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.8
     },
-    ...["documents", "deadlines", "by-use-case"].map((p) => ({
+    ...["documents", "deadlines", "by-use-case", "compliance-checklist", "regulator-warnings", "for-compliance-officers"].map((p) => ({
       url: `${BASE_URL}/ai-regulation/${p}`,
       lastModified: new Date(latestDocumentUpdate()),
       changeFrequency: "weekly" as const,

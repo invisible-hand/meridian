@@ -714,6 +714,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "occ-semiannual-risk-perspective-spring-2026",
+    "warning": true,
     "authority": "occ",
     "shortName": "OCC Semiannual Risk Perspective, Spring 2026",
     "title": "Semiannual Risk Perspective from the National Risk Committee, Spring 2026",
@@ -906,6 +907,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fdic-risk-review-2024",
+    "warning": true,
     "authority": "fdic",
     "shortName": "FDIC 2024 Risk Review",
     "title": "2024 Risk Review — Section 5: Operational and Cyber Risks",
@@ -987,6 +989,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fdic-cybersecurity-resilience-report-2025",
+    "warning": true,
     "authority": "fdic",
     "shortName": "FDIC 2025 Report on Cybersecurity and Resilience",
     "title": "2025 Report on Cybersecurity and Resilience",
@@ -2028,6 +2031,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "sec-gensler-ai-washing-speech-2024",
+    "warning": true,
     "authority": "sec",
     "shortName": "Gensler 'AI washing' remarks at Yale (Feb 2024)",
     "title": "AI, Finance, Movies, and the Law — Prepared Remarks Before the Yale Law School",
@@ -2408,6 +2412,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "cftc-ai-scams-customer-advisory-2024",
+    "warning": true,
     "authority": "cftc",
     "shortName": "CFTC AI Scams Customer Advisory",
     "title": "Customer Advisory: AI Won't Turn Trading Bots into Money Machines",
@@ -2985,6 +2990,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fincen-alert-2024-deepfake-media",
+    "warning": true,
     "authority": "fincen",
     "shortName": "FIN-2024-Alert004 (Deepfake Media)",
     "title": "FinCEN Alert on Fraud Schemes Involving Deepfake Media Targeting Financial Institutions",
@@ -3085,6 +3091,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fincen-alert-2026-federal-student-aid-fraud",
+    "warning": true,
     "authority": "fincen",
     "shortName": "FIN-2026-Alert004 (Federal Student Aid Fraud)",
     "title": "FinCEN Alert on Fraud Schemes Targeting Federal Student Aid",
@@ -3173,6 +3180,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "treasury-ai-cybersecurity-risks-report-2024",
+    "warning": true,
     "authority": "treasury",
     "shortName": "Treasury AI cybersecurity risks report (Mar 2024)",
     "title": "Managing Artificial Intelligence-Specific Cybersecurity Risks in the Financial Services Sector",
@@ -3403,6 +3411,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fsoc-annual-report-2025",
+    "warning": true,
     "authority": "treasury",
     "shortName": "FSOC 2025 Annual Report",
     "title": "Financial Stability Oversight Council 2025 Annual Report — Section 3.4, Harnessing Artificial Intelligence to Promote Financial Stability",
@@ -3738,6 +3747,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "ny-dfs-industry-letter-2024-10-16-ai-cyber-risks",
+    "warning": true,
     "authority": "ny-dfs",
     "shortName": "DFS AI Cybersecurity Industry Letter (Oct 2024)",
     "title": "Cybersecurity Risks Arising from Artificial Intelligence and Strategies to Combat Related Risks",
@@ -3827,6 +3837,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "ny-dfs-industry-letter-2026-05-21-frontier-ai-models",
+    "warning": true,
     "authority": "ny-dfs",
     "shortName": "DFS Frontier AI Models Industry Letter (May 2026)",
     "title": "Heightened Cybersecurity Risks Associated with Frontier AI Models",
@@ -3872,6 +3883,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "ny-dfs-industry-letter-2026-05-21-heightened-threat-environment",
+    "warning": true,
     "authority": "ny-dfs",
     "shortName": "DFS Heightened Threat Environment Guidance (May 2026)",
     "title": "Guidance on Measures Regulated Entities Should Consider in a Heightened Cybersecurity Threat Environment",
@@ -4285,6 +4297,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "nist-ai-100-2e2025",
+    "warning": true,
     "authority": "nist",
     "shortName": "NIST AI 100-2e2025 (Adversarial ML)",
     "title": "Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (NIST AI 100-2e2025)",
@@ -4868,6 +4881,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "ecb-fsr-may-2024-ai-special-feature",
+    "warning": true,
     "authority": "ecb",
     "shortName": "ECB FSR May 2024 AI special feature",
     "title": "The rise of artificial intelligence: benefits and risks for financial stability (Financial Stability Review, May 2024)",
@@ -5318,6 +5332,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "ecb-letter-ai-enabled-cybersecurity-threats-2026",
+    "warning": true,
     "authority": "ecb",
     "shortName": "ECB 'Dear CEO' letter on AI-enabled cybersecurity threats (SSM-2026-0301)",
     "title": "Addressing AI-enabled cybersecurity threats — letter from the Chair of the Supervisory Board to CEOs of significant institutions",
@@ -5726,6 +5741,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "esas-jc-2026-25-frontier-ai-statement",
+    "warning": true,
     "authority": "eba",
     "shortName": "ESA Statement on ICT risks from frontier AI models (JC 2026 25)",
     "title": "ESA Statement: Toward a consistent and risk-based approach for ICT risks from frontier AI models",
@@ -6048,6 +6064,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "boe-fpc-fsif-ai-financial-system-2025",
+    "warning": true,
     "authority": "uk",
     "shortName": "FPC Financial Stability in Focus: AI (Apr 2025)",
     "title": "Financial Stability in Focus: Artificial intelligence in the financial system",
@@ -6295,6 +6312,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "uk-joint-statement-frontier-ai-cyber-resilience-2026",
+    "warning": true,
     "authority": "uk",
     "shortName": "BoE/FCA/HMT joint statement on frontier AI and cyber resilience (May 2026)",
     "title": "The Bank, FCA and HM Treasury joint statement on Frontier AI models and cyber resilience",
@@ -6498,6 +6516,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fsb-financial-stability-implications-of-ai-2024",
+    "warning": true,
     "authority": "fsb",
     "shortName": "FSB AI financial stability report (Nov 2024)",
     "title": "The Financial Stability Implications of Artificial Intelligence",
@@ -6543,6 +6562,7 @@ export const DOCUMENTS: RegDocument[] = [
   },
   {
     "slug": "fsb-monitoring-ai-adoption-vulnerabilities-2025",
+    "warning": true,
     "authority": "fsb",
     "shortName": "FSB AI monitoring report (Oct 2025)",
     "title": "Monitoring Adoption of Artificial Intelligence and Related Vulnerabilities in the Financial Sector",

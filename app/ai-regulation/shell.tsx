@@ -27,6 +27,7 @@ export function TrackerShell({
             <Link href="/ai-regulation" className="trk-nav-link">Tracker</Link>
             <Link href="/ai-regulation/documents" className="trk-nav-link">Documents</Link>
             <Link href="/ai-regulation/deadlines" className="trk-nav-link">Deadlines</Link>
+            <Link href="/ai-regulation/compliance-checklist" className="trk-nav-link">Checklist</Link>
             <Link href="/ai-regulation/by-use-case" className="trk-nav-link">By use case</Link>
             <Link href="/issues" className="trk-nav-link">Archive</Link>
             <Link href="/#subscribe" className="trk-nav-cta">Subscribe</Link>
@@ -57,6 +58,9 @@ export function TrackerShell({
           <Link href="/ai-regulation/documents" className="trk-footer-link">Documents</Link>
           <Link href="/ai-regulation/deadlines" className="trk-footer-link">Deadlines</Link>
           <Link href="/ai-regulation/by-use-case" className="trk-footer-link">By use case</Link>
+          <Link href="/ai-regulation/compliance-checklist" className="trk-footer-link">Checklist</Link>
+          <Link href="/ai-regulation/regulator-warnings" className="trk-footer-link">Warnings</Link>
+          <Link href="/ai-regulation/for-compliance-officers" className="trk-footer-link">For compliance officers</Link>
           <Link href="/issues" className="trk-footer-link">Archive</Link>
         </footer>
       </div>

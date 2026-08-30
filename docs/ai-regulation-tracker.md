@@ -12,9 +12,23 @@ Everything else is **derived** in `lib/tracker.ts` and needs no editing:
 authority timelines (documents + `milestones`), the deadlines calendar
 (`effectiveDate`, `commentDeadline`, milestones), the use-case matrix
 (`useCases`), document statuses refined from dates, the hub's "open for
-comment / next deadlines" block, sitemap entries, and the cross-links between
-the daily brief and the tracker (text matching on `aliases`). There is nothing
-to edit in `app/ai-regulation/`.
+comment / next deadlines" block, the compliance checklist
+(`/ai-regulation/compliance-checklist`, from deadlines + in-force documents),
+the warnings page (`/ai-regulation/regulator-warnings`, from documents with
+`warning: true`), the compliance-officer orientation
+(`/ai-regulation/for-compliance-officers`), sitemap entries, and the
+cross-links between the daily brief and the tracker (text matching on
+`aliases`). There is nothing to edit in `app/ai-regulation/`.
+
+One extra field to remember when adding documents: set **`warning: true`** on
+any document that is a warning to the industry — an alert (FinCEN), a
+Dear-CEO/industry letter (ECB, NY DFS), a risk report with an AI warning
+section (OCC Semiannual Risk Perspective, FDIC Risk Review, FSB/FSOC
+stability reports). That flag is what feeds the warnings page; a warning-type
+document without it is invisible there. The FIRST_READS list in
+`app/ai-regulation/for-compliance-officers/page.tsx` is the one hand-picked
+list outside the data files — revisit it only when a listed document is
+superseded (e.g. the FSB final report replacing the consultation).
 
 ## Why this exists
 

@@ -163,7 +163,10 @@ export default function AiRegulationHub() {
         <div className="trk-related">
           <Link href="/ai-regulation/documents">{DOCUMENTS.length} documents →</Link>
           <Link href="/ai-regulation/deadlines">Deadlines calendar →</Link>
+          <Link href="/ai-regulation/compliance-checklist">Compliance checklist →</Link>
+          <Link href="/ai-regulation/regulator-warnings">Regulator warnings →</Link>
           <Link href="/ai-regulation/by-use-case">Rules by use case →</Link>
+          <Link href="/ai-regulation/for-compliance-officers">For compliance officers →</Link>
         </div>
       </Section>
 

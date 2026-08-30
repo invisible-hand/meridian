@@ -83,6 +83,8 @@ export type RegDocument = {
   supersededBy?: string;
   /** Sibling slugs when the same interagency document was issued under several numbers (SR 26-2 / Bulletin 2026-13 / FIL-15-2026) */
   interagency?: string[];
+  /** True when the document is a warning to the industry (an alert, Dear-CEO letter, risk report) — feeds /ai-regulation/regulator-warnings */
+  warning?: boolean;
   /** Official primary-source URL (regulator domain, eur-lex, federalregister…) */
   link: string;
   appliesTo: string;

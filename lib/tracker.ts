@@ -238,6 +238,26 @@ export function openConsultations(today = todayIso()): RegDocument[] {
   );
 }
 
+// ── Warnings & in-force views ──────────────────────────────────────────────
+
+/** Warning-type documents (alerts, Dear-CEO letters, risk reports), newest first, superseded ones dropped. */
+export function warningDocuments(): RegDocument[] {
+  return DOCUMENTS.filter((d) => d.warning && !d.supersededBy).sort(byDateDesc);
+}
+
+export type WarningTheme = "fraud" | "cyber" | "stability";
+
+export function warningTheme(doc: RegDocument): WarningTheme {
+  if (doc.useCases.includes("fraud")) return "fraud";
+  if (doc.useCases.includes("cybersecurity")) return "cyber";
+  return "stability";
+}
+
+/** Documents currently in force, newest first. */
+export function inForceDocuments(): RegDocument[] {
+  return DOCUMENTS.filter((d) => effectiveStatus(d) === "In force").sort(byDateDesc);
+}
+
 // ── Use-case matrix ────────────────────────────────────────────────────────
 
 export function documentsForUseCase(useCase: UseCase): RegDocument[] {
@@ -294,6 +314,9 @@ export function trackerPathsUpdatedSince(sinceIso: string): string[] {
       paths.add("/ai-regulation/documents");
       paths.add("/ai-regulation/deadlines");
       paths.add("/ai-regulation/by-use-case");
+      paths.add("/ai-regulation/compliance-checklist");
+      paths.add("/ai-regulation/regulator-warnings");
+      paths.add("/ai-regulation/for-compliance-officers");
     }
   }
   return [...paths];
