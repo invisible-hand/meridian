@@ -35,7 +35,8 @@ export async function getArchiveSummary(): Promise<{ total: number; latest: stri
  * Kept in one component so the two routes can never drift visually.
  */
 export default async function ArchiveView({ page }: { page: number }) {
-  await ensureSchema();
+  // No database (e.g. a sandbox build without Supabase env) → empty archive, not a build failure.
+  await ensureSchema().catch((e) => console.error("issues: database unavailable", e));
 
   const total = await countSentDigests().catch(() => 0);
   const pageCount = Math.max(1, Math.ceil(total / ARCHIVE_PAGE_SIZE));

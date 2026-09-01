@@ -10,7 +10,8 @@ import { BASE_URL } from "@/lib/seo";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  await ensureSchema();
+  // No database (e.g. a sandbox build without Supabase env) → tracker/static URLs only, not a build failure.
+  await ensureSchema().catch((e) => console.error("sitemap: database unavailable", e));
   const digests = await listSentDigests(365).catch(() => []);
 
   // Use the most recently sent digest as the homepage's lastModified, instead

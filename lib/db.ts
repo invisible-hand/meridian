@@ -75,7 +75,11 @@ export async function ensureSchema(): Promise<void> {
       }
       await seedDefaultSources();
       await ensureDefaultSettings();
-    })();
+    })().catch((e) => {
+      // Don't cache a failure: the next call retries instead of failing forever.
+      schemaPromise = null;
+      throw e;
+    });
   }
   return schemaPromise;
 }

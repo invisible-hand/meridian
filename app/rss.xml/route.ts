@@ -10,7 +10,8 @@ export const revalidate = 3600;
 const FEED_LIMIT = 30;
 
 export async function GET() {
-  await ensureSchema();
+  // No database (e.g. a CI/sandbox build without Supabase env) → empty feed, not a build failure.
+  await ensureSchema().catch((e) => console.error("rss: database unavailable", e));
   const digests = await listSentDigests(FEED_LIMIT).catch(() => []);
 
   const lastBuild = digests[0]?.sent_at

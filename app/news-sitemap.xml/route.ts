@@ -11,7 +11,8 @@ export const revalidate = 3600;
 const NEWS_WINDOW_MS = 48 * 60 * 60 * 1000;
 
 export async function GET() {
-  await ensureSchema();
+  // No database (e.g. a CI/sandbox build without Supabase env) → empty feed, not a build failure.
+  await ensureSchema().catch((e) => console.error("news-sitemap: database unavailable", e));
   const digests = await listSentDigests(20).catch(() => []);
   const cutoff = Date.now() - NEWS_WINDOW_MS;
 
