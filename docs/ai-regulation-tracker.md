@@ -20,6 +20,28 @@ the warnings page (`/ai-regulation/regulator-warnings`, from documents with
 cross-links between the daily brief and the tracker (text matching on
 `aliases`). There is nothing to edit in `app/ai-regulation/`.
 
+### Deep dives — answering a grounding query
+
+`Regulator.deepDives` holds long-form answers to specific questions an authority
+owns. They exist because of a measured pattern: when Bing Webmaster Tools' AI
+Performance report shows a **grounding query whose citation count rises while
+our citation share falls**, Copilot is answering that question more often and
+citing competitors alongside us — the fix is to make our page the fullest
+answer to that exact question, not to publish a new page (never split a cited
+asset; `/ai-regulation/cfpb` is a top-cited page).
+
+A deep dive is: a question phrased the way the query is phrased (it becomes the
+section H2 *and* a FAQPage entry), a 2–4 sentence quotable answer, a
+requirements table that may cross authorities (`authority` accepts any tracked
+slug, `docSlug` links the primary source), context paragraphs, and a
+"what this means in practice" list. Keep the answer self-contained: it is the
+block a model lifts.
+
+When adding one: take the wording from the grounding query, cover the whole
+question even where it reaches other authorities, and cite only documents that
+already exist in `DOCUMENTS`. `npm run tracker:check` enforces the id format,
+the question mark, a minimum answer length and every reference.
+
 One extra field to remember when adding documents: set **`warning: true`** on
 any document that is a warning to the industry — an alert (FinCEN), a
 Dear-CEO/industry letter (ECB, NY DFS), a risk report with an AI warning
@@ -109,6 +131,12 @@ the commit; nobody reviews by hand.
   clients (the validator accepts that).
 - sec.gov returns 403 to generic curl user-agents; use a declared
   `"name email"` User-Agent when checking by hand.
+- **bis.org migrated to a new site in 2026**: old `/press/pNNNNNN.htm` and
+  `/bcbs/publ/dNNN.htm` URLs now redirect to `/media-releases/<date>-<slug>` and
+  `/publications/<slug>`. The old publication URLs still redirect correctly, but
+  old press-release URLs 404. Get the real URL from
+  `https://www.bis.org/committees/bcbs/news` — the slugs are truncated and end in
+  `-0`, so guessing them fails. (Found 2026-09-01 by `tracker:check --links`.)
 
 ### Content rules
 

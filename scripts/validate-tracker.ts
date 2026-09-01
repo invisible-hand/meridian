@@ -16,7 +16,8 @@ const OFFICIAL_HOSTS = [
   "leg.colorado.gov", "coag.gov", "eur-lex.europa.eu", "eba.europa.eu", "ecb.europa.eu",
   "europa.eu", "fsb.org", "bis.org", "nist.gov", "bankofengland.co.uk", "fca.org.uk",
   "gov.uk", "federalregister.gov", "govinfo.gov", "congress.gov", "whitehouse.gov",
-  "artificialintelligenceact.eu", "fsoc.gov", "ffiec.gov", "finra.org", "gao.gov"
+  "artificialintelligenceact.eu", "fsoc.gov", "ffiec.gov", "finra.org", "gao.gov",
+  "cppa.ca.gov", "leginfo.legislature.ca.gov", "oag.ca.gov", "uscode.house.gov"
 ];
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -52,6 +53,23 @@ function checkRegulator(r: Regulator) {
     if (m.docSlug && !DOCUMENTS.some((d) => d.slug === m.docSlug)) err(`${at}: milestone docSlug ${m.docSlug} missing`);
   }
   if (r.faq.length === 0) warn(`${at}: no FAQ`);
+  const ddIds = new Set<string>();
+  for (const dd of r.deepDives ?? []) {
+    const dat = `${at} deep-dive ${dd.id}`;
+    if (!SLUG.test(dd.id)) err(`${dat}: id must be kebab-case (it is a permanent URL fragment)`);
+    if (ddIds.has(dd.id)) err(`${dat}: duplicate id`);
+    ddIds.add(dd.id);
+    if (!dd.question.trim().endsWith("?")) err(`${dat}: question must be phrased as a question`);
+    if (dd.answer.length < 200) err(`${dat}: answer too short to be quotable`);
+    for (const req of dd.requirements ?? []) {
+      if (req.docSlug && !DOCUMENTS.some((x) => x.slug === req.docSlug)) err(`${dat}: docSlug "${req.docSlug}" does not exist`);
+      if (!req.docSlug && !req.link) err(`${dat}: requirement "${req.rule}" cites no source (needs docSlug or link)`);
+      if (req.link && !hostOk(req.link)) err(`${dat}: requirement link is not an official host: ${req.link}`);
+      if (/^[a-z0-9-]+$/.test(req.authority) && !REGULATORS.some((x) => x.slug === req.authority)) {
+        err(`${dat}: authority "${req.authority}" looks like a slug but does not exist`);
+      }
+    }
+  }
 }
 
 function checkDocument(d: RegDocument) {

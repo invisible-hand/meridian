@@ -100,6 +100,45 @@ export type RegDocument = {
 
 export type Faq = { q: string; a: string };
 
+/**
+ * A long-form answer to one question this authority is the primary source for,
+ * rendered as its own question-phrased section on the authority page.
+ *
+ * Use when a *question* — typically a grounding query from Bing Webmaster
+ * Tools' AI Performance report, or a GSC query cluster — deserves a fuller,
+ * cross-authority answer than the FAQ format allows. Phrase `question` the way
+ * the query is phrased; the section H2 and the FAQPage schema both use it.
+ */
+export type DeepDive = {
+  /** Anchor id, kebab-case and stable (it is a URL fragment forever) */
+  id: string;
+  /** Short label for the section rule, e.g. "Automated credit decisions" */
+  label: string;
+  /** The question, phrased as a searcher or model asks it */
+  question: string;
+  /** 2–4 self-contained, quotable sentences — rendered first, before the table */
+  answer: string;
+  /** The requirement stack: one row per rule that applies */
+  requirements?: {
+    /** The rule, as it is cited: "ECOA / Regulation B §1002.9" */
+    rule: string;
+    /** Authority slug (links to that page) or a plain name for bodies not tracked */
+    authority: string;
+    /** What it actually demands, one sentence */
+    requirement: string;
+    /** Optional document slug for the primary source */
+    docSlug?: string;
+    /** Official source URL, when the primary source is not (yet) a tracked document */
+    link?: string;
+    /** Optional status note: "In force", "From Jan 1, 2027", … */
+    when?: string;
+  }[];
+  /** Paragraphs of context after the table */
+  detail?: string[];
+  /** Concrete "what this means in practice" items */
+  practice?: string[];
+};
+
 export type Regulator = {
   slug: string;
   /** Short display name, e.g. "FSB" */
@@ -130,12 +169,14 @@ export type Regulator = {
   milestones: TimelineEntry[];
   watchNext: string[];
   faq: Faq[];
+  /** Long-form answers to questions this authority owns — see DeepDive */
+  deepDives?: DeepDive[];
   related: string[];
   /** ISO date this entry's content was last reviewed/updated */
   lastUpdated: string;
 };
 
-export const TRACKER_LAST_REVIEWED = "2026-08-26";
+export const TRACKER_LAST_REVIEWED = "2026-09-01";
 
 // Authorities are grouped US-first on the hub. Every slug here must also
 // appear in DISPLAY_ORDER below.
@@ -458,12 +499,114 @@ const REGULATOR_ENTRIES: Regulator[] = [
         "a": "No. The final rule published April 22, 2026 (effective July 21, 2026) amended the disparate-impact, discouragement and special-purpose-credit-program provisions of Regulation B. It did not amend 12 CFR 1002.9, so lenders using machine-learning underwriting must still deliver notices with specific principal reasons within 30 days of a completed application."
       }
     ],
+    "deepDives": [
+    {
+      "id": "automated-credit-decisions",
+      "label": "Automated credit decisions",
+      "question": "What are the US regulatory requirements for automated credit decisions?",
+      "answer": "No US law regulates automated credit decisions as such — but four separate bodies of requirement apply to every model that decides who gets credit. Consumer law binds first and hardest: ECOA and Regulation B require a notice stating the specific principal reasons for any adverse action within 30 days of a completed application, and the FCRA adds credit-score key factors when a consumer report is used — neither has an exception for model complexity. Prudential guidance adds development, validation and governance duties for banks under the April 2026 interagency model risk framework. State law is now the fastest-moving layer: Colorado's ADMT Act reaches consequential lending decisions from January 1, 2027 with no bank exemption. The April 2026 Regulation B rule removed disparate-impact liability under ECOA — narrowing federal fair-lending exposure without changing a single notice obligation.",
+      "requirements": [
+        {
+          "rule": "ECOA / Regulation B §1002.9",
+          "authority": "cfpb",
+          "docSlug": "cfpb-ecoa-regulation-b-adverse-action",
+          "requirement": "Written notice of the specific principal reasons for adverse action within 30 days of a completed application. Reasons must relate to and accurately describe the factors the model actually scored — “failure to achieve a qualifying score” and the nearest box on the Appendix C sample form are both insufficient.",
+          "when": "Since 1974"
+        },
+        {
+          "rule": "Adverse action, defined (12 CFR 1002.2(c))",
+          "authority": "cfpb",
+          "docSlug": "cfpb-ecoa-regulation-b-adverse-action",
+          "requirement": "The duty is not limited to denials: terminations, unfavorable changes in terms and refusals to increase a credit limit all trigger it, which puts automated line-management and re-pricing systems in scope.",
+          "when": "In force"
+        },
+        {
+          "rule": "FCRA §§615(a), 609(f)",
+          "authority": "cfpb",
+          "docSlug": "cfpb-fcra-adverse-action-key-factors",
+          "requirement": "When a consumer report or score drives the decision: identify the reporting agency, state that it did not make the decision, and disclose the score, its range and the up-to-four key factors that adversely affected it. This is a separate notice from the Regulation B one.",
+          "when": "Since 1970"
+        },
+        {
+          "rule": "Regulation B final rule (April 2026)",
+          "authority": "cfpb",
+          "docSlug": "cfpb-regulation-b-final-rule-2026",
+          "requirement": "ECOA no longer supports disparate-impact claims; the effects test is removed from Regulation B and its commentary. Adverse-action duties under §1002.9 are expressly unchanged.",
+          "when": "Since Jul 21, 2026"
+        },
+        {
+          "rule": "UDAAP (Dodd-Frank §1031)",
+          "authority": "cfpb",
+          "requirement": "A model that produces unfair, deceptive or abusive outcomes — or a disclosure that misdescribes how a decision was reached — is actionable regardless of the technique used.",
+          "when": "In force",
+          "link": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title12-section5531"
+        },
+        {
+          "rule": "Joint Statement on Automated Systems",
+          "authority": "cfpb",
+          "docSlug": "cfpb-joint-statement-automated-systems-2023",
+          "requirement": "The CFPB, DOJ, EEOC and FTC's shared position that existing law applies to automated systems and that opacity is not a defence. The 2025 guidance withdrawal did not touch this statement.",
+          "when": "Since Apr 2023"
+        },
+        {
+          "rule": "Model risk management (SR 26-2 / OCC 2026-13 / FIL-15-2026)",
+          "authority": "federal-reserve",
+          "docSlug": "fed-sr-26-2",
+          "requirement": "Sound development and testing, independent validation with outcomes analysis, effective challenge, and board-level governance for credit models — risk-based, and most relevant above $30 billion in assets. Generative and agentic AI are explicitly out of scope.",
+          "when": "Since Apr 17, 2026"
+        },
+        {
+          "rule": "Third-party risk management (SR 23-4 / OCC 2023-17 / FIL-29-2023)",
+          "authority": "federal-reserve",
+          "docSlug": "fed-sr-23-4",
+          "requirement": "A purchased or vendor-hosted credit model carries the same expectations as one built in-house: the bank must understand it, validate it, and remain accountable for its outputs.",
+          "when": "In force"
+        },
+        {
+          "rule": "Colorado ADMT Act (SB 26-189)",
+          "authority": "colorado-ai-act",
+          "docSlug": "co-sb26-189",
+          "requirement": "Notice at the point of consumer interaction; within 30 days of an adverse outcome, an explanation of the decision, the system's role and the data used; rights to correct the data and to request human review by someone able to override. The bank and credit-union safe harbor was struck — an ECOA adverse-action notice satisfies the notice duty, not the whole Act.",
+          "when": "From Jan 1, 2027"
+        },
+        {
+          "rule": "California CPPA ADMT regulations (11 CCR 7200–7222)",
+          "authority": "California Privacy Protection Agency",
+          "requirement": "Pre-use notice, an opt-out (or a human-appeal alternative), and a plain-language explanation on request when automated technology makes a “significant decision” — a category that expressly includes lending. For GLBA-covered lenders the reach is much narrower than it looks; see below.",
+          "when": "From Jan 1, 2027",
+          "link": "https://cppa.ca.gov/regulations/ccpa_updates.html"
+        },
+        {
+          "rule": "EU AI Act, Annex III 5(b)",
+          "authority": "eu-ai-act",
+          "docSlug": "eu-ai-act-regulation-2024-1689",
+          "requirement": "For US banks with EU lending operations: creditworthiness scoring of natural persons is high-risk, requiring risk management, data governance, technical documentation, logging, human oversight and post-market monitoring.",
+          "when": "From Dec 2, 2027"
+        }
+      ],
+      "detail": [
+        "The two documents most often cited as “the CFPB's AI rules” — Circulars 2022-03 and 2023-03 — were withdrawn on May 12, 2025, alongside 65 other guidance documents. Their withdrawal changed nothing about the underlying obligation. The specific-reasons requirement is statutory (15 U.S.C. 1691(d)) and sits in the regulation itself (12 CFR 1002.9); it is enforceable by the Bureau, by the prudential regulators through their own examination authority, by state attorneys general under Dodd-Frank §1042, and by private plaintiffs. What was withdrawn was the Bureau's published interpretation of how that duty applies to complex models — not the duty, and not the case law.",
+        "The April 2026 Regulation B rule is the most consequential federal change for algorithmic underwriting in a decade. Disparate impact was the theory under which a model producing discriminatory outcomes from facially neutral inputs could be challenged; removing it narrows federal exposure substantially. It reaches ECOA only. Disparate-treatment claims survive — including the argument that a proxy variable amounts to intentional discrimination — as do state fair-lending and UDAP statutes, mortgage-specific fair-housing law, and the contractual and reputational consequences of a model nobody can explain.",
+        "California's ADMT regulations are the most-cited state rules in this area and the most misread for banks. The California Privacy Protection Agency's package took effect January 1, 2026 and requires ADMT compliance by January 1, 2027; it covers technology that replaces or substantially replaces human decision-making for a “significant decision”, and lending is expressly in that category. But the CCPA's exemption at Cal. Civ. Code §1798.145(e) is written at the level of the information, not the institution: personal information collected or processed subject to the Gramm-Leach-Bliley Act, the California Financial Information Privacy Act or the Farm Credit Act sits outside the statute. At a GLBA-covered lender the application, income, credit-bureau, account and adverse-action data behind a credit decision is exactly that — so the ADMT obligations largely do not reach the credit decision itself. Where they do reach a bank is everything GLBA does not cover, above all employment: HR, applicant and contractor data has been inside the CCPA since January 1, 2023, and hiring and compensation are themselves enumerated significant decisions. Risk assessments covering 2026–27 processing must be submitted to the agency with an executive attestation, under penalty of perjury, by April 1, 2028.",
+        "For a bank the practical test is rarely “is there an AI rule?” It is two questions asked in different rooms. Can you produce the reason? — a consumer-law duty that applies to the very first automated decision, at any institution size, with no materiality threshold. And can you defend the model? — a supervisory expectation that scales with the model's materiality and the institution's size. A lender can satisfy the second and still fail the first."
+      ],
+      "practice": [
+        "Every declined application needs a reason that maps to a factor the model actually used. Explainability tooling is a compliance requirement for anyone running a non-linear model, not an engineering preference.",
+        "Regulation B and the FCRA are two notices, not one. Satisfying the specific-reasons requirement does not satisfy the key-factor disclosure when a score was used.",
+        "Automated line management, term changes and re-pricing are adverse actions when unfavorable — compliance scoping that stops at originations misses the account-management models entirely.",
+        "The documentation that satisfies the April 2026 model risk framework — development evidence, independent validation, outcomes analysis — is the same evidence base used to defend a fair-lending challenge. Build it once.",
+        "A vendor that will not explain its scoring is a compliance problem, not a commercial one: under third-party guidance the bank still owns the outcome and still owes the applicant a reason.",
+        "Read California's ADMT rules through the §1798.145(e) data exemption before budgeting for them: at a GLBA-covered lender they bite hardest on employment decisions, not on credit ones.",
+        "Colorado's January 1, 2027 date is the binding US deadline for explanation duties on consequential decisions. Scope remediation to it rather than to the deferred EU timeline."
+      ]
+    }
+    ],
     "related": [
       "occ",
       "federal-reserve",
       "eu-ai-act"
     ],
-    "lastUpdated": "2026-08-26"
+    "lastUpdated": "2026-09-01"
   },
   {
     "slug": "sec",
@@ -1349,7 +1492,7 @@ const REGULATOR_ENTRIES: Regulator[] = [
         "date": "2026-05-20",
         "title": "Committee flags frontier AI models as a cyber-risk accelerant",
         "summary": "At its 19–20 May 2026 meeting the Basel Committee noted that frontier AI models could help banks and supervisors find cyber vulnerabilities, but that their malicious use 'may materially change the speed and scale of cyber incidents'; it committed to keep monitoring AI developments and exchanging supervisory insights.",
-        "link": "https://www.bis.org/press/p260520.htm",
+        "link": "https://www.bis.org/media-releases/20260520-basel-committee-agrees-publish-report-information-and-communication-technology-risk-0",
         "docType": "Milestone"
       }
     ],
