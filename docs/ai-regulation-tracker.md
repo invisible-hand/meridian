@@ -179,7 +179,8 @@ the commit; nobody reviews by hand.
 
 ### ncua — NCUA
 - Sources: https://ncua.gov/regulation-supervision/letters-credit-unions-other-guidance,
-  https://ncua.gov/regulation-supervision/regulatory-compliance-resources/credit-union-ai-resource-center,
+  https://ncua.gov/ai (AI Resource Center — moved here 2026; the old
+  `regulatory-compliance-resources/credit-union-ai-resource-center` URL 404s),
   board actions/speeches.
 - Watch for: any first AI-specific Letter to Credit Unions or rulemaking
   (NCUA has none yet — say so honestly); vendor-authority legislation;
@@ -203,7 +204,9 @@ the commit; nobody reviews by hand.
 
 ### cftc — Commodity Futures Trading Commission
 - Sources: https://www.cftc.gov/PressRoom/PressReleases,
-  /LawRegulation/FederalRegister, Innovation Advisory Committee pages.
+  https://www.federalregister.gov/agencies/commodity-futures-trading-commission
+  (the old `cftc.gov/LawRegulation/FederalRegister` URL 404s), Innovation
+  Advisory Committee pages.
 - Watch for: the compute-derivatives RFC outcome (comments closed ~Oct 20,
   2026); Innovation Task Force AI workstream deliverables; any AI staff
   advisory update.
