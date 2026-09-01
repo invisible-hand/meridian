@@ -232,9 +232,27 @@ the commit; nobody reviews by hand.
   Colorado Secretary of State rulemaking notices.
 - Watch for: **AG final ADMT / chatbot rules** (hearing Oct 26, 2026;
   effective Jan 1, 2027); the xAI litigation; any further legislative delay.
-  Note other state laws (California CPPA ADMT rules, Texas TRAIGA, Utah,
-  Illinois) in `watchNext`; propose a new authority if one becomes
-  load-bearing for banks.
+  Note other state laws (Texas TRAIGA, Utah, Illinois) in `watchNext`;
+  California has its own authority since 2026-09-01; propose another new
+  authority only if a state law becomes load-bearing for banks.
+
+### california — California (CPPA / Attorney General / Civil Rights Council)
+- Sources: https://cppa.ca.gov/regulations/ccpa_updates.html and
+  https://cppa.ca.gov/announcements/ (regulations, enforcement),
+  https://oag.ca.gov/news (advisories, enforcement),
+  https://calcivilrights.ca.gov/civilrightscouncil/rulemaking-actions/,
+  https://leginfo.legislature.ca.gov/ (bill pages), https://dfpi.ca.gov/news/.
+  Official hosts allowed by the validator: cppa.ca.gov, oag.ca.gov,
+  leginfo.legislature.ca.gov, calcivilrights.ca.gov.
+- Watch for: Governor's action by **Sep 30, 2026** on AB 1609 (customer-service
+  chatbots) and SB 947 (workplace ADS) — add each as a `Statute` document if
+  signed, with the leginfo bill page as link, and reword `latestMove` /
+  `watchNext` / the Aug 31 milestone either way; **Jan 1, 2027** ADMT
+  obligations start (milestone); **Apr 1, 2028** risk-assessment attestations
+  and first cyber-audit certifications; CPPA enforcement actions touching ADMT
+  or the GLBA data-level exemption; any DFPI AI guidance (none so far — say so
+  honestly); AB 1018's return in 2027. The CFPB page's credit-decisions deep
+  dive cites this authority — keep the two consistent.
 
 ### nist — NIST AI RMF
 - Sources: https://www.nist.gov/itl/ai-risk-management-framework,

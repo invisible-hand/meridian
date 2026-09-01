@@ -51,7 +51,7 @@ const HUB_FAQ = [
   },
   {
     q: "Is there a dedicated AI law for banks?",
-    a: "At the federal level, only in the EU: the EU AI Act is the sole binding, cross-sector AI law that reaches banks, and its high-risk regime covering credit scoring applies from December 2, 2027 after the 2026 Digital Omnibus deferral. In the US there is no federal AI statute for banks — but Colorado's Automated Decision-Making Technology Act (effective January 1, 2027) is binding state law that reaches lenders, and the UK has deliberately chosen to regulate bank AI through existing law and supervision."
+    a: "At the federal level, only in the EU: the EU AI Act is the sole binding, cross-sector AI law that reaches banks, and its high-risk regime covering credit scoring applies from December 2, 2027 after the 2026 Digital Omnibus deferral. In the US there is no federal AI statute for banks — but two states bind them: Colorado's Automated Decision-Making Technology Act (effective January 1, 2027) reaches lenders with no bank exemption, and California's CPPA regulations on automated decisionmaking technology (obligations from January 1, 2027) list lending as a significant decision, though GLBA-covered data is exempt. The UK has deliberately chosen to regulate bank AI through existing law and supervision."
   },
   {
     q: "What changed for bank AI regulation in 2026?",
@@ -150,8 +150,8 @@ export default function AiRegulationHub() {
       <p className="trk-answer">
         No single regulator owns AI in banking. Banks answer to a layered system:
         binding AI law where it exists (the EU AI Act, whose high-risk regime — including credit
-        scoring — now applies from December 2, 2027 after the 2026 Digital Omnibus deferral, and Colorado&apos;s
-        ADMT Act from January 1, 2027), prudential supervisors applying
+        scoring — now applies from December 2, 2027 after the 2026 Digital Omnibus deferral, Colorado&apos;s
+        ADMT Act from January 1, 2027, and California&apos;s ADMT regulations from the same day), prudential supervisors applying
         existing frameworks to AI (the Federal Reserve, OCC, FDIC, NCUA, ECB, and UK PRA/FCA),
         consumer-protection, market and financial-crime authorities that regulate outcomes regardless of how a
         decision was made (CFPB, SEC, CFTC, FinCEN, NY DFS), and global standard-setters shaping what supervisors

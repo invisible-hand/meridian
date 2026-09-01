@@ -192,6 +192,7 @@ export const US_AUTHORITIES = new Set([
   "treasury",
   "ny-dfs",
   "colorado-ai-act",
+  "california",
   "nist"
 ]);
 
@@ -571,10 +572,10 @@ const REGULATOR_ENTRIES: Regulator[] = [
         },
         {
           "rule": "California CPPA ADMT regulations (11 CCR 7200–7222)",
-          "authority": "California Privacy Protection Agency",
+          "authority": "california",
+          "docSlug": "ca-cppa-admt-risk-cyber-regulations-2025",
           "requirement": "Pre-use notice, an opt-out (or a human-appeal alternative), and a plain-language explanation on request when automated technology makes a “significant decision” — a category that expressly includes lending. For GLBA-covered lenders the reach is much narrower than it looks; see below.",
-          "when": "From Jan 1, 2027",
-          "link": "https://cppa.ca.gov/regulations/ccpa_updates.html"
+          "when": "From Jan 1, 2027"
         },
         {
           "rule": "EU AI Act, Annex III 5(b)",
@@ -1016,7 +1017,7 @@ const REGULATOR_ENTRIES: Regulator[] = [
       "Final ADMT rules from the Colorado AG after the Oct 26, 2026 hearing — especially which 'materially influences' test survives and how much the ECOA/FCRA notice overlap is extended to human-review and data-correction rights",
       "Jan 1, 2027: ADMT Act and Chatbot Safety Act (HB 26-1263) take effect; the 60-day cure period sunsets Jan 1, 2030",
       "Whether the DOJ AI Litigation Task Force or a federal preemption measure targets SB 26-189 as it did SB 24-205",
-      "California CPPA automated decision-making technology regulations — significant-decision obligations (including lending) phase in from Jan 1, 2027 with risk assessments due by April 1, 2027 — and the state's AI transparency statutes in force since Jan 1, 2026",
+      "California's CPPA automated decisionmaking technology regulations — significant-decision obligations (including lending) apply from Jan 1, 2027, with risk-assessment attestations due by April 1, 2028 — now tracked as their own authority; the two states' exemptions are mirror images (Colorado: none for banks; California: GLBA-covered data exempt)",
       "Texas TRAIGA (HB 149, in force Jan 1, 2026): AG-enforced prohibitions on intentionally discriminatory AI, with a 60-day cure and a regulatory sandbox; Utah's AI Policy Act (SB 149, May 1, 2024) requires generative-AI disclosure on request; Illinois HB 3773 (Jan 1, 2026) makes discriminatory AI in employment a civil-rights violation — relevant to bank HR uses"
     ],
     "faq": [
@@ -1040,7 +1041,77 @@ const REGULATOR_ENTRIES: Regulator[] = [
       "ny-dfs",
       "occ"
     ],
-    "lastUpdated": "2026-08-26"
+    "lastUpdated": "2026-09-01"
+  },
+  {
+    "slug": "california",
+    "name": "California CPPA",
+    "fullName": "California — Privacy Protection Agency (CCPA/CPRA automated decisionmaking, risk-assessment and cybersecurity-audit regulations), Attorney General, and Civil Rights Council",
+    "jurisdiction": "California, United States (any business meeting CCPA thresholds that handles Californians' personal information; employers with five or more California employees)",
+    "role": "State privacy-and-civil-rights regime whose automated decisionmaking rules reach lending, deposit and employment decisions — the most-cited state AI rules after Colorado's",
+    "binding": "Binding law",
+    "appliesTo": "Businesses over the CCPA thresholds (about $25 million in annual revenue, inflation-adjusted, or personal information of 100,000+ consumers or households) — including banks, credit unions and lenders for personal information that is not subject to GLBA or the California Financial Information Privacy Act; and, separately, any employer with five or more California employees using automated decision systems in hiring, promotion or pay",
+    "aliases": [
+      "California Privacy Protection Agency",
+      "CPPA ADMT",
+      "California ADMT",
+      "CCPA ADMT regulations",
+      "automated decisionmaking technology regulations",
+      "California Civil Rights Council"
+    ],
+    "answerFirst": "California has no dedicated AI statute for banks — the Automated Decisions Safety Act (AB 1018) was not among the bills sent to the Governor when the Legislature adjourned on August 31, 2026 — but three binding instruments reach them. The California Privacy Protection Agency's regulations on automated decisionmaking technology (ADMT), risk assessments and cybersecurity audits were approved September 22, 2025 and took effect January 1, 2026: businesses using ADMT to make 'significant decisions', a category that lists financial or lending services first, must give pre-use notice, an opt-out or human-appeal route, and an explanation on request from January 1, 2027, with risk-assessment attestations due to the Agency by April 1, 2028 and the first cybersecurity-audit certifications due the same day for businesses over $100 million in revenue. What narrows this for banks is the CCPA's data-level exemption (Civil Code §1798.145(e)): personal information subject to the Gramm-Leach-Bliley Act sits outside the statute, so the rules bite hardest on employment, marketing and non-GLBA data rather than on the credit decision itself. The Civil Rights Council's regulations on automated decision systems in employment (in force since October 1, 2025) and the Attorney General's January 2025 advisory that existing consumer-protection, civil-rights and credit-reporting law already applies to AI complete the picture.",
+    "overview": [
+      "The CPPA's 2025 package is the operative text. 'ADMT' is technology that processes personal information and uses computation to replace or substantially replace human decisionmaking — a business that keeps a human reviewer who understands the output, actually reviews it and can change the outcome is not using ADMT in the regulatory sense. A 'significant decision' is one that results in the provision or denial of financial or lending services, housing, education, employment or independent-contracting opportunities, or health-care services; 'financial or lending services' is defined to cover the extension of credit or a loan, transmitting or exchanging funds, deposit or checking accounts, check cashing and installment plans. Where ADMT is used for such a decision the business must give a pre-use notice, honor an opt-out (or instead offer an appeal to a qualified human reviewer), and on request explain the logic, the output and how it was used. Using ADMT for a significant decision also triggers a documented risk assessment before the processing starts.",
+      "For a bank the scoping question is the exemption, not the definition. The CCPA exempts personal information that is collected, processed, sold or disclosed subject to the Gramm-Leach-Bliley Act, the California Financial Information Privacy Act or the Farm Credit Act — at the level of the data, not the institution. In its Final Statement of Reasons the Agency declined to add an entity-level financial-institution exemption precisely because the statute already provides a data-level one. At a GLBA-covered lender the application, bureau, account and adverse-action data behind a credit decision is that data, so the ADMT article largely does not reach the credit decision. It does reach employee and applicant data (inside the CCPA since January 1, 2023), prospect and advertising data, non-GLBA product lines, and model-training data; mixed-input models remain the unresolved edge.",
+      "Two further instruments matter. The Civil Rights Council's regulations under the Fair Employment and Housing Act, in force since October 1, 2025, make it unlawful for an employer with five or more employees to use an automated decision system that discriminates on a protected basis, treat anti-bias testing as relevant evidence, extend liability to vendors acting as the employer's agent, and require four-year retention of ADS records — directly relevant to bank HR screening tools. The Attorney General's January 13, 2025 legal advisory states that the Unfair Competition Law, False Advertising Law, CCPA, Unruh Civil Rights Act, FEHA and the Consumer Credit Reporting Agencies Act already govern AI, and singles out AI used 'to evaluate consumers' credit risk and guide loan decisions' as a use that must still produce specific adverse-action reasons. California's Department of Financial Protection and Innovation has issued no AI-specific guidance for the institutions it licenses."
+    ],
+    "keyDocument": "CPPA regulations on cybersecurity audits, risk assessments and automated decisionmaking technology (11 CCR §§ 7001, 7120–7124, 7150–7157, 7200–7222; approved Sep 22, 2025, effective Jan 1, 2026; ADMT obligations from Jan 1, 2027)",
+    "latestMove": "Legislature adjourned Aug 31, 2026 with AB 1609 (customer-service chatbots at businesses over $500M revenue) and SB 947 (workplace automated decision systems) on the Governor's desk until Sep 30; AB 1018 did not pass. ADMT obligations for significant decisions apply from Jan 1, 2027",
+    "milestones": [
+      {
+        "date": "2026-01-01",
+        "title": "CPPA regulations on ADMT, risk assessments and cybersecurity audits take effect",
+        "summary": "The package approved by the Office of Administrative Law on September 22, 2025 became operative. ADMT obligations for significant decisions phase in from January 1, 2027; risk-assessment attestations and the first cybersecurity-audit certifications are due April 1, 2028.",
+        "link": "https://cppa.ca.gov/announcements/2025/20250923.html",
+        "docType": "Milestone"
+      },
+      {
+        "date": "2026-08-31",
+        "title": "Legislature adjourns: AB 1018 not passed; chatbot and workplace-ADS bills go to the Governor",
+        "summary": "The Automated Decisions Safety Act (AB 1018), which would have required pre-deployment bias evaluations of automated decision systems used for consequential decisions including lending, was not among the AI bills sent to the Governor. AB 1609 (customer-service chatbot disclosure and 15-minute human hand-off at businesses over $500 million in revenue) and SB 947 (worker protections for automated decision systems) were; the Governor has until September 30, 2026 to act.",
+        "link": "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260AB1018",
+        "docType": "Milestone"
+      }
+    ],
+    "watchNext": [
+      "Governor's action by Sep 30, 2026 on AB 1609 (customer-service chatbots: no representing a bot as human, clear AI disclosure, a way to reach a human within 15 minutes or by appointment within one business day; $5,000/$10,000 penalties; businesses over $500M revenue) and SB 947 (automated decision systems in employment) — both would reach large banks' customer and HR operations",
+      "Jan 1, 2027: ADMT obligations (pre-use notice, opt-out or human appeal, access explanation) apply to significant decisions; how the CPPA treats mixed GLBA/non-GLBA model inputs, which the Final Statement of Reasons left open",
+      "Apr 1, 2028: risk-assessment attestations and summaries for 2026–27 processing, and the first cybersecurity-audit certifications for businesses over $100M in revenue (Apr 1, 2029 for $50–100M; Apr 1, 2030 below $50M)",
+      "Whether AB 1018 or a successor bias-evaluation bill returns in the 2027 session, and any CPPA enforcement action that tests the data-level GLBA exemption",
+      "Whether the Department of Financial Protection and Innovation issues AI guidance under the California Consumer Financial Protection Law"
+    ],
+    "faq": [
+      {
+        "q": "Do California's ADMT regulations apply to banks?",
+        "a": "Only partly. The regulations cover automated decisionmaking technology used for significant decisions, which expressly include financial or lending services. But the CCPA exempts personal information subject to the Gramm-Leach-Bliley Act at the data level (Civil Code §1798.145(e)), so at a GLBA-covered lender the credit decision itself is largely outside the rules. Employment decisions, marketing data, non-GLBA products and model-training data remain inside."
+      },
+      {
+        "q": "When do California's ADMT rules take effect?",
+        "a": "The regulations took effect January 1, 2026. Businesses using ADMT for significant decisions must comply with the notice, opt-out and access requirements from January 1, 2027. Risk-assessment attestations are due to the CPPA by April 1, 2028."
+      },
+      {
+        "q": "Does California have an AI law like Colorado's ADMT Act?",
+        "a": "No. The Automated Decisions Safety Act (AB 1018) did not pass by the August 31, 2026 adjournment. California regulates AI in banking through the CPPA's privacy regulations, the Civil Rights Council's employment ADS rules, and existing consumer-protection and civil-rights law, as the Attorney General's January 2025 advisory set out."
+      }
+    ],
+    "related": [
+      "cfpb",
+      "colorado-ai-act",
+      "ny-dfs",
+      "nist",
+      "eu-ai-act"
+    ],
+    "lastUpdated": "2026-09-01"
   },
   {
     "slug": "nist",
@@ -1428,7 +1499,7 @@ const REGULATOR_ENTRIES: Regulator[] = [
       "The June 2026 consultation, 'Sound Practices for the Responsible Adoption of AI,' is the closest the FSB has come to firm-level expectations: 12 practices covering governance, risk management, and oversight of AI — including agentic AI, whose capacity to act autonomously and at speed the FSB singles out as a risk that can outpace human oversight. National supervisors typically translate FSB sound practices into examination expectations."
     ],
     "keyDocument": "The Financial Stability Implications of Artificial Intelligence (Nov 2024)",
-    "latestMove": "6 August 2026: FSB published 159 public responses to its June consultation on 12 sound practices for responsible AI adoption (JPMorgan Chase, ABA, BPI/IIB, GFMA, UBS among respondents); final report expected October 2026 as a deliverable to the US G20 presidency",
+    "latestMove": "31 August 2026: FSB Chair's letter to G20 finance ministers and central bank governors warns that frontier AI models' autonomy and threat capabilities make cyber risk the most immediate financial-stability concern; final AI sound-practices report still expected October 2026",
     "milestones": [
       {
         "date": "2026-07-22",
@@ -1440,6 +1511,7 @@ const REGULATOR_ENTRIES: Regulator[] = [
     ],
     "watchNext": [
       "Final 'Sound Practices for Responsible Adoption of AI' report, expected October 2026 as a deliverable to the US G20 presidency — likely to become the global reference for bank AI governance",
+      "What 'steps within its mandate' the FSB takes on frontier-AI cyber risk after the Chair's 31 August 2026 letter to the G20 — a possible work stream on model release, AI/cloud provider concentration and response-and-recovery expectations",
       "How the FSB resolves industry pushback in the 159 consultation responses (proportionality, overlap with existing model-risk and third-party rules, treatment of agentic AI)",
       "Whether the FSB moves from monitoring to recommending policy action on AI third-party concentration",
       "National supervisors (ECB, PRA, OCC, Federal Reserve) importing the 12 sound practices into examination programs"
@@ -1467,7 +1539,7 @@ const REGULATOR_ENTRIES: Regulator[] = [
       "eu-ai-act",
       "occ"
     ],
-    "lastUpdated": "2026-08-26"
+    "lastUpdated": "2026-09-01"
   },
   {
     "slug": "basel-committee",
@@ -1541,6 +1613,7 @@ const DISPLAY_ORDER = [
   "treasury",
   "ny-dfs",
   "colorado-ai-act",
+  "california",
   "nist",
   "eu-ai-act",
   "ecb",

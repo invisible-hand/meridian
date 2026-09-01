@@ -4156,6 +4156,189 @@ export const DOCUMENTS: RegDocument[] = [
     "lastUpdated": "2026-08-26"
   },
   {
+    "slug": "ca-cppa-admt-risk-cyber-regulations-2025",
+    "authority": "california",
+    "shortName": "CPPA ADMT, risk-assessment and cybersecurity-audit regulations",
+    "title": "CCPA Updates, Cybersecurity Audits, Risk Assessments, Automated Decisionmaking Technology, and Insurance Companies — approved regulation text (11 CCR Division 6)",
+    "aliases": [
+      "CCPA ADMT regulations",
+      "ADMT regulations",
+      "automated decisionmaking technology regulations",
+      "CPPA risk assessment regulations",
+      "CCPA cybersecurity audit regulations"
+    ],
+    "docType": "Regulation",
+    "status": "In force",
+    "date": "2025-09-22",
+    "effectiveDate": "2026-01-01",
+    "link": "https://cppa.ca.gov/regulations/pdf/ccpa_updates_cyber_risk_admt_appr_text.pdf",
+    "appliesTo": "Businesses subject to the CCPA — for banks and lenders, personal information not subject to GLBA or the California Financial Information Privacy Act, notably employee and applicant data, marketing and prospect data, and model-training data",
+    "answerFirst": "Adopted by the California Privacy Protection Agency board on July 24, 2025, approved by the Office of Administrative Law on September 22, 2025 and operative January 1, 2026, this package adds three articles to the CCPA regulations: annual cybersecurity audits (Article 9), risk assessments (Article 10) and automated decisionmaking technology (Article 11). A business that uses ADMT to make a significant decision — one that results in the provision or denial of financial or lending services, housing, education, employment or health care — must from January 1, 2027 give a pre-use notice, honor an opt-out or instead offer an appeal to a qualified human reviewer, and on request explain the logic, output and use of the technology. Risk assessments must be completed before such processing starts, with attestations and summaries submitted to the Agency by April 1, 2028; cybersecurity-audit certifications phase in from April 1, 2028 by revenue.",
+    "keyPoints": [
+      "'ADMT' means technology that processes personal information and uses computation to replace or substantially replace human decisionmaking; a human who knows how to interpret the output, actually reviews it and has authority to change the decision takes the process outside the definition",
+      "'Financial or lending services' — the first-listed significant decision — covers extending credit or a loan, transmitting or exchanging funds, deposit or checking accounts, check cashing and installment payment plans; behavioral advertising was dropped from the final text",
+      "ADMT obligations from January 1, 2027: pre-use notice describing purpose and how the technology works; a right to opt out, which the business may replace with a human-appeal route staffed by a reviewer able to overturn the decision; and an access right to the logic, key parameters, output and its role in the decision",
+      "Risk assessments required before selling or sharing personal information, processing sensitive personal information, using ADMT for a significant decision, or training ADMT for such use; attestation and summary due to the CPPA by April 1, 2028 for 2026–27 activities, then annually",
+      "Cybersecurity audits for businesses over the size thresholds, certified to the Agency by April 1, 2028 (revenue over $100M), April 1, 2029 ($50–100M) or April 1, 2030 (under $50M), then annually",
+      "The Agency declined to add an entity-level exemption for financial institutions: the CCPA already exempts GLBA- and CalFIPA-covered information at the data level (Civil Code §1798.145(e)), a point the Final Statement of Reasons makes explicit",
+      "Employee, applicant and contractor personal information has been fully inside the CCPA since January 1, 2023, so hiring, promotion and compensation decisions at a bank are squarely covered"
+    ],
+    "whatChanged": "California turned its privacy statute into the state's operative AI rule for consequential decisions without passing an AI statute. For banks the practical effect is a two-track programme: GLBA-covered credit and account data are largely outside the ADMT article, while HR screening tools, marketing models, non-GLBA products and any model trained on Californians' non-exempt data need notices, appeal channels, risk assessments and, above the thresholds, audited security by 2028.",
+    "useCases": [
+      "credit-underwriting",
+      "fair-lending",
+      "data-privacy",
+      "cybersecurity",
+      "governance-general"
+    ],
+    "faq": [
+      {
+        "q": "When must businesses comply with California's ADMT rules?",
+        "a": "January 1, 2027 for ADMT used to make significant decisions; businesses that start using ADMT after that date must comply from first use. Risk-assessment attestations are due April 1, 2028."
+      },
+      {
+        "q": "Is a credit model 'ADMT' if an underwriter reviews its output?",
+        "a": "Not if the human involvement is real: the reviewer must know how to interpret the output, actually review it, and have the authority to change the decision. A rubber-stamp review does not take the model outside the definition."
+      },
+      {
+        "q": "Does the GLBA exemption take a bank out of the ADMT rules?",
+        "a": "It takes GLBA-covered information out, not the institution. Data outside GLBA — employee and applicant data, marketing data, training data — remains subject to the rules."
+      }
+    ],
+    "lastUpdated": "2026-09-01"
+  },
+  {
+    "slug": "ca-civil-code-1798-145",
+    "authority": "california",
+    "shortName": "Cal. Civ. Code §1798.145 (CCPA exemptions, incl. GLBA data)",
+    "title": "California Consumer Privacy Act — exemptions, including the data-level exemption for information subject to the Gramm-Leach-Bliley Act and the California Financial Information Privacy Act (Civil Code §1798.145)",
+    "aliases": [
+      "1798.145",
+      "Section 1798.145",
+      "CCPA GLBA exemption",
+      "California Consumer Privacy Act",
+      "California Privacy Rights Act"
+    ],
+    "docType": "Statute",
+    "status": "In force",
+    "date": "2018-06-28",
+    "effectiveDate": "2020-01-01",
+    "link": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=1798.145.&lawCode=CIV",
+    "appliesTo": "Every business subject to the CCPA; the provision that determines how much of a bank's data — and therefore of its AI — the statute and the ADMT regulations reach",
+    "answerFirst": "Section 1798.145 of the Civil Code lists what the California Consumer Privacy Act (enacted June 28, 2018, operative January 1, 2020, and amended by the California Privacy Rights Act from January 1, 2023) does not reach. For banks the decisive clause is subdivision (e): the Act does not apply to personal information collected, processed, sold or disclosed subject to the federal Gramm-Leach-Bliley Act and its implementing regulations, the California Financial Information Privacy Act, or the federal Farm Credit Act. The exemption follows the information, not the institution — a bank is inside the CCPA for everything GLBA does not cover, and since the CPRA ended the employee and business-contact exemptions on January 1, 2023, that includes all HR and applicant data.",
+    "keyPoints": [
+      "Data-level, not entity-level: the same bank is outside the CCPA for GLBA-covered customer information and inside it for employee, applicant, prospect and marketing data",
+      "The GLBA exemption does not extend to the CCPA's data-breach private right of action (§1798.150)",
+      "Employee and applicant data lost its exemption on January 1, 2023 under the CPRA, bringing hiring and compensation — themselves 'significant decisions' — fully inside the statute and the ADMT regulations",
+      "The CPPA relied on this subdivision when it declined, in the 2025 Final Statement of Reasons, to add a separate financial-institution exemption to the ADMT regulations",
+      "Other subdivisions preserve compliance with federal, state and local law, legal process, and cooperation with law enforcement — the basis on which fraud and AML processing continues unaffected"
+    ],
+    "whatChanged": "Nothing in the text has changed since 2023; what changed is its load-bearing role. Once the ADMT regulations listed lending as a significant decision, §1798.145(e) became the provision that decides whether a bank's credit model is regulated by California at all.",
+    "useCases": [
+      "data-privacy",
+      "credit-underwriting",
+      "governance-general"
+    ],
+    "faq": [
+      {
+        "q": "Are banks exempt from the CCPA?",
+        "a": "No. Only personal information subject to GLBA, the California Financial Information Privacy Act or the Farm Credit Act is exempt. A bank must comply for all other personal information it holds, including employee and applicant data."
+      },
+      {
+        "q": "Why does the GLBA exemption matter for AI?",
+        "a": "Because the CPPA's ADMT regulations apply to 'significant decisions' including lending, and the only reason most bank credit models fall outside them is that the underlying data is GLBA-covered. Models using non-GLBA data are inside."
+      }
+    ],
+    "lastUpdated": "2026-09-01"
+  },
+  {
+    "slug": "ca-ag-legal-advisory-ai-2025",
+    "authority": "california",
+    "shortName": "California AG legal advisory on AI (Jan 2025)",
+    "title": "Legal Advisory: Application of Existing California Laws to Artificial Intelligence",
+    "aliases": [
+      "Application of Existing California Laws to Artificial Intelligence",
+      "California AG AI advisory",
+      "Bonta AI legal advisory"
+    ],
+    "docType": "Guidance",
+    "status": "Final",
+    "date": "2025-01-13",
+    "link": "https://oag.ca.gov/system/files/attachments/press-docs/Legal%20Advisory%20-%20Application%20of%20Existing%20CA%20Laws%20to%20Artificial%20Intelligence.pdf",
+    "appliesTo": "Any entity that develops, sells or uses AI systems affecting Californians — expressly including businesses using AI 'to evaluate consumers' credit risk and guide loan decisions'",
+    "answerFirst": "On January 13, 2025 Attorney General Rob Bonta issued a legal advisory stating that California's existing laws already govern the development and use of AI. It maps the Unfair Competition Law (Bus. & Prof. Code §17200), the False Advertising Law (§17500), the CCPA (Civ. Code §1798.100 et seq.), the Unruh Civil Rights Act (Civ. Code §51), the Fair Employment and Housing Act (Gov. Code §12900 et seq.) and the Consumer Credit Reporting Agencies Act (Civ. Code §1785.1 et seq.) onto AI uses, and names AI used to evaluate credit risk and guide loan decisions among the uses that must still produce specific reasons for adverse actions. A companion advisory the same day addressed AI in health care.",
+    "keyPoints": [
+      "Names credit and lending directly: 'Businesses are using AI systems to evaluate consumers' credit risk and guide loan decisions, screen tenants for rentals, and target consumers with ads and offers'",
+      "Adverse-action reasons: cites the federal Fair Credit Reporting Act and Equal Credit Opportunity Act and the California Consumer Credit Reporting Agencies Act as requiring specific reasons 'including when AI was used to make the determination'",
+      "Treats undisclosed or deceptive AI use, unsubstantiated performance claims and AI-driven pricing or eligibility discrimination as potential UCL, FAL, Unruh or FEHA violations",
+      "Applies the CCPA's purpose-limitation, transparency and consumer-rights provisions to AI training and profiling, and reminds businesses that AI-generated personal information is personal information",
+      "The CFPB circular it relies on for the adverse-action point (Circular 2023-03) was withdrawn by the Bureau on May 12, 2025 — the statutory duty under ECOA/Reg B and FCRA is unaffected, and the state-law analysis stands"
+    ],
+    "whatChanged": "The advisory is the clearest statement by a state enforcer that lenders' AI is already regulated under general law, independent of any AI-specific statute. It gives the Attorney General a stated theory for UCL and Unruh actions against discriminatory or opaque credit models, and it matters more since the CFPB's 2025 withdrawal of its AI circulars and 2026 removal of ECOA disparate-impact liability moved the fair-lending frontier to the states.",
+    "useCases": [
+      "fair-lending",
+      "credit-underwriting",
+      "customer-chatbots",
+      "data-privacy",
+      "governance-general"
+    ],
+    "faq": [
+      {
+        "q": "Is the California AG advisory binding?",
+        "a": "It is an interpretation, not a rule — but it states how the Attorney General will apply binding statutes (UCL, FAL, CCPA, Unruh, FEHA, CCRAA) to AI, and those statutes are enforceable by the AG, district attorneys and, for several, private plaintiffs."
+      },
+      {
+        "q": "What does the advisory say about credit decisions?",
+        "a": "That businesses using AI to evaluate credit risk or guide loan decisions must still provide specific reasons for adverse actions under FCRA, ECOA and the California Consumer Credit Reporting Agencies Act, and that discriminatory outcomes can violate Unruh and the UCL."
+      }
+    ],
+    "lastUpdated": "2026-09-01"
+  },
+  {
+    "slug": "ca-crc-ads-employment-regulations-2025",
+    "authority": "california",
+    "shortName": "Civil Rights Council ADS employment regulations",
+    "title": "Modifications to Employment Regulations Regarding Automated-Decision Systems (Fair Employment and Housing Act regulations, 2 CCR)",
+    "aliases": [
+      "automated-decision systems regulations",
+      "Civil Rights Council regulations",
+      "FEHA automated decision system",
+      "California employment AI regulations"
+    ],
+    "docType": "Regulation",
+    "status": "In force",
+    "date": "2025-06-27",
+    "effectiveDate": "2025-10-01",
+    "link": "https://calcivilrights.ca.gov/wp-content/uploads/sites/32/2025/06/Final-Text-regulations-automated-employment-decision-systems.pdf",
+    "appliesTo": "Employers with five or more employees, employment agencies and their agents — including vendors of hiring, screening and productivity tools — for any California applicant or employee",
+    "answerFirst": "Approved by the Office of Administrative Law and filed June 27, 2025, and in force since October 1, 2025, the Civil Rights Council's regulations state that using an automated-decision system that discriminates against applicants or employees on a basis protected by the Fair Employment and Housing Act is unlawful. They define ADS broadly (computational processes that make or facilitate employment decisions, including those derived from machine learning or AI), define proxies for protected characteristics, treat anti-bias testing and its results as relevant evidence, extend liability to third parties acting as the employer's agent, and require employers to keep ADS-related records for four years.",
+    "keyPoints": [
+      "Applies to employers with five or more employees — every bank and credit union with California staff",
+      "ADS covers résumé screening, assessments, targeting of job ads, video-interview analysis and any tool that makes or facilitates decisions on hiring, promotion, pay, discipline or termination",
+      "Discriminatory ADS outcomes violate FEHA; the employer's anti-bias testing — its scope, quality, timing and response to results — is relevant evidence in any claim",
+      "Vendors and other third parties can be liable as agents of the employer when they administer the ADS on its behalf",
+      "Record retention for ADS data, inputs and outputs extended to four years",
+      "Interacts with the CPPA's ADMT regulations, under which employment is a 'significant decision' subject to notice, opt-out or appeal, and access rights from January 1, 2027"
+    ],
+    "whatChanged": "For banks the immediate California AI exposure is in HR, not credit: GLBA keeps most lending data outside the CCPA, but hiring and promotion tools sit under both these FEHA regulations and the CPPA's ADMT rules. Vendor contracts, bias testing and four-year retention are now examinable compliance items.",
+    "useCases": [
+      "third-party-vendors",
+      "data-privacy",
+      "governance-general"
+    ],
+    "faq": [
+      {
+        "q": "Do California's ADS employment regulations apply to banks?",
+        "a": "Yes. They apply to any employer with five or more employees, with no financial-services exemption, and cover vendors acting as the employer's agent."
+      },
+      {
+        "q": "Is bias testing mandatory under the regulations?",
+        "a": "Not expressly — but the regulations make anti-bias testing and its results relevant evidence of whether the employer took reasonable steps, so its absence weighs against the employer in a claim."
+      }
+    ],
+    "lastUpdated": "2026-09-01"
+  },
+  {
     "slug": "nist-ai-100-1",
     "authority": "nist",
     "shortName": "NIST AI RMF 1.0",
@@ -6758,6 +6941,50 @@ export const DOCUMENTS: RegDocument[] = [
       }
     ],
     "lastUpdated": "2026-08-26"
+  },
+  {
+    "slug": "fsb-chair-letter-g20-august-2026",
+    "authority": "fsb",
+    "shortName": "FSB Chair's letter to G20 (Aug 2026)",
+    "title": "FSB Chair's letter to G20 Finance Ministers and Central Bank Governors: August 2026 — risks arising from frontier artificial intelligence models",
+    "aliases": [
+      "FSB Chair's letter to G20",
+      "FSB Chair letter to G20 Finance Ministers",
+      "Bailey letter to G20"
+    ],
+    "docType": "Letter",
+    "status": "Final",
+    "date": "2026-08-31",
+    "warning": true,
+    "link": "https://www.fsb.org/2026/08/fsb-chair-warns-of-risks-arising-from-frontier-artificial-intelligence-ai-models/",
+    "appliesTo": "G20 finance ministries and central banks; by extension, supervisors and the financial institutions and critical third-party technology providers they oversee",
+    "answerFirst": "On 31 August 2026, ahead of the G20 Finance Ministers and Central Bank Governors meeting, FSB Chair Andrew Bailey wrote that frontier AI models now show 'increasingly sophisticated autonomy and problem-solving abilities, as well as threat capabilities', and that their most immediate financial-stability impact is on cyber risk. The letter asks authorities to 'take appropriate steps to support safe and responsible model release and deployment as a priority' and financial institutions to ensure 'robust response and recovery capabilities and resilience amongst critical third-party technology providers'. It also flags that leverage in equity markets is interacting with high valuations, market concentration and AI-related optimism in a way that could amplify a correction, and says the FSB is examining what steps it can take within its mandate.",
+    "keyPoints": [
+      "First FSB Chair's letter to treat frontier AI models themselves — not AI adoption by firms — as a financial-stability concern",
+      "Cyber risk named as the most immediate channel: frontier models could alter the speed, scale and economics of attacks, with concentration among a few AI and cloud providers sharpening the exposure",
+      "Ask of authorities: support safe and responsible model release and deployment as a priority",
+      "Ask of firms: robust response and recovery capabilities and resilience among critical third-party technology providers",
+      "Sits alongside the FSB's June 2026 consultation on 12 sound practices for responsible AI adoption, whose final report is due in October 2026",
+      "Parallel warning from the ECB's July 2026 'Dear CEO' letter, which requires AI-cyber action plans from significant institutions by 31 October 2026"
+    ],
+    "whatChanged": "The FSB moved from monitoring AI adoption to warning about the models themselves. For banks it signals that AI-enabled cyber resilience and third-party concentration will be the first place the October sound-practices report and national supervisors look, and that response-and-recovery capability is now a stated expectation, not just prevention.",
+    "useCases": [
+      "cybersecurity",
+      "third-party-vendors",
+      "governance-general",
+      "generative-agentic-ai"
+    ],
+    "faq": [
+      {
+        "q": "What did the FSB Chair warn the G20 about in August 2026?",
+        "a": "That frontier AI models' autonomy and threat capabilities make cyber risk the most immediate financial-stability concern, that AI-related optimism is amplifying leverage and valuation risk, and that authorities should support safe model release while firms strengthen response, recovery and third-party resilience."
+      },
+      {
+        "q": "Is the letter binding on banks?",
+        "a": "No. It is a letter to G20 finance ministers and central bank governors. Its expectations reach banks through national supervisors — the ECB's AI-cyber action plans due 31 October 2026 are the first concrete example."
+      }
+    ],
+    "lastUpdated": "2026-09-01"
   },
   {
     "slug": "bcbs-239",

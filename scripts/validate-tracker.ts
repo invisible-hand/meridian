@@ -17,7 +17,7 @@ const OFFICIAL_HOSTS = [
   "europa.eu", "fsb.org", "bis.org", "nist.gov", "bankofengland.co.uk", "fca.org.uk",
   "gov.uk", "federalregister.gov", "govinfo.gov", "congress.gov", "whitehouse.gov",
   "artificialintelligenceact.eu", "fsoc.gov", "ffiec.gov", "finra.org", "gao.gov",
-  "cppa.ca.gov", "leginfo.legislature.ca.gov", "oag.ca.gov", "uscode.house.gov"
+  "cppa.ca.gov", "leginfo.legislature.ca.gov", "oag.ca.gov", "calcivilrights.ca.gov", "uscode.house.gov"
 ];
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
