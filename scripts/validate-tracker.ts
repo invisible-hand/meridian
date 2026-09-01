@@ -120,6 +120,11 @@ async function checkLinks() {
 }
 
 async function fetchStatus(url: string): Promise<number> {
+  // sec.gov rejects generic browser/bot user-agents with 403; it wants a
+  // declared "name email" UA, per SEC's own EDGAR fair-access guidance.
+  const userAgent = new URL(url).hostname.endsWith("sec.gov")
+    ? "BankingNewsAI Tracker andrey@fastmail.jp"
+    : "Mozilla/5.0 (compatible; BankingNewsAI tracker link check)";
   for (const method of ["HEAD", "GET"]) {
     try {
       const ctrl = new AbortController();
@@ -128,7 +133,7 @@ async function fetchStatus(url: string): Promise<number> {
         method,
         redirect: "follow",
         signal: ctrl.signal,
-        headers: { "User-Agent": "Mozilla/5.0 (compatible; BankingNewsAI tracker link check)" }
+        headers: { "User-Agent": userAgent }
       });
       clearTimeout(t);
       if (res.status === 200 || res.status === 202) return res.status;
