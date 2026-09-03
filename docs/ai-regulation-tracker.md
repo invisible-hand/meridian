@@ -22,7 +22,8 @@ cross-links between the daily brief and the tracker (text matching on
 
 ### Deep dives — answering a grounding query
 
-`Regulator.deepDives` holds long-form answers to specific questions an authority
+`Regulator.deepDives` — and, since 2026-09-02, `RegDocument.deepDives` for questions a
+document page itself ranks for ("what is bcbs 239", "ss1/23 model validation") — holds long-form answers to specific questions an authority
 owns. They exist because of a measured pattern: when Bing Webmaster Tools' AI
 Performance report shows a **grounding query whose citation count rises while
 our citation share falls**, Copilot is answering that question more often and

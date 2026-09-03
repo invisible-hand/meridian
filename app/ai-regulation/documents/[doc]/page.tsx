@@ -20,6 +20,7 @@ import {
 } from "@/lib/tracker";
 import { Coverage } from "../../coverage";
 import { Section, TrackerShell } from "../../shell";
+import { DeepDives, deepDiveFaqEntries } from "../../deep-dive";
 
 // Coverage links depend on the digests table; refresh hourly.
 export const revalidate = 3600;
@@ -94,11 +95,14 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: doc.faq.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a }
-      }))
+      mainEntity: [
+        ...deepDiveFaqEntries(doc.deepDives),
+        ...doc.faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a }
+        }))
+      ]
     }
   ];
 
@@ -188,6 +192,8 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
         <h2 className="trk-h2-q">What did {doc.shortName} change for banks?</h2>
         <p className="trk-p">{doc.whatChanged}</p>
       </Section>
+
+      <DeepDives items={doc.deepDives} selfDocSlug={doc.slug} />
 
       <Section label="Common questions">
         {doc.faq.map((f) => (

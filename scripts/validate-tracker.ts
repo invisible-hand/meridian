@@ -53,8 +53,12 @@ function checkRegulator(r: Regulator) {
     if (m.docSlug && !DOCUMENTS.some((d) => d.slug === m.docSlug)) err(`${at}: milestone docSlug ${m.docSlug} missing`);
   }
   if (r.faq.length === 0) warn(`${at}: no FAQ`);
+  checkDeepDives(at, r.deepDives);
+}
+
+function checkDeepDives(at: string, deepDives: RegDocument["deepDives"]) {
   const ddIds = new Set<string>();
-  for (const dd of r.deepDives ?? []) {
+  for (const dd of deepDives ?? []) {
     const dat = `${at} deep-dive ${dd.id}`;
     if (!SLUG.test(dd.id)) err(`${dat}: id must be kebab-case (it is a permanent URL fragment)`);
     if (ddIds.has(dd.id)) err(`${dat}: duplicate id`);
@@ -94,6 +98,7 @@ function checkDocument(d: RegDocument) {
   for (const u of d.useCases) if (!(USE_CASES as readonly string[]).includes(u)) err(`${at}: unknown useCase ${u}`);
   for (const s of d.supersedes ?? []) if (!DOCUMENTS.some((x) => x.slug === s)) err(`${at}: supersedes "${s}" does not exist`);
   for (const s of d.interagency ?? []) if (!DOCUMENTS.some((x) => x.slug === s)) err(`${at}: interagency "${s}" does not exist`);
+  checkDeepDives(at, d.deepDives);
   if (d.supersededBy && !DOCUMENTS.some((x) => x.slug === d.supersededBy)) err(`${at}: supersededBy "${d.supersededBy}" does not exist`);
   if (d.supersededBy && d.status !== "Superseded" && d.status !== "Withdrawn") warn(`${at}: has supersededBy but status is ${d.status}`);
   if (d.status === "Comment period open" && !d.commentDeadline) warn(`${at}: open for comment but no commentDeadline`);
@@ -102,7 +107,10 @@ function checkDocument(d: RegDocument) {
 async function checkLinks() {
   const urls = new Set<string>();
   for (const d of DOCUMENTS) urls.add(d.link);
+
   for (const r of REGULATORS) for (const m of r.milestones) if (m.link) urls.add(m.link);
+  for (const r of REGULATORS) for (const dd of r.deepDives ?? []) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
+  for (const d of DOCUMENTS) for (const dd of d.deepDives ?? []) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
   const list = [...urls];
   console.log(`checking ${list.length} links…`);
   const queue = [...list];

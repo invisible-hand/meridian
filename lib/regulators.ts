@@ -94,6 +94,8 @@ export type RegDocument = {
   whatChanged: string;
   useCases: UseCase[];
   faq: Faq[];
+  /** Long-form answers to questions this document is the primary source for (see DeepDive) */
+  deepDives?: DeepDive[];
   /** ISO date this document's content was last reviewed/updated */
   lastUpdated: string;
 };
@@ -176,7 +178,7 @@ export type Regulator = {
   lastUpdated: string;
 };
 
-export const TRACKER_LAST_REVIEWED = "2026-09-01";
+export const TRACKER_LAST_REVIEWED = "2026-09-02";
 
 // Authorities are grouped US-first on the hub. Every slug here must also
 // appear in DISPLAY_ORDER below.
