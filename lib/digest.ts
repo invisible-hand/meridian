@@ -67,7 +67,7 @@ const STYLE_RULES = `Style rules (apply to every field):
 - Only state facts that appear in the source text. If the text does not give a number, do not invent one. Rounding is fine: write $12.93 billion, not $12,930,300,000; keep the unit the source uses.
 - title: one line stating what happened, with the actor named. No colon-led headline patterns, no puns.
 - executiveSummary: 2 to 3 sentences, at most 70 words, of facts from the source text. Lead with the event, then the one or two numbers that matter. Readers who want more will open the article.
-- businessImpact: 1 or 2 sentences that start with a verb, naming the team or function at a US bank that should act and what they should do or check. One action, stated once; do not restate it in a second sentence. No "consider", "monitor", "explore", "keep an eye on".`;
+- businessImpact: one instruction in the form "Team: instruction." — the team or function at a US bank first (e.g. "Fraud operations:", "Model risk:", "Treasury technology:", "Legal and compliance:"), then one concrete thing to do or check, at most 25 words. Do not write "Direct X to", "Require X to", "Ask X to"; address the team directly. No "consider", "monitor", "explore", "keep an eye on".`;
 
 const SELECT_PROMPT_TEXT = `You are the editor of a daily brief for executives at US banks. Two sections: "banking" (AI at banks, lenders, payments companies, fintechs serving banks, and financial regulators) and "ai" (general AI developments an executive must know: model releases, capabilities, pricing, enterprise deployments, major lab and chip moves, policy).
 

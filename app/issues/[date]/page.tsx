@@ -39,12 +39,12 @@ const getCachedRelatedIssues = cache(async (excludeDate: string): Promise<Digest
 });
 
 
-/** The action line starts with a verb; render it bold so the line reads as an instruction. */
+/** Actions are "Team: instruction." — the team in bold, the instruction as plain text. */
 function ActionText({ text }: { text: string }) {
   const trimmed = text.trim();
-  const space = trimmed.indexOf(" ");
-  if (space <= 0) return <strong>{trimmed}</strong>;
-  return (<><strong style={{ fontWeight: 700 }}>{trimmed.slice(0, space)}</strong>{trimmed.slice(space)}</>);
+  const colon = trimmed.indexOf(":");
+  if (colon <= 0 || colon > 60) return <>{trimmed}</>;
+  return (<><strong style={{ fontWeight: 700 }}>{trimmed.slice(0, colon + 1)}</strong>{trimmed.slice(colon + 1)}</>);
 }
 
 function formatDate(iso: string): string {

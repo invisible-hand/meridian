@@ -223,12 +223,12 @@ function renderStory(story: DigestStory, index: number, accent: string): string 
   </table>`;
 }
 
-/** The action line starts with a verb; set the verb in bold so the line reads as an instruction. */
+/** Actions are "Team: instruction." — the team in bold, the instruction as plain text. */
 function renderAction(text: string): string {
   const trimmed = text.trim();
-  const space = trimmed.indexOf(" ");
-  if (space <= 0) return `<strong>${escapeHtml(trimmed)}</strong>`;
-  return `<strong style="font-weight:700;">${escapeHtml(trimmed.slice(0, space))}</strong>${escapeHtml(trimmed.slice(space))}`;
+  const colon = trimmed.indexOf(":");
+  if (colon <= 0 || colon > 60) return escapeHtml(trimmed);
+  return `<strong style="font-weight:700;">${escapeHtml(trimmed.slice(0, colon + 1))}</strong>${escapeHtml(trimmed.slice(colon + 1))}`;
 }
 
 function formatDate(iso: string): string {
