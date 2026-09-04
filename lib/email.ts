@@ -49,6 +49,15 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
     ? `<span style="font-family:${D.mono};font-size:10px;color:#333;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`
     : "";
 
+  // Today's lede — one or two sentences, set larger than the stories, under the masthead.
+  const ledeBlock = digest.lede
+    ? `<tr>
+        <td style="padding:26px 40px 22px;border-bottom:1px solid ${D.divider};">
+          <p style="margin:0;font-family:${D.serif};font-size:21px;font-weight:400;color:${D.textPrimary};line-height:1.45;letter-spacing:-0.01em;">${escapeHtml(digest.lede)}</p>
+        </td>
+      </tr>`
+    : "";
+
   // Optional one-off note from the developer — a visually flagged box that sits
   // between the masthead and the stories.
   const developerNoteBlock = digest.developerNote
@@ -114,6 +123,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
 
         <!-- ── DEVELOPER NOTE (optional) ── -->
         ${developerNoteBlock}
+        ${ledeBlock}
 
         <!-- ── BODY ── -->
         <tr>
@@ -206,8 +216,8 @@ function renderStory(story: DigestStory, index: number, accent: string): string 
         <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:16px;">
           <tr>
             <td style="padding:11px 16px;border-left:2px solid ${accent};background:#faf9f7;">
-              <p style="margin:0 0 3px;font-family:${D.mono};font-size:9px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:${accent};">Action</p>
-              <p style="margin:0;font-family:${D.sans};font-size:13px;color:${D.textPrimary};line-height:1.6;">${escapeHtml(story.businessImpact)}</p>
+              <p style="margin:0 0 4px;font-family:${D.mono};font-size:9px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:${accent};">&rarr;&nbsp;Action</p>
+              <p style="margin:0;font-family:${D.sans};font-size:14px;color:${D.textPrimary};line-height:1.55;">${renderAction(story.businessImpact)}</p>
             </td>
           </tr>
         </table>
@@ -221,6 +231,14 @@ function renderStory(story: DigestStory, index: number, accent: string): string 
       </td>
     </tr>
   </table>`;
+}
+
+/** The action line starts with a verb; set the verb in bold so the line reads as an instruction. */
+function renderAction(text: string): string {
+  const trimmed = text.trim();
+  const space = trimmed.indexOf(" ");
+  if (space <= 0) return `<strong>${escapeHtml(trimmed)}</strong>`;
+  return `<strong style="font-weight:700;">${escapeHtml(trimmed.slice(0, space))}</strong>${escapeHtml(trimmed.slice(space))}`;
 }
 
 function formatDate(iso: string): string {

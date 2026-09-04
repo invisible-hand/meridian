@@ -1,12 +1,23 @@
 import Parser from "rss-parser";
 import { insertNewsItem, listActiveSources } from "@/lib/db";
 import { canonicalizeUrl, hashUrl } from "@/lib/url";
+import { keenableEnabled, keenableSearch } from "@/lib/keenable";
+import { REGULATOR_HOSTS, PRIMARY_HOSTS, TRADE_HOSTS } from "@/lib/source-tiers";
+
+// Collection has three layers, all landing in news_items keyed by canonical URL:
+//   1. RSS feeds (lib/default-sources.ts, seeded into the `sources` table)
+//   2. Keenable searches — site-scoped over regulators, banks, vendors and
+//      feed-less trade titles, plus topical queries over the whole index
+//   3. Exa, restricted to a domain allow-list (it is noise without one)
+// Generation (lib/digest.ts) then works over everything ingested in 48 hours.
 
 type IngestStats = {
   attempted: number;
   inserted: number;
   duplicates: number;
   failedSources: string[];
+  keenable: { requests: number; results: number };
+  exa: { results: number };
 };
 
 // Some publishers (notably occ.gov) reject rss-parser's default request headers
@@ -18,47 +29,33 @@ const parser = new Parser({
     Accept: "application/rss+xml, application/xml, text/xml; q=0.9, */*; q=0.8"
   }
 });
-const SMOL_HOST = "news.smol.ai";
 const INGEST_LOOKBACK_HOURS = parsePositiveInt(process.env.INGEST_LOOKBACK_HOURS, 72);
 const INGEST_MAX_ITEMS_PER_SOURCE = parsePositiveInt(process.env.INGEST_MAX_ITEMS_PER_SOURCE, 75);
+const FEED_CONCURRENCY = 6;
+const DEAD_HOSTS = ["news.smol.ai"];
 
 export async function runIngestion(): Promise<IngestStats> {
-  const sources = await listActiveSources();
+  const sources = (await listActiveSources()).filter(
+    (s) => !DEAD_HOSTS.some((h) => s.url.includes(h))
+  );
   const stats: IngestStats = {
     attempted: 0,
     inserted: 0,
     duplicates: 0,
-    failedSources: []
+    failedSources: [],
+    keenable: { requests: 0, results: 0 },
+    exa: { results: 0 }
   };
 
-  // First-class source: always ingest today's Smol AI issues first.
-  const smolFirst = await ingestSmolIssuesForToday();
-  stats.attempted += smolFirst.attempted;
-  stats.inserted += smolFirst.inserted;
-  stats.duplicates += smolFirst.duplicates;
-  if (!smolFirst.ok) {
-    stats.failedSources.push("https://news.smol.ai/issues");
-  }
-
-  for (const source of sources) {
-    if (source.url.includes("news.smol.ai/issues")) {
-      // Already handled up front as a dedicated first-class source.
-      continue;
-    }
+  // Layer 1 — feeds, a few at a time so 60 feeds fit comfortably in the cron budget.
+  await mapWithConcurrency(sources, FEED_CONCURRENCY, async (source) => {
     try {
       const feed = await parser.parseURL(source.url);
       const candidateFeedItems = prioritizeFeedItems(feed.items ?? []);
       for (const item of candidateFeedItems) {
         const url = item.link?.trim();
         const title = item.title?.trim();
-        if (!url || !title) {
-          continue;
-        }
-        const summary = await resolveSummaryForItem({
-          sourceUrl: source.url,
-          itemUrl: url,
-          rssSummary: item.contentSnippet ?? item.content ?? null
-        });
+        if (!url || !title) continue;
         stats.attempted += 1;
         const canonicalUrl = canonicalizeUrl(url);
         const inserted = await insertNewsItem({
@@ -66,385 +63,232 @@ export async function runIngestion(): Promise<IngestStats> {
           url,
           canonicalUrl,
           urlHash: hashUrl(canonicalUrl),
-          summary,
+          summary: item.contentSnippet ?? item.content ?? null,
           publishedAt: item.isoDate ?? null,
           sourceName: source.name,
           sourceUrl: source.url,
           raw: item
         });
-        if (inserted) {
-          stats.inserted += 1;
-        } else {
-          stats.duplicates += 1;
-        }
+        if (inserted) stats.inserted += 1;
+        else stats.duplicates += 1;
       }
     } catch {
-      const recovered = await tryIngestSmolIssuesFallback(source.name, source.url);
-      if (recovered) {
-        stats.attempted += recovered.attempted;
-        stats.inserted += recovered.inserted;
-        stats.duplicates += recovered.duplicates;
-      } else {
-        stats.failedSources.push(source.url);
-      }
+      stats.failedSources.push(source.url);
     }
+  });
+
+  // Layer 2 — Keenable.
+  if (keenableEnabled()) {
+    const k = await ingestFromKeenable();
+    stats.attempted += k.attempted;
+    stats.inserted += k.inserted;
+    stats.duplicates += k.duplicates;
+    stats.keenable = { requests: k.requests, results: k.results };
   }
 
-  const discoveryCount = await ingestFromDiscoveryApi();
-  stats.attempted += discoveryCount.attempted;
-  stats.inserted += discoveryCount.inserted;
-  stats.duplicates += discoveryCount.duplicates;
+  // Layer 3 — Exa, allow-listed.
+  const exa = await ingestFromExa();
+  stats.attempted += exa.attempted;
+  stats.inserted += exa.inserted;
+  stats.duplicates += exa.duplicates;
+  stats.exa = { results: exa.results };
 
   return stats;
 }
 
-// Three targeted queries covering the angles the digest cares about most.
-// Running them separately gives the LLM cleaner, higher-signal candidates
-// than a single kitchen-sink query.
-const EXA_QUERIES = [
-  // Concrete banking/fintech AI deployments and product moves
-  "bank fintech deploying AI product launch announcement",
-  // Regulatory and compliance — hard to catch via RSS
-  "financial regulator AI guidance policy ruling compliance",
-  // General AI moves significant enough for a banking executive
-  "AI model release enterprise deployment capability announcement",
+// ── Layer 2: Keenable ────────────────────────────────────────────────────────
+
+// Sites watched daily with a broad "artificial intelligence" query. Regulators
+// and standard-setters, the largest US banks, the core and payments vendors
+// banks buy from, the model labs, and trade titles whose feeds block bots.
+const KEENABLE_SITES: string[] = [
+  ...REGULATOR_HOSTS.filter((h) => !["govdelivery.com", "europa.eu", "gov.uk", "whitehouse.gov", "federalregister.gov", "ffiec.gov", "fsoc.gov", "cppa.ca.gov", "oag.ca.gov", "coag.gov"].includes(h)),
+  "jpmorganchase.com", "bankofamerica.com", "wellsfargo.com", "citigroup.com", "capitalone.com", "usbank.com",
+  "pnc.com", "truist.com", "goldmansachs.com", "morganstanley.com",
+  "fiserv.com", "fisglobal.com", "jackhenry.com", "ncino.com", "visa.com", "mastercard.com",
+  "openai.com", "anthropic.com", "blog.google", "microsoft.com", "aws.amazon.com", "nvidia.com",
+  "bankautomationnews.com", "thefinancialbrand.com", "fintechfutures.com", "cutimes.com"
 ];
+
+// Topical queries over the whole index, last 48 hours. Phrased as a news desk
+// would search, not as keywords.
+const KEENABLE_TOPICS: string[] = [
+  "bank deploys artificial intelligence",
+  "bank launches AI agent for customers",
+  "fintech launches AI product for banks",
+  "AI fraud detection bank rollout",
+  "AI credit underwriting lender",
+  "AI anti-money laundering compliance bank",
+  "regulator artificial intelligence guidance banks",
+  "credit union artificial intelligence",
+  "payments network agentic AI",
+  "core banking provider AI",
+  "wealth management AI advisor bank",
+  "AI model release enterprise",
+  "AI agents enterprise deployment announcement",
+  "frontier AI model capabilities release",
+  "AI chip data center capacity announcement"
+];
+
+async function ingestFromKeenable(): Promise<{
+  attempted: number; inserted: number; duplicates: number; requests: number; results: number;
+}> {
+  const since48h = new Date(Date.now() - 48 * 3600_000).toISOString();
+  const since7d = new Date(Date.now() - 7 * 86400_000).toISOString();
+  const seen = new Set<string>();
+  const collected: { title: string; url: string; snippet: string | null; publishedAt: string | null; label: string }[] = [];
+  let requests = 0;
+
+  const siteJobs = KEENABLE_SITES.map((site) => async () => {
+    requests += 1;
+    const results = await keenableSearch({ query: "artificial intelligence", site, maxResults: 20, publishedAfter: since7d });
+    for (const r of results) collect(r, `Keenable: ${site}`);
+  });
+  const topicJobs = KEENABLE_TOPICS.map((q) => async () => {
+    requests += 1;
+    const results = await keenableSearch({ query: q, maxResults: 50, publishedAfter: since48h });
+    for (const r of results) collect(r, "Keenable: topical");
+  });
+
+  function collect(r: { title?: string; url?: string; snippet?: string; description?: string; published_at?: string }, label: string) {
+    if (!r.url || !r.title) return;
+    const canonical = canonicalizeUrl(r.url);
+    if (seen.has(canonical)) return;
+    seen.add(canonical);
+    collected.push({
+      title: r.title.trim(),
+      url: r.url,
+      snippet: (r.snippet || r.description || "").trim() || null,
+      publishedAt: r.published_at ?? null,
+      label
+    });
+  }
+
+  await mapWithConcurrency([...siteJobs, ...topicJobs], 5, (job) => job());
+
+  let attempted = 0, inserted = 0, duplicates = 0;
+  for (const c of collected) {
+    attempted += 1;
+    const canonicalUrl = canonicalizeUrl(c.url);
+    const wasInserted = await insertNewsItem({
+      title: c.title,
+      url: c.url,
+      canonicalUrl,
+      urlHash: hashUrl(canonicalUrl),
+      summary: c.snippet,
+      publishedAt: c.publishedAt,
+      sourceName: c.label,
+      sourceUrl: "https://keenable.ai",
+      raw: { keenable: true, label: c.label }
+    });
+    if (wasInserted) inserted += 1;
+    else duplicates += 1;
+  }
+  return { attempted, inserted, duplicates, requests, results: collected.length };
+}
+
+// ── Layer 3: Exa, allow-listed ───────────────────────────────────────────────
+
+const EXA_QUERIES = [
+  "bank or fintech deploying AI product launch announcement",
+  "financial regulator AI guidance policy ruling",
+  "AI model release enterprise capability announcement"
+];
+const EXA_DOMAINS = [...TRADE_HOSTS, ...PRIMARY_HOSTS, ...REGULATOR_HOSTS].filter(
+  (h) => !["americanbanker.com", "govdelivery.com"].includes(h)
+);
 
 type ExaResult = { title?: string; url?: string; text?: string; publishedDate?: string };
 
-async function ingestFromDiscoveryApi(): Promise<{
-  attempted: number;
-  inserted: number;
-  duplicates: number;
-}> {
+async function ingestFromExa(): Promise<{ attempted: number; inserted: number; duplicates: number; results: number }> {
   const apiKey = process.env.EXA_API_KEY;
-  if (!apiKey) {
-    return { attempted: 0, inserted: 0, duplicates: 0 };
-  }
-
-  const startDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-
-  // Fire all queries, collect results, dedupe by URL
+  if (!apiKey) return { attempted: 0, inserted: 0, duplicates: 0, results: 0 };
+  const startDate = new Date(Date.now() - 48 * 3600_000).toISOString();
   const seen = new Set<string>();
-  const allResults: ExaResult[] = [];
+  const all: ExaResult[] = [];
 
   await Promise.all(
     EXA_QUERIES.map(async (query) => {
-      let response: Response;
       try {
-        response = await fetch("https://api.exa.ai/search", {
+        const response = await fetch("https://api.exa.ai/search", {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-api-key": apiKey },
           body: JSON.stringify({
             query,
-            type: "auto",           // neural + keyword combined — Exa's semantic mode
-            category: "news",       // restrict to news index only
-            numResults: 15,
+            type: "auto",
+            category: "news",
+            numResults: 25,
             startPublishedDate: startDate,
-            contents: { text: true } // fetch full article body, not just a cached snippet
+            includeDomains: EXA_DOMAINS,
+            contents: { text: { maxCharacters: 4000 } }
           })
         });
+        if (!response.ok) return;
+        const data = (await response.json()) as { results?: ExaResult[] };
+        for (const r of data.results ?? []) {
+          if (!r.url || !r.title) continue;
+          const c = canonicalizeUrl(r.url);
+          if (seen.has(c)) continue;
+          seen.add(c);
+          all.push(r);
+        }
       } catch {
-        return;
-      }
-      if (!response.ok) return;
-
-      let data: { results?: ExaResult[] };
-      try {
-        data = (await response.json()) as { results?: ExaResult[] };
-      } catch {
-        return;
-      }
-
-      for (const result of data.results ?? []) {
-        if (!result.url || !result.title) continue;
-        const canonical = canonicalizeUrl(result.url);
-        if (seen.has(canonical)) continue;
-        seen.add(canonical);
-        allResults.push(result);
+        // Exa is optional; a failed query just means fewer candidates.
       }
     })
   );
 
-  let attempted = 0;
-  let inserted = 0;
-  let duplicates = 0;
-
-  for (const result of allResults) {
-    if (!result.url || !result.title) continue;
+  let attempted = 0, inserted = 0, duplicates = 0;
+  for (const r of all) {
     attempted += 1;
-    const canonicalUrl = canonicalizeUrl(result.url);
+    const canonicalUrl = canonicalizeUrl(r.url!);
     const wasInserted = await insertNewsItem({
-      title: result.title,
-      url: result.url,
+      title: r.title!,
+      url: r.url!,
       canonicalUrl,
       urlHash: hashUrl(canonicalUrl),
-      summary: result.text ?? null,
-      publishedAt: result.publishedDate ?? null,
+      summary: r.text ?? null,
+      publishedAt: r.publishedDate ?? null,
       sourceName: "Exa Discovery",
       sourceUrl: "https://exa.ai",
-      raw: result
+      raw: r
     });
-    if (wasInserted) {
-      inserted += 1;
-    } else {
-      duplicates += 1;
-    }
+    if (wasInserted) inserted += 1;
+    else duplicates += 1;
   }
-
-  return { attempted, inserted, duplicates };
+  return { attempted, inserted, duplicates, results: all.length };
 }
 
-async function resolveSummaryForItem(params: {
-  sourceUrl: string;
-  itemUrl: string;
-  rssSummary: string | null;
-}): Promise<string | null> {
-  if (isSmolIssueItem(params.sourceUrl, params.itemUrl)) {
-    const issueText = await fetchSmolIssueText(params.itemUrl);
-    if (issueText) {
-      return issueText;
-    }
-  }
-
-  return params.rssSummary;
-}
-
-function isSmolIssueItem(sourceUrl: string, itemUrl: string): boolean {
-  try {
-    const source = new URL(sourceUrl);
-    const item = new URL(itemUrl);
-    return source.hostname === SMOL_HOST && item.hostname === SMOL_HOST && item.pathname.startsWith("/issues/");
-  } catch {
-    return false;
-  }
-}
-
-async function fetchSmolIssueText(issueUrl: string): Promise<string | null> {
-  try {
-    const response = await fetch(issueUrl, { headers: { "User-Agent": "bankingnewsai-bot/1.0" } });
-    if (!response.ok) {
-      return null;
-    }
-    const html = await response.text();
-    const text = extractReadableTextFromHtml(html);
-    if (!text) {
-      return null;
-    }
-    // Keep payload bounded for DB/LLM prompt size while preserving article details.
-    return text.slice(0, 14000);
-  } catch {
-    return null;
-  }
-}
-
-function extractReadableTextFromHtml(html: string): string {
-  const mainMatch =
-    html.match(/<main[\s\S]*?<\/main>/i) ||
-    html.match(/<article[\s\S]*?<\/article>/i) ||
-    html.match(/<body[\s\S]*?<\/body>/i);
-  const content = mainMatch ? mainMatch[0] : html;
-
-  return content
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&quot;/gi, "\"")
-    .replace(/&#39;/gi, "'")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-async function tryIngestSmolIssuesFallback(sourceName: string, sourceUrl: string): Promise<{
-  attempted: number;
-  inserted: number;
-  duplicates: number;
-} | null> {
-  if (!sourceUrl.includes("news.smol.ai/issues")) {
-    return null;
-  }
-
-  try {
-    const response = await fetch("https://news.smol.ai/issues", {
-      headers: { "User-Agent": "bankingnewsai-bot/1.0" }
-    });
-    if (!response.ok) {
-      return null;
-    }
-
-    const html = await response.text();
-    const issueUrls = extractSmolIssueUrls(html);
-
-    let attempted = 0;
-    let inserted = 0;
-    let duplicates = 0;
-
-    for (const issueUrl of issueUrls) {
-      const issueText = await fetchSmolIssueText(issueUrl);
-      if (!issueText) {
-        continue;
-      }
-      attempted += 1;
-      const canonicalUrl = canonicalizeUrl(issueUrl);
-      const title = issueUrl.split("/").pop()?.replace(/-/g, " ") ?? "smol ai issue";
-      const publishedAt = parseDateFromIssueUrl(issueUrl);
-      const wasInserted = await insertNewsItem({
-        title,
-        url: issueUrl,
-        canonicalUrl,
-        urlHash: hashUrl(canonicalUrl),
-        summary: issueText,
-        publishedAt,
-        sourceName,
-        sourceUrl,
-        raw: { fallback: "smol-issues-page", issueUrl }
-      });
-      if (wasInserted) {
-        inserted += 1;
-      } else {
-        duplicates += 1;
-      }
-    }
-
-    return { attempted, inserted, duplicates };
-  } catch {
-    return null;
-  }
-}
-
-function parseDateFromIssueUrl(issueUrl: string): string | null {
-  // Accept both 4-digit (`2024-05-08`) and 2-digit (`24-05-08`) year prefixes.
-  // Current smol.ai URLs use the 2-digit form (e.g. `/issues/26-05-08-not-much`).
-  const match = issueUrl.match(/\/issues\/(\d{2}|\d{4})-(\d{2})-(\d{2})-/);
-  if (!match) {
-    return null;
-  }
-  const yearPart = match[1];
-  const month = match[2];
-  const day = match[3];
-  const year = yearPart.length === 2 ? `20${yearPart}` : yearPart;
-  return `${year}-${month}-${day}T12:00:00.000Z`;
-}
+// ── Helpers ──────────────────────────────────────────────────────────────────
 
 function prioritizeFeedItems(
-  items: Array<{ isoDate?: string; pubDate?: string }>
-): Array<{ isoDate?: string; pubDate?: string; title?: string; link?: string; contentSnippet?: string; content?: string }> {
+  items: Array<{ link?: string; title?: string; isoDate?: string; pubDate?: string; contentSnippet?: string; content?: string }>
+) {
   const now = Date.now();
-  const lookbackMs = INGEST_LOOKBACK_HOURS * 60 * 60 * 1000;
+  const lookbackMs = INGEST_LOOKBACK_HOURS * 3600_000;
+  const withDates = items.map((item) => {
+    const iso = item.isoDate ?? (item.pubDate ? new Date(item.pubDate).toISOString() : undefined);
+    const ms = iso ? new Date(iso).getTime() : NaN;
+    return { item: { ...item, isoDate: iso }, ms };
+  });
+  const recent = withDates.filter((x) => Number.isFinite(x.ms) && now - x.ms <= lookbackMs && now - x.ms >= -3600_000);
+  // Feeds without dates (a few regulators) are taken as-is, newest first by feed order.
+  const undated = withDates.filter((x) => !Number.isFinite(x.ms));
+  return [...recent.sort((a, b) => b.ms - a.ms), ...undated].slice(0, INGEST_MAX_ITEMS_PER_SOURCE).map((x) => x.item);
+}
 
-  return items
-    .filter((item) => {
-      const rawDate = item.isoDate ?? item.pubDate;
-      if (!rawDate) {
-        return true;
-      }
-      const publishedMs = new Date(rawDate).getTime();
-      if (!Number.isFinite(publishedMs)) {
-        return true;
-      }
-      return now - publishedMs >= 0 && now - publishedMs <= lookbackMs;
-    })
-    .sort((a, b) => {
-      const aMs = new Date(a.isoDate ?? a.pubDate ?? "").getTime();
-      const bMs = new Date(b.isoDate ?? b.pubDate ?? "").getTime();
-      const aScore = Number.isFinite(aMs) ? aMs : 0;
-      const bScore = Number.isFinite(bMs) ? bMs : 0;
-      return bScore - aScore;
-    })
-    .slice(0, INGEST_MAX_ITEMS_PER_SOURCE);
+async function mapWithConcurrency<T>(items: T[], limit: number, fn: (item: T) => Promise<void>): Promise<void> {
+  const queue = [...items];
+  const workers = Array.from({ length: Math.min(limit, queue.length) }, async () => {
+    while (queue.length) {
+      const next = queue.shift()!;
+      await fn(next);
+    }
+  });
+  await Promise.all(workers);
 }
 
 function parsePositiveInt(value: string | undefined, fallback: number): number {
   const parsed = Number.parseInt(value ?? "", 10);
-  if (!Number.isFinite(parsed) || parsed <= 0) {
-    return fallback;
-  }
-  return parsed;
-}
-
-async function ingestSmolIssuesForToday(): Promise<{
-  ok: boolean;
-  attempted: number;
-  inserted: number;
-  duplicates: number;
-}> {
-  const sourceName = "Smol AI Issues";
-  const sourceUrl = "https://news.smol.ai/issues";
-  const today = new Date().toISOString().slice(0, 10);
-
-  try {
-    const response = await fetch(sourceUrl, {
-      headers: { "User-Agent": "bankingnewsai-bot/1.0" }
-    });
-    if (!response.ok) {
-      return { ok: false, attempted: 0, inserted: 0, duplicates: 0 };
-    }
-    const html = await response.text();
-    const allIssueUrls = extractSmolIssueUrls(html);
-
-    // Always ingest the 3 most recent issues to cover weekends, gaps, and testing
-    // scenarios where today's issue hasn't been published yet.
-    // Issues that match today's date are kept; for the rest we stamp publishedAt
-    // as today so they pass the 72-hour recency gate in digest generation.
-    const targetUrls = allIssueUrls.slice(0, 3);
-
-    let attempted = 0;
-    let inserted = 0;
-    let duplicates = 0;
-
-    for (const issueUrl of targetUrls) {
-      const issueText = await fetchSmolIssueText(issueUrl);
-      if (!issueText) {
-        continue;
-      }
-      attempted += 1;
-      const canonicalUrl = canonicalizeUrl(issueUrl);
-      const title = issueUrl.split("/").pop()?.replace(/-/g, " ") ?? "smol ai issue";
-      // Use the date embedded in the URL when available. If the issue is older than
-      // today (weekend gaps, etc.) override to today so it stays within the 72-hour
-      // recency window used by the digest generator.
-      const urlDate = parseDateFromIssueUrl(issueUrl);
-      const isOlderThanWindow =
-        urlDate === null ||
-        Date.now() - new Date(urlDate).getTime() > 72 * 60 * 60 * 1000;
-      const publishedAt = isOlderThanWindow ? `${today}T12:00:00.000Z` : urlDate;
-      const wasInserted = await insertNewsItem({
-        title,
-        url: issueUrl,
-        canonicalUrl,
-        urlHash: hashUrl(canonicalUrl),
-        summary: issueText,
-        publishedAt,
-        sourceName,
-        sourceUrl,
-        raw: { firstClassSource: "smol-issues", issueUrl, dateOverridden: isOlderThanWindow }
-      });
-      if (wasInserted) {
-        inserted += 1;
-      } else {
-        duplicates += 1;
-      }
-    }
-
-    return { ok: true, attempted, inserted, duplicates };
-  } catch {
-    return { ok: false, attempted: 0, inserted: 0, duplicates: 0 };
-  }
-}
-
-function extractSmolIssueUrls(html: string): string[] {
-  // Match both absolute and relative issue paths. The smol.ai issues page
-  // renders relative links (e.g. `/issues/26-05-08-not-much`) so we capture
-  // either form and normalize to an absolute URL.
-  const slugs = new Set<string>();
-  for (const match of html.matchAll(/(?:https:\/\/news\.smol\.ai)?\/issues\/([a-z0-9][a-z0-9-]+)/gi)) {
-    const slug = match[1]?.toLowerCase();
-    if (slug) {
-      slugs.add(slug);
-    }
-  }
-  return Array.from(slugs).map((slug) => `https://news.smol.ai/issues/${slug}`);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }

@@ -409,15 +409,25 @@ export async function listNewsItemsSince(hours: number): Promise<NewsItem[]> {
   await ensureSchema();
   const thresholdIso = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
   const supabase = getSupabaseAdminClient();
-  const { data, error } = await supabase
-    .from("news_items")
-    .select("id,title,url,canonical_url,summary,published_at,source_name,source_url,ingested_at")
-    .gte("ingested_at", thresholdIso)
-    .order("published_at", { ascending: false, nullsFirst: false });
-  if (error) {
-    throw error;
+  // PostgREST caps a single response at 1,000 rows; a day's ingest is larger
+  // than that now, so page through in order until a short page comes back.
+  const PAGE = 1000;
+  const all: NewsItem[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("news_items")
+      .select("id,title,url,canonical_url,summary,published_at,source_name,source_url,ingested_at")
+      .gte("ingested_at", thresholdIso)
+      .order("id", { ascending: false })
+      .range(from, from + PAGE - 1);
+    if (error) {
+      throw error;
+    }
+    const rows = (data as NewsItem[]) ?? [];
+    all.push(...rows);
+    if (rows.length < PAGE || all.length >= 10000) break;
   }
-  return (data as NewsItem[]) ?? [];
+  return all;
 }
 
 export async function listRecentNewsItems(limit = 100): Promise<NewsItem[]> {

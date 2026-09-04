@@ -2,241 +2,217 @@ import { z } from "zod";
 import { listNewsItemsSince, listRecentDigests, upsertDailyDigest } from "@/lib/db";
 import { DailyDigest, DigestStory } from "@/lib/types";
 import { isPaywalled } from "@/lib/paywall";
+import { keenableFetchText } from "@/lib/keenable";
+import { sourceTier, TIER_LABEL, hostOf } from "@/lib/source-tiers";
 
-// ── Zod schema (shared for both LLM calls) ───────────────────────────────────
+// Digest generation, in stages:
+//   0. pool     — everything ingested in the last 48 h, minus paywalls, exclusions,
+//                 URLs already published, and items with no AI signal
+//   1. score    — the model rates every candidate (banking relevance, AI relevance,
+//                 concreteness, geography) in batches, reading title + snippet
+//   2. read     — full article text is fetched for the top candidates
+//   3. select   — one call picks up to 3 banking + 3 AI stories over full text,
+//                 treating one event covered by several outlets as one story
+//   4. write    — one call per story, facts only, from the article text
+//   5. verify   — one call per story checks every claim against the text
+// A day with fewer than six good stories ships fewer stories. Nothing is padded.
+
+// ── Schemas ───────────────────────────────────────────────────────────────────
 const storySchema = z.object({
-  title: z.string(),
-  executiveSummary: z.string(),
-  businessImpact: z.string(),
+  title: z.string().min(1),
+  executiveSummary: z.string().min(1),
+  businessImpact: z.string().default(""),
   sourceUrl: z.string().url()
 });
 
-// Cap sections by truncating rather than z.array().max(3): a hard max is a
-// validation, so a model returning 4 stories would fail the whole parse and
-// silently discard every story in the response.
-const cappedStories = z.array(storySchema).transform((a) => a.slice(0, 3));
-
-const twoSectionSchema = z.object({
-  bankingStories: cappedStories.default([]),
-  aiStories: cappedStories.default([])
+const scoreSchema = z.object({
+  scores: z.array(z.object({
+    idx: z.number().int(),
+    banking: z.number().min(0).max(10),
+    ai: z.number().min(0).max(10),
+    concrete: z.number().min(0).max(10),
+    geography: z.enum(["US", "EU", "other"]).default("other"),
+    topic: z.string().default("")
+  })).default([])
 });
 
-const topicRepeatSchema = z.object({
-  bankingRepeatIndices: z.array(z.number().int()).default([]),
-  aiRepeatIndices: z.array(z.number().int()).default([])
+const selectSchema = z.object({
+  banking: z.array(z.object({ idx: z.number().int(), reason: z.string().default("") })).default([]),
+  ai: z.array(z.object({ idx: z.number().int(), reason: z.string().default("") })).default([])
 });
 
-// ── Keyword lists ─────────────────────────────────────────────────────────────
+const verifySchema = z.object({
+  supported: z.boolean().default(true),
+  title: z.string().optional(),
+  executiveSummary: z.string().optional(),
+  businessImpact: z.string().optional(),
+  problems: z.array(z.string()).default([])
+});
+
+// ── Keyword pre-filter (cheap gate before any model call) ────────────────────
 const AI_KEYWORDS = [
-  "artificial intelligence", " ai ", "genai", "llm", "foundation model",
-  "openai", "anthropic", "gemini", "chatgpt", "copilot", "machine learning"
+  "artificial intelligence", " ai ", " ai-", "ai.", "ai,", "genai", "gen ai", "llm", "large language model",
+  "foundation model", "openai", "anthropic", "gemini", "chatgpt", "claude", "copilot", "machine learning",
+  "agentic", "ai agent", "generative"
 ];
+const EXCLUDE_KEYWORDS = ["film", "streaming", "gaming", "box office", "celebrity", "entertainment", "watch now", "trailer"];
+const EXCLUDE_URL_PATTERNS = ["/video/", "/videos/", "youtube.com", "youtu.be", "tiktok.com", "/podcast/", "/webinar", "/events/"];
 
-const BANKING_KEYWORDS = [
-  "bank", "banking", "fintech", "payments", "payment", "credit", "lending",
-  "lender", "loan", "mortgage", "fraud", "risk", "compliance", "regulation",
-  "regulator", "aml", "kyc", "treasury", "insurance", "insurer",
-  "capital markets", "wealth management", "financial services",
-  "financial institution", "neobank", "digital wallet", "swift",
-  "trade finance", "underwriting", "asset management", "hedge fund",
-  "private equity", "investment bank", "retail banking", "commercial bank",
-  "central bank", "fdic", "occ", "cfpb", "fed reserve", "federal reserve",
-  "sec ", "cftc", "fca ", "money laundering", "sanctions", "deposit",
-  "debit", "interchange", "stablecoin", "crypto exchange", "defi", "cbdc"
-];
+// ── Style rules shared by the writing and verification prompts ───────────────
+const STYLE_RULES = `Style rules (apply to every field):
+- Plain, direct sentences. Subject, verb, object. Present or past tense as the facts require.
+- State what happened, who did it, when, and the numbers. Names of institutions, products, regulators, dollar amounts, dates and percentages from the source text belong in the summary.
+- No mannered prose. Do not use: "signals", "underscores", "highlights", "marks a", "in a move that", "landmark", "significant", "major shift", "game-changer", "poised to", "it remains to be seen", "amid", "as ... continues to", "reshaping", "transforming", "landscape", "ecosystem", "journey", "leverage", "unlock", "robust", "seamless", "cutting-edge", "next-generation", "revolutionary", "at the forefront", "notably", "importantly", "crucially". No rhetorical questions. No metaphors. No adjectives that only express importance.
+- Do not editorialise. Do not speculate about what may happen. Do not write "this shows" or "this means" unless the sentence then states a fact.
+- Only state facts that appear in the source text. If the text does not give a number, do not invent one. Rounding is fine: write $12.93 billion, not $12,930,300,000; keep the unit the source uses.
+- title: one line stating what happened, with the actor named. No colon-led headline patterns, no puns.
+- executiveSummary: 2 to 3 sentences, at most 70 words, of facts from the source text. Lead with the event, then the one or two numbers that matter. Readers who want more will open the article.
+- businessImpact: 1 or 2 sentences that start with a verb, naming the team or function at a US bank that should act and what they should do or check. One action, stated once; do not restate it in a second sentence. No "consider", "monitor", "explore", "keep an eye on".`;
 
-const EXCLUDE_KEYWORDS = [
-  "film", "streaming", "gaming", "box office", "celebrity",
-  "entertainment", "watch now", "trailer"
-];
+const SELECT_PROMPT_TEXT = `You are the editor of a daily brief for executives at US banks. Two sections: "banking" (AI at banks, lenders, payments companies, fintechs serving banks, and financial regulators) and "ai" (general AI developments an executive must know: model releases, capabilities, pricing, enterprise deployments, major lab and chip moves, policy).
 
-const EXCLUDE_URL_PATTERNS = ["/video/", "/videos/", "youtube.com", "youtu.be", "tiktok.com", "/podcast/"];
+Pick up to 3 stories for each section from the candidates. Rules:
+- One event is one story. If several candidates cover the same event, choose the best one: the original announcement, regulator page or filing beats coverage; a named publisher beats a wire copy; the most complete text beats a stub.
+- Prefer US institutions and US regulators. UK/EU regulators and major European banks are acceptable when they beat the US alternatives on substance. Skip the rest of the world unless it directly affects US institutions or the vendors they buy from.
+- Prefer concrete events with names and numbers over opinion, market research, listicles, event recaps and vendor marketing without an event.
+- Skip anything that repeats a title in recentTitles (already published this week).
+- Spread coverage: do not pick two stories about the same company in one section unless both are clearly the day's top events.
+- Fewer than 3 is fine when the candidates are weak. Do not pick a weak story to fill a slot.
+Return strict JSON: {"banking":[{"idx":1,"reason":"one sentence"}],"ai":[{"idx":2,"reason":"one sentence"}]}`;
 
-// ── Prompt for the smol.ai newsletter extraction pass ────────────────────────
-const SMOL_EXTRACT_PROMPT = `You're reading this morning's AI newsletter so a banking executive doesn't have to. They're walking into their 8am board call in 20 minutes. What do they actually need to know?
+const WRITE_PROMPT_TEXT = `Write one story for a daily brief read by executives at US banks, from the article text provided. Use only facts in the text.
+${STYLE_RULES}
+Return strict JSON: {"title":"...","executiveSummary":"...","businessImpact":"...","sourceUrl":"<the url provided, unchanged>"}`;
 
-This executive runs a US bank. Their world is US institutions and US regulators.
-
-From the newsletter provided, pull out:
-- Up to 3 bankingStories: AI moves that directly touch their world — a real bank, a named regulator, a specific financial product. Not "could affect banks someday." Happening now.
-- Up to 3 aiStories: The AI developments big enough that they'd kick themselves for missing. Model releases, capability leaps, enterprise deployments already reshaping their vendor landscape.
-
-GEOGRAPHY — this matters as much as the topic:
-- Default to the US. A US bank, a US fintech, or a US regulator (Fed, OCC, FDIC, SEC, CFPB, CFTC, FinCEN, Treasury, state regulators) is what they care about.
-- If a slot would otherwise go empty, European news (ECB, Bank of England, FCA, EU AI Act, a major European bank) is an acceptable second choice.
-- Otherwise skip it. A regulator in Asia, Africa, or Latin America telling local firms what to do is NOT their world — leave the slot empty rather than filling it with one. An empty slot is better than an irrelevant story.
-- The exception: any country's news that directly moves US institutions or the global AI vendors US banks buy from.
-
-Skip anything from paywalled sources (FT, WSJ, Bloomberg, The Information, American Banker, Economist, Barrons). Skip developer gossip, consumer apps, entertainment AI.
-
-For each story, write like you're briefing a sharp colleague who has no patience for filler:
-- title: The actual point, not a repackaged headline. What happened and why it matters in one line.
-- executiveSummary: 2-3 sentences. What happened, who did it, what it means. No hedging, no "it remains to be seen." Stick to what is known.
-- businessImpact: One concrete thing they should do or watch. Start with a verb. Not "banks should consider exploring..." — try "Pressure your core banking vendor on this at your next QBR" or "This is the model your fraud team should be evaluating right now."
-- sourceUrl: Use the newsletter URL exactly as provided — do not invent external URLs.
-
-Return strict JSON: {"bankingStories":[{"title":"...","executiveSummary":"...","businessImpact":"...","sourceUrl":"..."}],"aiStories":[...]}`;
-
-
-// ── Main prompt for the supplementary RSS candidates pass ─────────────────────
-export const LLM_PROMPT = `You're a trusted intelligence analyst who knows banking inside-out. The smol.ai newsletter stories are already handled — now scan these RSS items for anything else worth surfacing.
-
-The executive reading this is sharp, time-constrained, and allergic to filler. They read between 7am meetings. Your job isn't to summarize the internet — it's to find the 1-3 things they'd actually wish they knew about today.
-
-WHAT TO INCLUDE
-- bankingStories (up to 3): AI news where the banking angle is explicit and concrete. Not "could apply to financial services someday." A named bank deployed it. A regulator issued guidance. A fintech raised on it. Real, specific, now.
-- aiStories (up to 3): General AI developments a banking executive would feel behind on if they missed — new model capabilities, enterprise adoption at scale, meaningful moves from the major labs.
-
-WHERE IT MATTERS
-The executive reading this runs a US bank.
-- Default to the US: US banks, US fintechs, US regulators (Fed, OCC, FDIC, SEC, CFPB, CFTC, FinCEN, Treasury, state regulators).
-- Europe is the fallback when there is genuinely nothing US-relevant for a slot — ECB, Bank of England, FCA, EU AI Act, a major European bank.
-- Beyond that, skip. A central bank in Asia, Africa, or Latin America issuing guidance to its own supervised firms is not their world, no matter how well it fits the AI angle. Return fewer stories instead — an empty slot beats an irrelevant one.
-- Exception: non-US news that directly moves US institutions or the AI vendors US banks buy from.
-
-WHAT TO SKIP
-- Paywalled articles with no actual content. A headline and a wall isn't a story.
-- Social, entertainment, lifestyle. Not their world.
-- Vague opinion pieces with no new data or concrete developments.
-- Anything already covered by the smol.ai stories.
-
-HOW TO WRITE IT
-Think of it as explaining to a very smart colleague who's been heads-down in a board meeting for a week. They don't need the background. They need: what changed, why it matters, what to do about it.
-
-- title: The actual point in one line — not a repackaged headline.
-- executiveSummary: 2-3 sentences. Direct, active voice. What changed, who moved, what's different now. Avoid: "it's worth noting," "this highlights," "in a significant development."
-- businessImpact: One or two sentences starting with an action verb. Specific enough they could say it in a meeting. Avoid: "banks should monitor this space," "this could impact the industry," "leaders may want to consider."
-
-Return strict JSON only — no commentary, no markdown wrapper.
-
-{
-  "bankingStories": [
-    {
-      "title": "...",
-      "executiveSummary": "...",
-      "businessImpact": "...",
-      "sourceUrl": "https://..."
-    }
-  ],
-  "aiStories": [
-    {
-      "title": "...",
-      "executiveSummary": "...",
-      "businessImpact": "...",
-      "sourceUrl": "https://..."
-    }
-  ]
-}`;
+/** Shown on the admin page: the editorial and writing instructions in force. */
+export const LLM_PROMPT = `SELECTION\n${SELECT_PROMPT_TEXT}\n\nWRITING\n${WRITE_PROMPT_TEXT}`;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type ItemRow = {
+  id?: number;
   title: string;
   summary: string | null;
   url: string;
   source_name: string | null;
   published_at?: string | Date | null;
+  ingested_at?: string | Date | null;
+};
+
+type Candidate = ItemRow & {
+  idx: number;
+  tier: 1 | 2 | 3 | 4;
+  banking: number;
+  ai: number;
+  concrete: number;
+  geography: "US" | "EU" | "other";
+  topic: string;
+  bankingScore: number;
+  aiScore: number;
+  text?: string;
 };
 
 // ── Entry point ───────────────────────────────────────────────────────────────
 export async function generateFintechDigest(): Promise<DailyDigest> {
-  const items = await listNewsItemsSince(72);
   const date = new Date().toISOString().slice(0, 10);
   const category = "fintech_banking" as const;
-
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL || "gpt-4.1-mini";
-
-  // Collects failures from every LLM call/parse so generation_meta records WHY
-  // a pass came back empty (API error vs. schema rejection vs. no API key).
   const llmErrors: string[] = [];
   if (!apiKey) llmErrors.push("OPENAI_API_KEY not set");
 
-  // Collect URLs already published in recent digests to avoid cross-day repeats
-  const recentDigests = await listRecentDigests(3);
-
-  // Preserve a one-off developer note already set on today's draft: the cron
-  // regenerates content_json wholesale, and the note (set manually for a single
-  // date) must survive that. It never carries across dates.
+  // Preserve a one-off developer note on today's draft across regeneration.
+  const recentDigests = await listRecentDigests(7);
   const existingToday = recentDigests.find((d) => d.digest_date === date);
   const developerNote = (existingToday?.content_json as DailyDigest | null)?.developerNote;
-  const recentlyUsedUrls = new Set<string>();
+
+  // URLs and titles published in the last 7 days — never repeat a story.
+  const usedUrls = new Set<string>();
+  const recentTitles: string[] = [];
   for (const d of recentDigests) {
-    if (d.digest_date === date) continue; // skip today's own draft if regenerating
-    const content = d.content_json as DailyDigest | null;
-    if (!content) continue;
-    for (const s of [...(content.bankingStories ?? content.stories ?? []), ...(content.aiStories ?? [])]) {
-      if (s.sourceUrl) recentlyUsedUrls.add(normalizeUrl(s.sourceUrl));
+    if (d.digest_date === date) continue;
+    const c = d.content_json as DailyDigest | null;
+    if (!c) continue;
+    for (const s of [...(c.bankingStories ?? c.stories ?? []), ...(c.aiStories ?? [])]) {
+      if (s.sourceUrl) usedUrls.add(normalizeUrl(s.sourceUrl));
+      recentTitles.push(s.title);
     }
   }
 
-  // Split smol.ai items (newsletter blobs) from regular RSS items
-  const smolItems = items.filter((i) => i.source_name === "Smol AI Issues" && i.summary);
-  // Remove paywalled, excluded, and already-published URLs from the RSS pool
-  const rssItems = items.filter(
-    (i) => i.source_name !== "Smol AI Issues"
-      && !isPaywalled(i.url)
-      && !isExcludedUrl(i.url)
-      && !recentlyUsedUrls.has(normalizeUrl(i.url))
-  );
+  // Stage 0 — the pool.
+  const items = await listNewsItemsSince(48);
+  const now = Date.now();
+  const pool: ItemRow[] = items.filter((i) => {
+    if (isPaywalled(i.url) || isExcludedUrl(i.url)) return false;
+    if (usedUrls.has(normalizeUrl(i.url))) return false;
+    const publishedMs = i.published_at ? new Date(i.published_at).getTime() : NaN;
+    if (Number.isFinite(publishedMs) && now - publishedMs > 48 * 3600_000) return false;
+    const hay = ` ${i.title} ${(i.summary ?? "").slice(0, 3000)} `.toLowerCase();
+    if (!AI_KEYWORDS.some((k) => hay.includes(k))) return false;
+    if (EXCLUDE_KEYWORDS.some((k) => hay.includes(k))) return false;
+    return true;
+  });
 
-  // Pass 1: extract stories from the smol.ai newsletter (primary source)
-  const smolResult = apiKey && smolItems.length > 0
-    ? await extractFromSmolNewsletter(smolItems, apiKey, model, llmErrors)
-    : { bankingStories: [], aiStories: [] };
-
-  // Pass 2: supplementary stories from RSS candidates (fill remaining slots)
-  const neededBanking = 3 - smolResult.bankingStories.length;
-  const neededAi = 3 - smolResult.aiStories.length;
-  const usedUrls = new Set([
-    ...smolResult.bankingStories.map((s) => s.sourceUrl),
-    ...smolResult.aiStories.map((s) => s.sourceUrl)
-  ]);
-
-  let rssResult: { bankingStories: DigestStory[]; aiStories: DigestStory[] } = {
-    bankingStories: [],
-    aiStories: []
+  const meta: Record<string, unknown> = {
+    totalItems: items.length,
+    poolAfterFilters: pool.length,
+    model
   };
 
-  if (apiKey && rssItems.length > 0 && (neededBanking > 0 || neededAi > 0)) {
-    const bankingCandidates = selectCandidateItems(rssItems).filter((i) => !usedUrls.has(i.url));
-    const aiCandidates = selectAiItems(rssItems).filter((i) => !usedUrls.has(i.url));
-    rssResult = await tryLlmTwoSection(bankingCandidates, aiCandidates, apiKey, model, llmErrors);
+  let bankingStories: DigestStory[] = [];
+  let aiStories: DigestStory[] = [];
+  let selectionReasons: { banking: string[]; ai: string[] } = { banking: [], ai: [] };
+
+  if (apiKey && pool.length > 0) {
+    // Stage 1 — score everything.
+    const scored = await scoreCandidates(pool, apiKey, model, llmErrors);
+    meta.scored = scored.length;
+
+    const bankingTop = [...scored]
+      .filter((c) => c.banking >= 5 && c.geography !== "other")
+      .sort((a, b) => b.bankingScore - a.bankingScore)
+      .slice(0, 22);
+    const aiTop = [...scored]
+      .filter((c) => c.ai >= 6)
+      .sort((a, b) => b.aiScore - a.aiScore)
+      .slice(0, 22);
+    meta.bankingShortlist = bankingTop.length;
+    meta.aiShortlist = aiTop.length;
+
+    // Stage 2 — read the articles.
+    const toRead = dedupeByUrl([...bankingTop, ...aiTop]);
+    await mapWithConcurrency(toRead, 8, async (c) => {
+      c.text = await fetchArticleText(c.url, c.summary);
+    });
+    meta.articlesRead = toRead.filter((c) => c.text && c.text.length > 800).length;
+
+    // Stage 3 — select.
+    const selection = await selectStories(bankingTop, aiTop, recentTitles, apiKey, model, llmErrors);
+    selectionReasons = { banking: selection.banking.map((s) => s.reason), ai: selection.ai.map((s) => s.reason) };
+
+    // Stage 4 + 5 — write and verify, in parallel per story.
+    const writeAll = async (picks: Candidate[]) =>
+      (await Promise.all(picks.map((c) => writeAndVerify(c, apiKey, model, llmErrors)))).filter(
+        (s): s is DigestStory => s !== null
+      );
+    [bankingStories, aiStories] = await Promise.all([
+      writeAll(selection.banking.map((s) => s.candidate)),
+      writeAll(selection.ai.map((s) => s.candidate))
+    ]);
+    bankingStories = dedupeStories(bankingStories).slice(0, 3);
+    aiStories = dedupeStories(aiStories).filter((s) => !bankingStories.some((b) => normalizeUrl(b.sourceUrl) === normalizeUrl(s.sourceUrl))).slice(0, 3);
   }
 
-  // Collect recently-published titles for topic-level dedup (catches smol newsletter repeats
-  // where sourceUrl is the newsletter URL, not the underlying article URL)
-  const recentTitles = recentDigests
-    .filter((d) => d.digest_date !== date)
-    .flatMap((d) => {
-      const c = d.content_json as DailyDigest | null;
-      if (!c) return [];
-      return [...(c.bankingStories ?? c.stories ?? []), ...(c.aiStories ?? [])].map((s) => s.title);
-    });
+  const lede = apiKey && (bankingStories.length + aiStories.length) > 0
+    ? await generateLedeLlm(bankingStories, aiStories, apiKey, model, llmErrors)
+    : null;
 
-  // Merge: smol stories take priority, RSS fills remaining slots up to 3 each
-  const mergedBanking = dedupeStories([...smolResult.bankingStories, ...rssResult.bankingStories]);
-  const mergedAi = dedupeStories([...smolResult.aiStories, ...rssResult.aiStories]);
-
-  const deduped = apiKey
-    ? await filterTopicRepeatsLlm(mergedBanking, mergedAi, recentTitles, apiKey, model, llmErrors)
-    : {
-        bankingStories: mergedBanking.filter((s) => !isTopicRepeat(s.title, recentTitles)),
-        aiStories: mergedAi.filter((s) => !isTopicRepeat(s.title, recentTitles))
-      };
-
-  const bankingStories = deduped.bankingStories.slice(0, 3);
-  const aiStories = deduped.aiStories.slice(0, 3);
-
-  const briefSummary = apiKey
-    ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model, llmErrors)) ||
-      buildBriefSummary(bankingStories, aiStories)
+  const briefSummary = apiKey && (bankingStories.length + aiStories.length) > 0
+    ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model, llmErrors)) || buildBriefSummary(bankingStories, aiStories)
     : buildBriefSummary(bankingStories, aiStories);
 
-  // If the LLM pipeline produced nothing, store the digest empty. The send
-  // step refuses to email an empty digest, so a broken/quiet day means no
-  // email rather than a keyword-scored dump of raw scraped text.
   const digest: DailyDigest = {
     date, category, bankingStories, aiStories, briefSummary,
+    ...(lede ? { lede } : {}),
     ...(developerNote ? { developerNote } : {})
   };
 
@@ -245,13 +221,11 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     category,
     contentJson: digest,
     generationMeta: {
-      totalItems: items.length,
-      smolItems: smolItems.length,
-      rssItems: rssItems.length,
-      smolBanking: smolResult.bankingStories.length,
-      smolAi: smolResult.aiStories.length,
-      rssBanking: rssResult.bankingStories.length,
-      rssAi: rssResult.aiStories.length,
+      ...meta,
+      bankingPublished: bankingStories.length,
+      aiPublished: aiStories.length,
+      sources: [...bankingStories, ...aiStories].map((s) => `${hostOf(s.sourceUrl)} (${TIER_LABEL[sourceTier(s.sourceUrl)]})`),
+      selectionReasons,
       llmErrors
     }
   });
@@ -259,142 +233,235 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
   return digest;
 }
 
-// ── Pass 1: dedicated smol.ai newsletter extraction ───────────────────────────
-async function extractFromSmolNewsletter(
-  smolItems: ItemRow[],
-  apiKey: string,
-  model: string,
-  llmErrors?: string[]
-): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
-  // Use the most recent smol issue (DB already orders by published_at desc)
-  const issue = smolItems[0];
-  const issueUrl = issue.url;
-  // Trim to model context limits while preserving the most relevant content
-  const newsletterText = (issue.summary ?? "").slice(0, 18000);
+// ── Stage 1: scoring ──────────────────────────────────────────────────────────
+const SCORE_PROMPT = `You rate news candidates for a daily brief read by executives at US banks. For each item return scores 0-10:
+- banking: how directly this is about AI at a bank, credit union, lender, payments company, fintech serving banks, or a financial regulator. 10 = a named institution or regulator did something specific with AI. 0 = no banking connection.
+- ai: how important this is as general AI news for a business executive: model releases, capability changes, pricing, enterprise deployments at scale, major lab or chip moves, AI policy. Developer tooling, consumer apps, entertainment, gossip score low.
+- concrete: 10 = a specific event with names, numbers and dates; 0 = opinion, listicle, vendor marketing with no event, market-research report, conference recap, sponsored content.
+- geography: "US" if the actors are US institutions, US regulators, or global vendors that sell to US banks; "EU" for UK/EU institutions and regulators; "other" for the rest of the world.
+- topic: 3-6 words naming the event, the same wording for items about the same event.
+Press releases about a named bank or vendor product are legitimate; syndicated copies of the same release should get the same topic. Return strict JSON: {"scores":[{"idx":1,"banking":0,"ai":0,"concrete":0,"geography":"US","topic":"..."}]}`;
 
-  const prompt = `${SMOL_EXTRACT_PROMPT} The newsletter URL (use as sourceUrl for all stories) is: ${issueUrl}`;
-
-  const response = await callLlm(apiKey, model, prompt, `Newsletter content:\n\n${newsletterText}`, llmErrors, "smol");
-  if (!response) return { bankingStories: [], aiStories: [] };
-
-  const result = twoSectionSchema.safeParse(response);
-  if (!result.success) {
-    llmErrors?.push(`smol: schema rejected response: ${result.error.message.slice(0, 300)}`);
-    return { bankingStories: [], aiStories: [] };
-  }
-
-  return {
-    bankingStories: dedupeStories(result.data.bankingStories),
-    aiStories: dedupeStories(result.data.aiStories)
-  };
+async function scoreCandidates(pool: ItemRow[], apiKey: string, model: string, llmErrors: string[]): Promise<Candidate[]> {
+  const batches: ItemRow[][] = [];
+  for (let i = 0; i < pool.length; i += 40) batches.push(pool.slice(i, i + 40));
+  const out: Candidate[] = [];
+  const jobs = batches.map((batch, b) => async () => {
+    const base = b * 40;
+    const compact = batch.map((item, i) => ({
+      idx: base + i + 1,
+      source: item.source_name ?? "unknown",
+      host: hostOf(item.url),
+      tier: TIER_LABEL[sourceTier(item.url)],
+      published: item.published_at ? String(item.published_at).slice(0, 10) : null,
+      title: item.title,
+      snippet: (item.summary ?? "").slice(0, 700)
+    }));
+    const response = await callLlm(apiKey, model, SCORE_PROMPT, JSON.stringify({ items: compact }), llmErrors, "score");
+    const parsed = scoreSchema.safeParse(response);
+    if (!parsed.success) {
+      llmErrors.push(`score: batch ${b} rejected`);
+      return;
+    }
+    for (const s of parsed.data.scores) {
+      const item = batch[s.idx - base - 1];
+      if (!item) continue;
+      const tier = sourceTier(item.url);
+      const tierBonus = { 1: 3, 2: 2, 3: 1, 4: -1 }[tier];
+      out.push({
+        ...item,
+        idx: s.idx,
+        tier,
+        banking: s.banking,
+        ai: s.ai,
+        concrete: s.concrete,
+        geography: s.geography,
+        topic: s.topic,
+        bankingScore: s.banking * 2 + s.concrete + tierBonus + (s.geography === "US" ? 2 : 0),
+        aiScore: s.ai * 2 + s.concrete + tierBonus
+      });
+    }
+  });
+  await mapWithConcurrency(jobs, 6, (job) => job());
+  return out;
 }
 
-// ── Pass 2: RSS candidates via two-section LLM ────────────────────────────────
-async function tryLlmTwoSection(
-  bankingItems: ItemRow[],
-  aiItems: ItemRow[],
-  apiKey: string,
-  model: string,
-  llmErrors?: string[]
-): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
-  if (bankingItems.length === 0 && aiItems.length === 0) {
-    return { bankingStories: [], aiStories: [] };
-  }
-
-  const seen = new Set<string>();
-  const combined: Array<ItemRow & { pool: string }> = [];
-  for (const item of bankingItems) {
-    if (!seen.has(item.url)) { seen.add(item.url); combined.push({ ...item, pool: "banking" }); }
-  }
-  for (const item of aiItems) {
-    if (!seen.has(item.url)) { seen.add(item.url); combined.push({ ...item, pool: "ai" }); }
-  }
-
-  const compactItems = combined.slice(0, 150).map((item, i) => ({
-    idx: i + 1, pool: item.pool,
-    title: item.title,
-    summary: (item.summary ?? "").slice(0, 350),
-    source: item.source_name ?? "unknown",
-    url: item.url
-  }));
-
-  const response = await callLlm(
-    apiKey, model, LLM_PROMPT,
-    JSON.stringify({ items: compactItems }),
-    llmErrors, "rss"
-  );
-  if (!response) return { bankingStories: [], aiStories: [] };
-
-  const result = twoSectionSchema.safeParse(response);
-  if (!result.success) {
-    llmErrors?.push(`rss: schema rejected response: ${result.error.message.slice(0, 300)}`);
-    return { bankingStories: [], aiStories: [] };
-  }
-
-  return {
-    bankingStories: dedupeStories(result.data.bankingStories),
-    aiStories: dedupeStories(result.data.aiStories)
-  };
+// ── Stage 2: read ─────────────────────────────────────────────────────────────
+async function fetchArticleText(url: string, fallback: string | null): Promise<string> {
+  const direct = await fetchDirect(url);
+  if (direct && direct.length > 800) return direct.slice(0, 7000);
+  const viaKeenable = await keenableFetchText(url);
+  if (viaKeenable && viaKeenable.length > 800) return viaKeenable.slice(0, 7000);
+  return (direct && direct.length > (fallback?.length ?? 0) ? direct : fallback ?? "").slice(0, 7000);
 }
 
-// ── Cross-day repeat filter (LLM) ────────────────────────────────────────────
-// Keyword/entity matching (isTopicRepeat below) misses repeats where the same
-// story is referred to by different names across days (e.g. "BoE" vs "Bank of
-// England"). An LLM pass catches those by reading for meaning, not tokens.
-async function filterTopicRepeatsLlm(
-  bankingCandidates: DigestStory[],
-  aiCandidates: DigestStory[],
+async function fetchDirect(url: string): Promise<string | null> {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 9000);
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; BankingNewsAI/2.0; +https://www.bankingnewsai.com)",
+        Accept: "text/html,application/xhtml+xml"
+      },
+      redirect: "follow",
+      signal: ctrl.signal
+    });
+    clearTimeout(t);
+    if (!res.ok) return null;
+    const type = res.headers.get("content-type") ?? "";
+    if (!type.includes("html") && !type.includes("xml")) return null;
+    const html = await res.text();
+    return extractReadableText(html);
+  } catch {
+    return null;
+  }
+}
+
+function extractReadableText(html: string): string {
+  const main =
+    html.match(/<article[\s\S]*?<\/article>/i)?.[0] ||
+    html.match(/<main[\s\S]*?<\/main>/i)?.[0] ||
+    html.match(/<body[\s\S]*?<\/body>/i)?.[0] ||
+    html;
+  return main
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<nav[\s\S]*?<\/nav>/gi, " ")
+    .replace(/<footer[\s\S]*?<\/footer>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, "\"")
+    .replace(/&#39;|&rsquo;|&lsquo;/gi, "'")
+    .replace(/&[a-z]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// ── Stage 3: select ───────────────────────────────────────────────────────────
+const SELECT_PROMPT = SELECT_PROMPT_TEXT;
+
+async function selectStories(
+  bankingTop: Candidate[],
+  aiTop: Candidate[],
   recentTitles: string[],
   apiKey: string,
   model: string,
-  llmErrors?: string[]
-): Promise<{ bankingStories: DigestStory[]; aiStories: DigestStory[] }> {
-  if (recentTitles.length === 0 || (bankingCandidates.length === 0 && aiCandidates.length === 0)) {
-    return { bankingStories: bankingCandidates, aiStories: aiCandidates };
-  }
-
-  const prompt = `You catch repeat stories in a daily banking/AI newsletter. Below are today's candidate story titles and the titles already published in the last few days.
-
-A candidate is a REPEAT if it covers the same underlying news event as a recent title — even if worded differently, using an abbreviation or acronym for the same organization (e.g. "BoE" = "Bank of England", "ECB" = "European Central Bank", "FCA" = "Financial Conduct Authority"), or emphasizing a different angle on the same event. It is NOT a repeat if it's a genuinely new development, even about the same organization.
-
-Return strict JSON only: {"bankingRepeatIndices": [...idx numbers...], "aiRepeatIndices": [...idx numbers...]}`;
-
-  const userContent = JSON.stringify({
-    recentTitles,
-    bankingCandidates: bankingCandidates.map((s, idx) => ({ idx, title: s.title })),
-    aiCandidates: aiCandidates.map((s, idx) => ({ idx, title: s.title }))
-  });
-
-  const response = await callLlm(apiKey, model, prompt, userContent, llmErrors, "repeat-filter");
-  const result = topicRepeatSchema.safeParse(response);
-  if (!result.success) {
-    llmErrors?.push("repeat-filter: schema rejected response, falling back to keyword dedup");
+  llmErrors: string[]
+): Promise<{ banking: { candidate: Candidate; reason: string }[]; ai: { candidate: Candidate; reason: string }[] }> {
+  const byIdx = new Map<number, Candidate>();
+  const pack = (list: Candidate[]) =>
+    list.map((c) => {
+      byIdx.set(c.idx, c);
+      return {
+        idx: c.idx,
+        host: hostOf(c.url),
+        tier: TIER_LABEL[c.tier],
+        published: c.published_at ? String(c.published_at).slice(0, 10) : null,
+        geography: c.geography,
+        topic: c.topic,
+        title: c.title,
+        text: (c.text ?? c.summary ?? "").slice(0, 2200)
+      };
+    });
+  const response = await callLlm(
+    apiKey, model, SELECT_PROMPT,
+    JSON.stringify({ recentTitles: recentTitles.slice(0, 60), banking: pack(bankingTop), ai: pack(aiTop) }),
+    llmErrors, "select"
+  );
+  const parsed = selectSchema.safeParse(response);
+  if (!parsed.success) {
+    llmErrors.push("select: schema rejected response; falling back to top scores");
     return {
-      bankingStories: bankingCandidates.filter((s) => !isTopicRepeat(s.title, recentTitles)),
-      aiStories: aiCandidates.filter((s) => !isTopicRepeat(s.title, recentTitles))
+      banking: bankingTop.slice(0, 3).map((candidate) => ({ candidate, reason: "fallback: top score" })),
+      ai: aiTop.slice(0, 3).map((candidate) => ({ candidate, reason: "fallback: top score" }))
     };
   }
-
-  const bankingRepeat = new Set(result.data.bankingRepeatIndices);
-  const aiRepeat = new Set(result.data.aiRepeatIndices);
-  return {
-    bankingStories: bankingCandidates.filter((_, idx) => !bankingRepeat.has(idx)),
-    aiStories: aiCandidates.filter((_, idx) => !aiRepeat.has(idx))
-  };
+  const resolve = (picks: { idx: number; reason: string }[]) =>
+    picks.map((p) => ({ candidate: byIdx.get(p.idx), reason: p.reason }))
+      .filter((p): p is { candidate: Candidate; reason: string } => Boolean(p.candidate))
+      .slice(0, 3);
+  return { banking: resolve(parsed.data.banking), ai: resolve(parsed.data.ai) };
 }
 
-// ── Shared LLM helper ─────────────────────────────────────────────────────────
-async function callLlm(
-  apiKey: string,
-  model: string,
-  systemPrompt: string,
-  userContent: string,
-  llmErrors?: string[],
-  pass?: string
-): Promise<unknown | null> {
-  // Reasoning models (o-series, gpt-5.x) don't support the temperature parameter
-  const isReasoningOrGpt5 = /^(o\d|gpt-5)/i.test(model);
+// ── Stage 4 + 5: write, then verify ───────────────────────────────────────────
+const WRITE_PROMPT = WRITE_PROMPT_TEXT;
 
+const VERIFY_PROMPT = `You check a drafted story against its source text. For every sentence in the draft, confirm the source text supports it. Remove or correct any sentence with a name, number, date or claim the text does not contain. Remove any phrase that breaks the style rules below. Keep the rest unchanged.
+${STYLE_RULES}
+Return strict JSON: {"supported":true|false,"title":"...","executiveSummary":"...","businessImpact":"...","problems":["..."]} where the three text fields are the corrected versions (identical to the draft when nothing needed changing).`;
+
+async function writeAndVerify(c: Candidate, apiKey: string, model: string, llmErrors: string[]): Promise<DigestStory | null> {
+  const text = (c.text ?? c.summary ?? "").slice(0, 7000);
+  if (text.length < 200) {
+    llmErrors.push(`write: no usable text for ${c.url}`);
+    return null;
+  }
+  const drafted = await callLlm(
+    apiKey, model, WRITE_PROMPT,
+    JSON.stringify({ url: c.url, source: hostOf(c.url), published: c.published_at, title: c.title, text }),
+    llmErrors, "write"
+  );
+  const draft = storySchema.safeParse(drafted);
+  if (!draft.success) {
+    llmErrors.push(`write: schema rejected for ${c.url}`);
+    return null;
+  }
+  const story: DigestStory = { ...draft.data, sourceUrl: cleanSourceUrl(c.url) };
+
+  const checked = await callLlm(
+    apiKey, model, VERIFY_PROMPT,
+    JSON.stringify({ draft: story, text }),
+    llmErrors, "verify"
+  );
+  const verified = verifySchema.safeParse(checked);
+  if (!verified.success) return story;
+  const v = verified.data;
+  if (v.executiveSummary && v.executiveSummary.length > 60) {
+    story.title = v.title || story.title;
+    story.executiveSummary = v.executiveSummary;
+    story.businessImpact = v.businessImpact ?? story.businessImpact;
+  }
+  if (v.problems.length > 0) llmErrors.push(`verify(${hostOf(c.url)}): ${v.problems.slice(0, 3).join(" | ").slice(0, 300)}`);
+  return story;
+}
+
+// ── Brief summary (subject line) ──────────────────────────────────────────────
+export async function generateBriefSummaryLlm(
+  banking: DigestStory[], ai: DigestStory[], apiKey: string, model: string, llmErrors: string[] = []
+): Promise<string | null> {
+  const prompt = `Write the email subject line for today's brief: one plain sentence, at most 110 characters, stating the single most important story by actor and action. No colon patterns, no hype words, no questions. Return strict JSON: {"subject":"..."}`;
+  const response = await callLlm(apiKey, model, prompt, JSON.stringify({ banking: banking.map((s) => s.title), ai: ai.map((s) => s.title) }), llmErrors, "subject");
+  const subject = (response as { subject?: string } | null)?.subject?.trim();
+  return subject && subject.length > 10 ? subject.slice(0, 140) : null;
+}
+
+async function generateLedeLlm(
+  banking: DigestStory[], ai: DigestStory[], apiKey: string, model: string, llmErrors: string[]
+): Promise<string | null> {
+  const prompt = `Write the opening of today's brief: one or two plain sentences, at most 45 words in total, telling a US bank executive what happened today across these stories. Name the actors. State facts only, no framing words, no "today's brief covers". ${STYLE_RULES.split("\n").slice(0, 4).join("\n")}
+Return strict JSON: {"lede":"..."}`;
+  const response = await callLlm(
+    apiKey, model, prompt,
+    JSON.stringify({ banking: banking.map((s) => ({ title: s.title, summary: s.executiveSummary })), ai: ai.map((s) => ({ title: s.title, summary: s.executiveSummary })) }),
+    llmErrors, "lede"
+  );
+  const lede = (response as { lede?: string } | null)?.lede?.trim();
+  return lede && lede.length > 20 ? lede.slice(0, 400) : null;
+}
+
+export function buildBriefSummary(banking: DigestStory[], ai: DigestStory[]): string {
+  const first = banking[0]?.title ?? ai[0]?.title;
+  return first ? first.slice(0, 140) : "Banking AI Brief";
+}
+
+// ── LLM helper ────────────────────────────────────────────────────────────────
+async function callLlm(
+  apiKey: string, model: string, systemPrompt: string, userContent: string, llmErrors: string[], pass: string
+): Promise<unknown | null> {
+  const isReasoningOrGpt5 = /^(o\d|gpt-5)/i.test(model);
   const body: Record<string, unknown> = {
     model,
     response_format: { type: "json_object" },
@@ -403,185 +470,87 @@ async function callLlm(
       { role: "user", content: userContent }
     ]
   };
-
-  if (!isReasoningOrGpt5) {
-    body.temperature = 0.2;
-  }
-
+  if (!isReasoningOrGpt5) body.temperature = 0.2;
   try {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
       body: JSON.stringify(body)
     });
-
     if (!res.ok) {
       const err = await res.text().catch(() => res.statusText);
-      console.error(`[callLlm] OpenAI API error ${res.status}: ${err}`);
-      llmErrors?.push(`${pass ?? "llm"}: OpenAI API error ${res.status}: ${err.slice(0, 300)}`);
+      llmErrors.push(`${pass}: OpenAI API error ${res.status}: ${err.slice(0, 200)}`);
       return null;
     }
-
     const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
     const content = json.choices?.[0]?.message?.content;
     if (!content) {
-      llmErrors?.push(`${pass ?? "llm"}: empty completion`);
+      llmErrors.push(`${pass}: empty completion`);
       return null;
     }
     return JSON.parse(content);
   } catch (e) {
-    console.error("[callLlm] Unexpected error:", e);
-    llmErrors?.push(`${pass ?? "llm"}: ${e instanceof Error ? e.message.slice(0, 300) : "unexpected error"}`);
+    llmErrors.push(`${pass}: ${e instanceof Error ? e.message.slice(0, 200) : "unexpected error"}`);
     return null;
   }
 }
 
-// ── Candidate selectors ───────────────────────────────────────────────────────
-function selectCandidateItems(items: ItemRow[]) {
-  const now = Date.now();
-  const windowMs = 72 * 60 * 60 * 1000;
-  return items
-    .map((item) => {
-      const hay = `${item.title} ${item.summary ?? ""} ${item.source_name ?? ""}`.toLowerCase();
-      const aiHits = kwHits(hay, AI_KEYWORDS);
-      const bankingHits = kwHits(hay, BANKING_KEYWORDS);
-      const excluded = kwHits(hay, EXCLUDE_KEYWORDS) > 0;
-      const lowerUrl = item.url.toLowerCase();
-      const excludedUrl = EXCLUDE_URL_PATTERNS.some((p) => lowerUrl.includes(p));
-      const publishedMs = item.published_at ? new Date(item.published_at).getTime() : NaN;
-      const isRecent = Number.isFinite(publishedMs) && now - publishedMs >= 0 && now - publishedMs <= windowMs;
-      return { ...item, score: aiHits * 3 + bankingHits * 4 - (excluded ? 10 : 0) - (excludedUrl ? 100 : 0), isRecent, excludedUrl };
-    })
-    .filter((i) => {
-      const hay = `${i.title} ${i.summary ?? ""} ${i.source_name ?? ""}`.toLowerCase();
-      return kwHits(hay, AI_KEYWORDS) > 0 && kwHits(hay, BANKING_KEYWORDS) > 0
-        && !i.excludedUrl && i.score > 0 && i.isRecent;
-    })
-    .sort((a, b) => b.score - a.score);
-}
-
-function selectAiItems(items: ItemRow[]) {
-  const now = Date.now();
-  const windowMs = 72 * 60 * 60 * 1000;
-  return items
-    .map((item) => {
-      const hay = `${item.title} ${item.summary ?? ""} ${item.source_name ?? ""}`.toLowerCase();
-      const aiHits = kwHits(hay, AI_KEYWORDS);
-      const excluded = kwHits(hay, EXCLUDE_KEYWORDS) > 0;
-      const lowerUrl = item.url.toLowerCase();
-      const excludedUrl = EXCLUDE_URL_PATTERNS.some((p) => lowerUrl.includes(p));
-      const publishedMs = item.published_at ? new Date(item.published_at).getTime() : NaN;
-      const isRecent = Number.isFinite(publishedMs) && now - publishedMs >= 0 && now - publishedMs <= windowMs;
-      return { ...item, aiHits, excluded, excludedUrl, isRecent };
-    })
-    .filter((i) => i.aiHits > 0 && !i.excluded && !i.excludedUrl && i.isRecent)
-    .sort((a, b) => b.aiHits - a.aiHits);
-}
-
+// ── Utilities ─────────────────────────────────────────────────────────────────
 function isExcludedUrl(url: string): boolean {
   const lower = url.toLowerCase();
   return EXCLUDE_URL_PATTERNS.some((p) => lower.includes(p));
 }
 
-// ── Utilities ─────────────────────────────────────────────────────────────────
-
-/**
- * Extract key entities from a title: dollar/billion amounts and capitalized proper nouns.
- * Used to detect same-story repeats across consecutive digests.
- */
-function extractKeyEntities(title: string): Set<string> {
-  const entities = new Set<string>();
-  // "$110B", "$4.2T", "$500M", etc.
-  for (const m of title.matchAll(/\$[\d,.]+[BMKTbmkt]?/gi)) {
-    entities.add(m[0].replace(/,/g, "").toLowerCase());
+/** The URL we publish: tracking parameters stripped, otherwise as the source gave it. */
+function cleanSourceUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    for (const k of [...u.searchParams.keys()]) if (/^(utm_|ref$|fbclid|gclid|mc_)/i.test(k)) u.searchParams.delete(k);
+    u.hash = "";
+    return u.toString();
+  } catch {
+    return url;
   }
-  // Capitalised proper nouns 3+ chars (skip common sentence-starters)
-  const skip = new Set(["The", "A", "An", "In", "On", "At", "For", "Of", "With", "And", "But", "Or", "As", "Is", "Are", "Its"]);
-  for (const m of title.matchAll(/\b([A-Z][a-zA-Z]{2,})\b/g)) {
-    if (!skip.has(m[1])) entities.add(m[1].toLowerCase());
-  }
-  return entities;
 }
 
-/**
- * Returns true if `title` shares ≥2 key entities with any title in `recentTitles`,
- * indicating the same story was already covered in a recent digest.
- */
-function isTopicRepeat(title: string, recentTitles: string[]): boolean {
-  const these = extractKeyEntities(title);
-  if (these.size < 2) return false;
-  for (const recent of recentTitles) {
-    const those = extractKeyEntities(recent);
-    let overlap = 0;
-    for (const e of these) {
-      if (those.has(e)) overlap++;
-    }
-    if (overlap >= 2) return true;
+function normalizeUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    u.hash = "";
+    for (const k of [...u.searchParams.keys()]) if (/^(utm_|ref$|fbclid|gclid)/i.test(k)) u.searchParams.delete(k);
+    return u.toString().replace(/\/$/, "").toLowerCase();
+  } catch {
+    return url.trim().toLowerCase();
   }
-  return false;
 }
 
-function kwHits(haystack: string, keywords: string[]): number {
-  return keywords.reduce((n, kw) => n + (haystack.includes(kw) ? 1 : 0), 0);
-}
-
-function dedupeStories(stories: DigestStory[]): DigestStory[] {
-  const used = new Set<string>();
-  return stories.filter((s) => {
-    const key = normalizeUrl(s.sourceUrl) || s.title.toLowerCase().trim();
-    if (!key || used.has(key)) return false;
-    used.add(key);
+function dedupeByUrl(list: Candidate[]): Candidate[] {
+  const seen = new Set<string>();
+  return list.filter((c) => {
+    const k = normalizeUrl(c.url);
+    if (seen.has(k)) return false;
+    seen.add(k);
     return true;
   });
 }
 
-function normalizeUrl(input: string): string {
-  try {
-    const p = new URL(input);
-    p.hash = "";
-    if ((p.protocol === "https:" && p.port === "443") || (p.protocol === "http:" && p.port === "80")) p.port = "";
-    return p.toString().replace(/\/$/, "");
-  } catch {
-    return input.trim().toLowerCase();
-  }
+function dedupeStories(stories: DigestStory[]): DigestStory[] {
+  const seen = new Set<string>();
+  return stories.filter((s) => {
+    const k = normalizeUrl(s.sourceUrl);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
-/** LLM-written 10–15 word complete-sentence summary of the day's top stories. */
-export async function generateBriefSummaryLlm(
-  bankingStories: DigestStory[],
-  aiStories: DigestStory[],
-  apiKey: string,
-  model: string,
-  llmErrors?: string[]
-): Promise<string> {
-  const all = [...bankingStories, ...aiStories].slice(0, 6);
-  if (all.length === 0) return "";
-
-  const storyList = all.map((s, i) => `${i + 1}. ${s.title}`).join("\n");
-
-  const response = await callLlm(
-    apiKey,
-    model,
-    `You are an editor writing the subject line for a banking and AI daily newsletter. Given today's top story headlines, write ONE complete sentence of 10–15 words that captures the single most significant development of the day. Rules: (1) name the specific company, regulator, or technology, (2) active voice, (3) no hedging words like "may" or "could", (4) end with a period, (5) do not start with "Today". Return JSON: {"briefSummary": "..."}`,
-    `Today's headlines:\n${storyList}`,
-    llmErrors, "brief-summary"
-  );
-
-  if (!response || typeof response !== "object" || !("briefSummary" in response)) return "";
-  const s = (response as { briefSummary: unknown }).briefSummary;
-  return typeof s === "string" ? s.trim() : "";
-}
-
-/** Mechanical fallback used when no API key is available. */
-export function buildBriefSummary(bankingStories: DigestStory[], aiStories: DigestStory[]): string {
-  const top = bankingStories[0] ?? aiStories[0];
-  if (!top) return "";
-  const title = top.title.trim();
-  const words = title.split(/\s+/);
-  if (words.length <= 15) return title;
-  // Prefer a natural break at punctuation within the first 15 words
-  const candidate = words.slice(0, 15).join(" ");
-  const m = candidate.match(/^.+?[,;:—–]/);
-  if (m) return m[0].trim();
-  return words.slice(0, 12).join(" ") + "…";
+async function mapWithConcurrency<T>(items: T[], limit: number, fn: (item: T) => Promise<void>): Promise<void> {
+  const queue = [...items];
+  const workers = Array.from({ length: Math.min(limit, queue.length) }, async () => {
+    while (queue.length) {
+      const next = queue.shift()!;
+      await fn(next);
+    }
+  });
+  await Promise.all(workers);
 }

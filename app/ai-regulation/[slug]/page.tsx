@@ -8,16 +8,7 @@ import {
   formatTimelineDate,
   getRegulator
 } from "@/lib/regulators";
-import {
-  STATUS_TAG,
-  authorityMatcher,
-  documentPath,
-  documentsFor,
-  effectiveStatus,
-  getDocument,
-  statusLabel,
-  timelineFor
-} from "@/lib/tracker";
+import { STATUS_TAG, authorityMatcher, documentPath, documentsFor, effectiveStatus, statusLabel, timelineFor } from "@/lib/tracker";
 import { Coverage } from "../coverage";
 import { Section, TrackerShell } from "../shell";
 import { DeepDives, deepDiveFaqEntries } from "../deep-dive";

@@ -38,6 +38,15 @@ const getCachedRelatedIssues = cache(async (excludeDate: string): Promise<Digest
   return digests.filter((d) => d.digest_date !== excludeDate).slice(0, 5);
 });
 
+
+/** The action line starts with a verb; render it bold so the line reads as an instruction. */
+function ActionText({ text }: { text: string }) {
+  const trimmed = text.trim();
+  const space = trimmed.indexOf(" ");
+  if (space <= 0) return <strong>{trimmed}</strong>;
+  return (<><strong style={{ fontWeight: 700 }}>{trimmed.slice(0, space)}</strong>{trimmed.slice(space)}</>);
+}
+
 function formatDate(iso: string): string {
   return formatIssueDateLong(iso);
 }
@@ -107,14 +116,14 @@ function StoryCard({ story, index, accent }: {
           fontSize: 9, fontWeight: 500, letterSpacing: "0.18em",
           textTransform: "uppercase", color: accent
         }}>
-          Action
+          → Action
         </p>
         <p style={{
           margin: 0,
           fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
-          fontSize: 13, color: "#111111", lineHeight: 1.6
+          fontSize: 14, color: "#111111", lineHeight: 1.55
         }}>
-          {story.businessImpact}
+          <ActionText text={story.businessImpact} />
         </p>
       </div>
 
@@ -308,6 +317,16 @@ export default async function IssuePage({
           background: #e4e4df;
           margin: 0 auto 20px;
           max-width: 480px;
+        }
+
+        .issue-lede {
+          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
+          font-size: clamp(1.05rem, 2vw, 1.3rem);
+          font-weight: 300;
+          color: #111111;
+          line-height: 1.5;
+          margin: 0 0 18px;
+          max-width: 62ch;
         }
 
         .issue-headline {
@@ -579,6 +598,7 @@ export default async function IssuePage({
               </p>
               <div className="issue-header-rule" />
               <h1 className="issue-headline">{content.briefSummary ?? formatted}</h1>
+              {content.lede && <p className="issue-lede">{content.lede}</p>}
               <div className="issue-badges">
                 {bankingStories.length > 0 && (
                   <span className="issue-badge issue-badge-bank">
