@@ -53,7 +53,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
   const ledeBlock = digest.lede
     ? `<tr>
         <td style="padding:26px 40px 22px;border-bottom:1px solid ${D.divider};">
-          <p style="margin:0;font-family:${D.serif};font-size:21px;font-weight:400;color:${D.textPrimary};line-height:1.45;letter-spacing:-0.01em;">${escapeHtml(digest.lede)}</p>
+          <p style="margin:0;font-family:${D.sans};font-size:18px;font-weight:400;color:${D.textPrimary};line-height:1.5;">${escapeHtml(digest.lede)}</p>
         </td>
       </tr>`
     : "";

@@ -441,7 +441,11 @@ export async function generateBriefSummaryLlm(
 async function generateLedeLlm(
   banking: DigestStory[], ai: DigestStory[], apiKey: string, model: string, llmErrors: string[]
 ): Promise<string | null> {
-  const prompt = `Write the opening of today's brief: one or two plain sentences, at most 45 words in total, telling a US bank executive what happened today across these stories. Name the actors. State facts only, no framing words, no "today's brief covers". ${STYLE_RULES.split("\n").slice(0, 4).join("\n")}
+  const prompt = `Write the opening of today's brief for a US bank executive: two short sentences, at most 30 words in total.
+Sentence 1: the single most important thing that happened, with the actor named.
+Sentence 2: what else happened, naming at most two actors.
+Rules: no dates, no semicolons, no lists of three or more items, no numbers unless one is the point, no framing words ("today's brief", "in other news"), no adjectives of importance. Plain present or past tense.
+Example of the form: "NVIDIA is buying Hugging Face. OpenAI shipped GPT-6 Astra to enterprise customers and Visa added a fraud score to A2A Protect."
 Return strict JSON: {"lede":"..."}`;
   const response = await callLlm(
     apiKey, model, prompt,
@@ -449,7 +453,7 @@ Return strict JSON: {"lede":"..."}`;
     llmErrors, "lede"
   );
   const lede = (response as { lede?: string } | null)?.lede?.trim();
-  return lede && lede.length > 20 ? lede.slice(0, 400) : null;
+  return lede && lede.length > 20 ? lede.slice(0, 260) : null;
 }
 
 export function buildBriefSummary(banking: DigestStory[], ai: DigestStory[]): string {
