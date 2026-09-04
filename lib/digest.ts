@@ -66,7 +66,7 @@ const STYLE_RULES = `Style rules (apply to every field):
 - Do not editorialise. Do not speculate about what may happen. Do not write "this shows" or "this means" unless the sentence then states a fact.
 - Only state facts that appear in the source text. If the text does not give a number, do not invent one. Rounding is fine: write $12.93 billion, not $12,930,300,000; keep the unit the source uses.
 - title: one line stating what happened, with the actor named. No colon-led headline patterns, no puns.
-- executiveSummary: 2 to 3 sentences, at most 70 words, of facts from the source text. Lead with the event, then the one or two numbers that matter. Readers who want more will open the article.
+- executiveSummary: 4 to 5 sentences, 90 to 130 words, of facts from the source text. Sentence one states the event: who did what, when. The following sentences carry the substance the text gives: how it works or what it covers, the scale (markets, customers, volumes, dollar amounts, percentages), who is affected and how, the timeline or effective dates, and what the actor says comes next. Every sentence must add a new fact; do not restate the event or pad. Stay on the event: background figures, third-party surveys and industry statistics quoted in the text get at most one sentence. Prefer the specific detail (the product, the model, the rule section, the counterparty) over the general description. Readers who want more will open the article.
 - businessImpact: one instruction in the form "Team: instruction." — the team or function at a US bank first (e.g. "Fraud operations:", "Model risk:", "Treasury technology:", "Legal and compliance:"), then one concrete thing to do or check, at most 25 words. Do not write "Direct X to", "Require X to", "Ask X to"; address the team directly. No "consider", "monitor", "explore", "keep an eye on".`;
 
 const SELECT_PROMPT_TEXT = `You are the editor of a daily brief for executives at US banks. Two sections: "banking" (AI at banks, lenders, payments companies, fintechs serving banks, and financial regulators) and "ai" (general AI developments an executive must know: model releases, capabilities, pricing, enterprise deployments, major lab and chip moves, policy).
@@ -384,7 +384,7 @@ async function selectStories(
 // ── Stage 4 + 5: write, then verify ───────────────────────────────────────────
 const WRITE_PROMPT = WRITE_PROMPT_TEXT;
 
-const VERIFY_PROMPT = `You check a drafted story against its source text. For every sentence in the draft, confirm the source text supports it. Remove or correct any sentence with a name, number, date or claim the text does not contain. Remove any phrase that breaks the style rules below. Keep the rest unchanged.
+const VERIFY_PROMPT = `You check a drafted story against its source text. For every sentence in the draft, confirm the source text supports it. Remove or correct any sentence with a name, number, date or claim the text does not contain. Remove any phrase that breaks the style rules below. Keep the rest unchanged: do not shorten, compress or reword sentences the text supports, and do not add sentences.
 ${STYLE_RULES}
 Return strict JSON: {"supported":true|false,"title":"...","executiveSummary":"...","businessImpact":"...","problems":["..."]} where the three text fields are the corrected versions (identical to the draft when nothing needed changing).`;
 
