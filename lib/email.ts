@@ -49,15 +49,6 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
     ? `<span style="font-family:${D.mono};font-size:10px;color:#333;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`
     : "";
 
-  // Today's lede — one or two sentences, set larger than the stories, under the masthead.
-  const ledeBlock = digest.lede
-    ? `<tr>
-        <td style="padding:26px 40px 22px;border-bottom:1px solid ${D.divider};">
-          <p style="margin:0;font-family:${D.sans};font-size:18px;font-weight:400;color:${D.textPrimary};line-height:1.5;">${escapeHtml(digest.lede)}</p>
-        </td>
-      </tr>`
-    : "";
-
   // Optional one-off note from the developer — a visually flagged box that sits
   // between the masthead and the stories.
   const developerNoteBlock = digest.developerNote
@@ -123,7 +114,6 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
 
         <!-- ── DEVELOPER NOTE (optional) ── -->
         ${developerNoteBlock}
-        ${ledeBlock}
 
         <!-- ── BODY ── -->
         <tr>

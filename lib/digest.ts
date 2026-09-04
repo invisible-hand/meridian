@@ -202,17 +202,12 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     aiStories = dedupeStories(aiStories).filter((s) => !bankingStories.some((b) => normalizeUrl(b.sourceUrl) === normalizeUrl(s.sourceUrl))).slice(0, 3);
   }
 
-  const lede = apiKey && (bankingStories.length + aiStories.length) > 0
-    ? await generateLedeLlm(bankingStories, aiStories, apiKey, model, llmErrors)
-    : null;
-
   const briefSummary = apiKey && (bankingStories.length + aiStories.length) > 0
     ? (await generateBriefSummaryLlm(bankingStories, aiStories, apiKey, model, llmErrors)) || buildBriefSummary(bankingStories, aiStories)
     : buildBriefSummary(bankingStories, aiStories);
 
   const digest: DailyDigest = {
     date, category, bankingStories, aiStories, briefSummary,
-    ...(lede ? { lede } : {}),
     ...(developerNote ? { developerNote } : {})
   };
 
@@ -436,24 +431,6 @@ export async function generateBriefSummaryLlm(
   const response = await callLlm(apiKey, model, prompt, JSON.stringify({ banking: banking.map((s) => s.title), ai: ai.map((s) => s.title) }), llmErrors, "subject");
   const subject = (response as { subject?: string } | null)?.subject?.trim();
   return subject && subject.length > 10 ? subject.slice(0, 140) : null;
-}
-
-async function generateLedeLlm(
-  banking: DigestStory[], ai: DigestStory[], apiKey: string, model: string, llmErrors: string[]
-): Promise<string | null> {
-  const prompt = `Write the opening of today's brief for a US bank executive: two short sentences, at most 30 words in total.
-Sentence 1: the single most important thing that happened, with the actor named.
-Sentence 2: what else happened, naming at most two actors.
-Rules: no dates, no semicolons, no lists of three or more items, no numbers unless one is the point, no framing words ("today's brief", "in other news"), no adjectives of importance. Plain present or past tense.
-Example of the form: "NVIDIA is buying Hugging Face. OpenAI shipped GPT-6 Astra to enterprise customers and Visa added a fraud score to A2A Protect."
-Return strict JSON: {"lede":"..."}`;
-  const response = await callLlm(
-    apiKey, model, prompt,
-    JSON.stringify({ banking: banking.map((s) => ({ title: s.title, summary: s.executiveSummary })), ai: ai.map((s) => ({ title: s.title, summary: s.executiveSummary })) }),
-    llmErrors, "lede"
-  );
-  const lede = (response as { lede?: string } | null)?.lede?.trim();
-  return lede && lede.length > 20 ? lede.slice(0, 260) : null;
 }
 
 export function buildBriefSummary(banking: DigestStory[], ai: DigestStory[]): string {

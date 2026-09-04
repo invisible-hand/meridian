@@ -319,16 +319,6 @@ export default async function IssuePage({
           max-width: 480px;
         }
 
-        .issue-lede {
-          font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
-          font-size: clamp(1.05rem, 2vw, 1.3rem);
-          font-weight: 300;
-          color: #111111;
-          line-height: 1.5;
-          margin: 0 0 18px;
-          max-width: 62ch;
-        }
-
         .issue-headline {
           font-family: var(--font-serif), 'Helvetica Neue', sans-serif;
           font-size: clamp(1.4rem, 3.5vw, 2rem);
@@ -598,7 +588,6 @@ export default async function IssuePage({
               </p>
               <div className="issue-header-rule" />
               <h1 className="issue-headline">{content.briefSummary ?? formatted}</h1>
-              {content.lede && <p className="issue-lede">{content.lede}</p>}
               <div className="issue-badges">
                 {bankingStories.length > 0 && (
                   <span className="issue-badge issue-badge-bank">

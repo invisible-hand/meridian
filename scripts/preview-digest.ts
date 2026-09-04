@@ -9,6 +9,7 @@ import { sendDigestEmail } from "../lib/email";
 async function main() {
   const to = process.argv[2];
   const skipIngest = process.argv.includes("--skip-ingest");
+const skipGenerate = process.argv.includes("--skip-generate");
   if (!to || !to.includes("@")) throw new Error("usage: preview-digest.ts <email> [--skip-ingest]");
   if (!skipIngest) {
     const t0 = Date.now();
