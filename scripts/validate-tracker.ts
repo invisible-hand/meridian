@@ -9,6 +9,7 @@
 
 import { REGULATORS, USE_CASES, type RegDocument, type Regulator } from "../lib/regulators";
 import { DOCUMENTS } from "../lib/regulatory-documents";
+import { AGENT_OS_DOC_SLUGS, AGENT_OS_UPDATED, LAYERS, LIFECYCLE, TIMELINE } from "../lib/agent-os";
 
 const OFFICIAL_HOSTS = [
   "occ.gov", "occ.treas.gov", "federalreserve.gov", "fdic.gov", "consumerfinance.gov",
@@ -104,6 +105,21 @@ function checkDocument(d: RegDocument) {
   if (d.status === "Comment period open" && !d.commentDeadline) warn(`${at}: open for comment but no commentDeadline`);
 }
 
+function checkAgentOs() {
+  const at = "agent-os";
+  if (!ISO.test(AGENT_OS_UPDATED)) err(`${at}: AGENT_OS_UPDATED not ISO`);
+  for (const slug of AGENT_OS_DOC_SLUGS) {
+    if (!DOCUMENTS.some((d) => d.slug === slug)) err(`${at}: docSlug "${slug}" does not exist`);
+  }
+  for (const l of LAYERS) {
+    if (!SLUG.test(l.id)) err(`${at}: layer id "${l.id}" not kebab-case`);
+    if (!l.question.trim().endsWith("?")) err(`${at}: layer ${l.id} question must be a question`);
+    if (l.answer.length < 200) err(`${at}: layer ${l.id} answer too short to be quotable`);
+  }
+  for (const s of LIFECYCLE) if (!s.gate.trim().endsWith("?")) err(`${at}: stage ${s.id} gate must be a question`);
+  for (const t of TIMELINE) if (!ISO.test(t.date)) err(`${at}: timeline "${t.label}" date not ISO`);
+}
+
 async function checkLinks() {
   const urls = new Set<string>();
   for (const d of DOCUMENTS) urls.add(d.link);
@@ -166,6 +182,7 @@ async function fetchStatus(url: string): Promise<number> {
     docSlugs.add(d.slug);
     checkDocument(d);
   }
+  checkAgentOs();
   for (const r of REGULATORS) {
     if (!DOCUMENTS.some((d) => d.authority === r.slug)) warn(`regulator ${r.slug} has no documents`);
   }

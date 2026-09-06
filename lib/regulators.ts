@@ -178,7 +178,7 @@ export type Regulator = {
   lastUpdated: string;
 };
 
-export const TRACKER_LAST_REVIEWED = "2026-09-02";
+export const TRACKER_LAST_REVIEWED = "2026-09-06";
 
 // Authorities are grouped US-first on the hub. Every slug here must also
 // appear in DISPLAY_ORDER below.
@@ -305,12 +305,151 @@ const REGULATOR_ENTRIES: Regulator[] = [
         "a": "Four issuances: OCC Bulletin 2011-12 (Supervisory Guidance on Model Risk Management), OCC Bulletin 1997-24 (Credit Scoring Models: Examination Guidance), OCC Bulletin 2021-19 (the interagency statement on model risk management for BSA/AML compliance), and the 'Model Risk Management' booklet of the Comptroller's Handbook. The rescinded bulletins remain readable in the OCC's rescinded-bulletins archive."
       }
     ],
+    "deepDives": [
+{
+      "id": "large-banks-responsible-ai-practices",
+      "label": "Responsible AI at large banks",
+      "question": "What responsible AI practices are expected of large banks as they innovate with AI?",
+      "answer": "No US regulator has written an AI rulebook for large banks, but the expectation set is now concrete. For banking organizations above roughly $30 billion in assets, the April 2026 interagency model risk guidance (OCC Bulletin 2026-13, SR 26-2, FIL-15-2026) is the operative standard for every quantitative model: sound development, independent validation with outcomes analysis, effective challenge and board-level governance, scaled to materiality. It deliberately leaves generative and agentic AI to 'broader risk management and governance', which supervisors then examine through third-party (SR 23-4), operational-resilience, cybersecurity and consumer-protection frameworks. Internationally the practices are converging on the FSB's twelve proposed sound practices of June 2026: board-set strategic direction, clear accountability, AI inside the enterprise risk framework, materiality-based risk assessment, data governance, explainability, performance monitoring, human oversight with extra measures for highly autonomous agents, cyber and ICT controls, and third-party AI risk. Supervisors on both sides of the Atlantic describe the same observed practice at large banks in almost the same words: guardrails, human-in-the-loop accountability, and use limited to defined cases.",
+      "requirements": [
+            {
+                  "rule": "OCC Bulletin 2026-13 / SR 26-2 / FIL-15-2026",
+                  "authority": "occ",
+                  "docSlug": "occ-bulletin-2026-13",
+                  "requirement": "Risk-based, materiality-driven model risk management — sound development and testing, independent validation with outcomes analysis, effective challenge, board and senior-management governance — most relevant above $30 billion in assets. Generative and agentic AI are outside its scope and must be managed through broader governance programs.",
+                  "when": "Since Apr 17, 2026"
+            },
+            {
+                  "rule": "Acting Comptroller Hood, Responsible AI Symposium",
+                  "authority": "occ",
+                  "docSlug": "occ-hood-responsible-ai-speech-2025",
+                  "requirement": "'Robust risk management practices for AI applications, consistent with conventional model risk management' — covering bias, security vulnerabilities and explainability — and existing OCC and interagency guidance applied as the AI governance baseline.",
+                  "when": "Since Apr 2025"
+            },
+            {
+                  "rule": "OCC Semiannual Risk Perspective, Spring 2026",
+                  "authority": "occ",
+                  "docSlug": "occ-semiannual-risk-perspective-spring-2026",
+                  "requirement": "Reports the observed large-bank practice for generative and agentic AI: a measured approach, use limited to specific cases, guardrails and human-in-the-loop accountability — and warns that lack of explainability makes governance 'essential' before use expands to material financial decisions.",
+                  "when": "May 2026"
+            },
+            {
+                  "rule": "SR 23-4 / OCC Bulletin 2023-17 / FIL-29-2023",
+                  "authority": "federal-reserve",
+                  "docSlug": "fed-sr-23-4",
+                  "requirement": "Vendor-supplied AI — cloud-hosted models, foundation-model access, embedded AI in platforms — goes through the full third-party lifecycle: due diligence, contracts with audit and data rights, ongoing monitoring, exit. The bank stays accountable for the outcome; supervisors said in May 2026 they are assessing how these expectations apply to vendor AI.",
+                  "when": "In force"
+            },
+            {
+                  "rule": "Vice Chair Bowman, FSOC AI roundtable",
+                  "authority": "federal-reserve",
+                  "docSlug": "fed-bowman-speech-ai-financial-system-2026",
+                  "requirement": "No pre-emptive AI-specific rulemaking: existing frameworks, regularly reviewed, should accommodate AI. Confirms the generative/agentic carve-out from model risk guidance and frames frontier AI as dual-use in cybersecurity.",
+                  "when": "May 2026"
+            },
+            {
+                  "rule": "FSB 12 sound practices for responsible AI adoption",
+                  "authority": "fsb",
+                  "docSlug": "fsb-ai-sound-practices-consultation-2026",
+                  "requirement": "Organisation-wide: strategic direction and oversight, governance and accountability, AI in the risk framework, organisational adaptability. Lifecycle: materiality and risk assessment, model selection, data governance, explainability, performance management, human oversight (extra measures for highly autonomous agentic AI), cyber/ICT, third-party AI risk.",
+                  "when": "Final report due Oct 2026"
+            },
+            {
+                  "rule": "NIST AI RMF 1.0 (AI 100-1)",
+                  "authority": "nist",
+                  "docSlug": "nist-ai-100-1",
+                  "requirement": "Voluntary Govern–Map–Measure–Manage cycle and seven trustworthiness characteristics (valid and reliable, safe, secure and resilient, accountable and transparent, explainable, privacy-enhanced, fair). The common vocabulary US agencies and Treasury keep pointing to.",
+                  "when": "Since Jan 2023"
+            },
+            {
+                  "rule": "Treasury FS AI RMF and AI Lexicon",
+                  "authority": "treasury",
+                  "docSlug": "treasury-fs-ai-rmf-and-ai-lexicon-2026",
+                  "requirement": "Adapts the NIST AI RMF to financial-services operations, regulation and consumer protection; gives institutions tools to evaluate AI use cases across the lifecycle and a shared lexicon. Non-binding, scalable by size.",
+                  "when": "Since Feb 19, 2026"
+            },
+            {
+                  "rule": "NIST AI 600-1 (Generative AI Profile)",
+                  "authority": "nist",
+                  "docSlug": "nist-ai-600-1",
+                  "requirement": "Twelve generative-AI risks — confabulation, information security (prompt injection, data poisoning, model extraction), data privacy, harmful bias, value-chain and component integration — with 200+ suggested actions mapped to RMF subcategories. The de facto control catalogue for the AI that model risk guidance excludes.",
+                  "when": "Since Jul 2024"
+            },
+            {
+                  "rule": "ECB: 'Technology is neutral, governance is not'",
+                  "authority": "ecb",
+                  "docSlug": "ecb-machado-technology-neutral-governance-speech-2026",
+                  "requirement": "Three governance expectations for the 85%+ of large European banks using AI: clear accountability for AI outcomes, senior-management oversight matching AI's strategic importance, effective challenge from risk, compliance and internal audit — plus explainability, lifecycle governance and drift monitoring, data quality and third-party risk.",
+                  "when": "Feb 2026"
+            },
+            {
+                  "rule": "SSM supervisory priorities 2026–28",
+                  "authority": "ecb",
+                  "docSlug": "ecb-ssm-supervisory-priorities-2026-28",
+                  "requirement": "Banks 'shall have strategies that effectively reflect opportunities and risks' of new technologies; continued monitoring of general AI use and a targeted, in-depth approach to generative-AI applications, with DORA on-site campaigns on cyber and third-party risk.",
+                  "when": "2026–28"
+            },
+            {
+                  "rule": "PRA SS1/23",
+                  "authority": "uk",
+                  "docSlug": "pra-ss1-23-model-risk-management",
+                  "requirement": "Five model-risk principles for all models informing business decisions, including vendor models, with a sub-principle on AI and machine-learning risks and a named Senior Management Function holder accountable for the framework.",
+                  "when": "Since May 17, 2024"
+            },
+            {
+                  "rule": "DFS Industry Letter on frontier AI models",
+                  "authority": "ny-dfs",
+                  "docSlug": "ny-dfs-industry-letter-2026-05-21-frontier-ai-models",
+                  "requirement": "For New York-regulated institutions: shorter remediation timelines, mapped third-party dependencies, human review of AI-generated code before deployment, stronger logging and alerting, more frequent resilience testing — under 23 NYCRR Part 500.",
+                  "when": "May 2026"
+            },
+            {
+                  "rule": "CFPB issue spotlight on chatbots",
+                  "authority": "cfpb",
+                  "docSlug": "cfpb-chatbots-in-consumer-finance-2023",
+                  "requirement": "Every top-10 US bank runs a chatbot; institutions remain responsible for accurate answers, dispute recognition and access to a human 'regardless of the processes or technologies used' — UDAAP, Regulation E and Z duties attach to the AI front end.",
+                  "when": "Since Jun 2023"
+            },
+            {
+                  "rule": "SEC Examination Priorities FY2026",
+                  "authority": "sec",
+                  "docSlug": "sec-exam-priorities-fy2026",
+                  "requirement": "For bank-affiliated broker-dealers and advisers: accurate representations of AI capabilities, and policies and procedures to monitor and supervise AI used in fraud prevention, back-office operations, AML and trading.",
+                  "when": "FY2026"
+            },
+            {
+                  "rule": "EU AI Act, Annex III 5(b) and Arts. 9–15, 26",
+                  "authority": "eu-ai-act",
+                  "docSlug": "eu-ai-act-regulation-2024-1689",
+                  "requirement": "For large banks with EU operations: creditworthiness scoring of natural persons is high-risk — risk management, data governance, logging, human oversight and, for deployers, monitoring, six-month log retention and a fundamental-rights impact assessment.",
+                  "when": "From Dec 2, 2027"
+            }
+      ],
+      "detail": [
+            "'Large' has a number in the United States. The April 2026 interagency model risk guidance says it is most relevant to banking organizations with more than $30 billion in total assets, and everything above that line is examined against it: an inventory of models, development evidence, independent validation with outcomes analysis, effective challenge, and a board that owns the framework. Below the line the same disciplines apply proportionately. The guidance replaced SR 11-7 after fifteen years and narrowed the definition of a model to complex quantitative methods — deterministic rules and simple arithmetic are out — which is why the OCC rescinded Bulletins 2011-12, 1997-24 and 2021-19 and the Comptroller's Handbook booklet on the same day.",
+            "What large banks actually do is now on the record from supervisors, not vendors. The OCC's Spring 2026 Risk Perspective describes generative and agentic AI use as 'primarily productivity and customer experience enhancement tools', deployed 'with guardrails and human-in-the-loop accountability' and limited to specific cases, while noting banks may expand to 'material financial decisions'. The ECB's Pedro Machado reported in February 2026 that more than 85% of large European banks use AI, with generative and agentic tools accelerating in IT operations, legal and document analysis and front-line support. The EBA's September 2025 survey put EU adoption at 92%, with 55% of banks already using general-purpose or agentic AI in consumer-facing processes. The CFPB found in 2023 that all of the top ten US commercial banks ran chatbots. The UK's 2024 survey found 75% adoption with only 2% of use cases fully autonomous — and the 2026 edition, the first to ask about agentic AI, will publish later this year.",
+            "The gap every large bank's AI governance has to bridge is explicit: the 2026 model risk guidance says generative and agentic AI 'are not within the scope of this guidance', and the agencies have promised an interagency request for information on AI and model risk 'in the near future'. Until it lands, four frameworks fill the space. Third-party guidance (SR 23-4) governs the vendor models and cloud-hosted foundation models most banks actually consume — Vice Chair Bowman said in May 2026 supervisors are assessing exactly how it applies to vendor AI. NIST AI 600-1 supplies the control catalogue for generative-AI-specific risks such as confabulation, prompt injection and value-chain integration. NIST's CAISI has an open workstream on AI agent security — indirect prompt injection, misaligned behaviour, constraining and monitoring agent access — from its January 2026 RFI. And the FSB's Sound Practice 10 sets the international expectation that human oversight scales up, not down, as agents become more autonomous.",
+            "Direction of travel matters as much as the current rules, and it runs in two directions at once. On adoption, the posture is pro-innovation: Executive Order 14179 and the July 2025 AI Action Plan frame Treasury's February 2026 FS AI RMF; FSOC's 2025 report made 'harnessing AI' a priority and created a standing AI Working Group; the four-roundtable FSOC AI Innovation Series closed in June 2026 with participants asking for regulatory clarity and harmonization; FDIC Chairman Hill told Congress the revised model risk guidance 'supports the use of innovative technology'; HM Treasury's July 2026 plan wants firms 'beyond isolated pilots'; and the PRA's April 2026 plan keeps regulation technology-agnostic. On cyber, the warnings escalate: DFS's May 2026 frontier-AI letter, the ECB's 'Dear CEO' letter of July 2026 requiring AI-cyber action plans by 31 October, the ESAs' July 2026 statement under DORA, and the FSB Chair's 31 August 2026 letter naming frontier models' 'increasingly sophisticated autonomy' as a stability concern. A large bank's responsible-AI programme has to satisfy both audiences with one set of controls.",
+            "In practice the examination question is rarely 'do you have a responsible AI policy'. It is whether the bank can show, for any given AI system, which tier it sits in, who owns it, what it was validated against, what a human can override, what the vendor contract lets the bank see, and what happens when it is wrong. The documents above are the sources of each of those questions."
+      ],
+      "practice": [
+            "Tier every AI system by materiality before choosing the control set. Above $30 billion, anything that meets the 2026 definition of a model gets full validation; generative and agentic tools get a documented governance path that names which of SR 23-4, NIST 600-1 and the operational-resilience controls apply.",
+            "Write the generative/agentic gap into policy rather than leaving it implicit: the guidance itself says these tools are managed through 'broader risk management and governance' — examiners will ask to see that program.",
+            "Treat vendor AI as a third-party relationship first and a model second. Due diligence, contract audit rights, data-use terms and exit plans are what supervisors are currently assessing for AI vendors.",
+            "Make human-in-the-loop measurable. The observed large-bank practice supervisors praise is not a checkbox; it is a defined reviewer with authority to override, evidence they actually review, and a threshold at which automation stops.",
+            "Fund explainability as a control, not a research project. Hood in 2025, the Risk Perspective in 2026 and the ECB in 2026 all name explainability as the governance issue that limits where AI can be used.",
+            "Give internal audit and compliance an effective-challenge role over AI — the ECB's third expectation and the FSB's second practice — rather than housing all AI oversight in technology.",
+            "Map the cyber warnings to remediation timelines now: human review of AI-generated code, faster patching, dependency maps and logging are what DFS, the ECB and the ESAs asked for in the same eight weeks of 2026.",
+            "Watch for the interagency RFI on AI and model risk management: it is the first federal document that will speak to generative and agentic AI directly, and comment letters from large banks will shape it."
+      ]
+}
+    ],
     "related": [
       "federal-reserve",
       "cfpb",
       "fsb"
     ],
-    "lastUpdated": "2026-08-26"
+    "lastUpdated": "2026-09-06"
   },
   {
     "slug": "fdic",
@@ -889,6 +1028,130 @@ const REGULATOR_ENTRIES: Regulator[] = [
         "a": "Not directly. Treasury publishes reports, voluntary frameworks, and FSOC recommendations, and it houses the OCC and FinCEN, which do have supervisory and enforcement powers. Its December 2024 RFI report recommended that regulators clarify supervisory expectations and that firms review AI use cases for compliance with existing laws before deployment."
       }
     ],
+    "deepDives": [
+{
+      "id": "ai-treasury-risk-assessment",
+      "label": "AI treasury risk assessment",
+      "question": "What is an AI treasury risk assessment, and which Treasury frameworks apply?",
+      "answer": "'AI treasury risk assessment' means two different things, and both route through the same documents. For the U.S. Department of the Treasury it is the sector-level assessment it has run since 2024: the March 27, 2024 report on AI-specific cybersecurity and fraud risks, built on 42 institutional interviews and naming a capability gap between large and small banks and a 'fraud data divide'; the December 19, 2024 report synthesising 103 responses to its AI request for information; FSOC's annual AI vulnerability assessments; and, since February 19, 2026, the Financial Services AI Risk Management Framework (FS AI RMF), which adapts NIST's Govern–Map–Measure–Manage cycle to banks and is the closest thing to an official template. For a bank's own treasury function — liquidity and cash-flow forecasting, asset-liability management, funding, hedging and payments — an AI risk assessment is the use-case-level review both Treasury reports recommend before deployment, carried out under the model risk (SR 26-2), third-party (SR 23-4) and risk-data (BCBS 239) frameworks that already govern treasury models, with fraud and cyber controls layered on for payments.",
+      "requirements": [
+            {
+                  "rule": "Treasury report on AI-specific cybersecurity risks",
+                  "authority": "treasury",
+                  "docSlug": "treasury-ai-cybersecurity-risks-report-2024",
+                  "requirement": "The first federal AI risk assessment for the sector: a widening capability gap between large and small institutions, a 'fraud data divide', data supply-chain and vendor-model opacity, explainability of black-box and generative AI, and regulatory fragmentation — with a recommendation to extend the NIST AI RMF for financial services.",
+                  "when": "Mar 27, 2024"
+            },
+            {
+                  "rule": "Treasury report on AI in financial services (RFI findings)",
+                  "authority": "treasury",
+                  "docSlug": "treasury-ai-financial-services-report-2024",
+                  "requirement": "Firms should review every AI use case for compliance with existing law before deployment and re-evaluate periodically; regulators should clarify supervisory expectations and close framework gaps. Names data privacy, bias and third-party dependence as the amplified risks.",
+                  "when": "Dec 19, 2024"
+            },
+            {
+                  "rule": "Financial Services AI Risk Management Framework (FS AI RMF) and AI Lexicon",
+                  "authority": "treasury",
+                  "docSlug": "treasury-fs-ai-rmf-and-ai-lexicon-2026",
+                  "requirement": "The assessment template: NIST's Govern, Map, Measure and Manage functions adapted to financial-services operations, regulation and consumer protection, with tools to evaluate individual AI use cases across their lifecycle and a common lexicon for risk categories. Voluntary, scalable to institution size.",
+                  "when": "Since Feb 19, 2026"
+            },
+            {
+                  "rule": "FSOC 2025 Annual Report — AI Working Group",
+                  "authority": "treasury",
+                  "docSlug": "fsoc-annual-report-2025",
+                  "requirement": "Standing FSOC Artificial Intelligence Working Group to monitor financial-stability risks from AI adoption inside and outside finance and to identify high-value use cases; 'harnessing AI' is one of four Council priorities.",
+                  "when": "Since Dec 11, 2025"
+            },
+            {
+                  "rule": "FSOC AI Innovation Series",
+                  "authority": "treasury",
+                  "docSlug": "treasury-fsoc-ai-innovation-series-2026",
+                  "requirement": "Four roundtables (strategy and governance; value and efficiency; cybersecurity and risk management; financial stability) whose readouts record what large institutions consider the binding constraints — regulatory clarity and harmonization — and the risk themes supervisors expect assessments to cover.",
+                  "when": "Mar–May 2026"
+            },
+            {
+                  "rule": "NIST AI RMF 1.0 (AI 100-1)",
+                  "authority": "nist",
+                  "docSlug": "nist-ai-100-1",
+                  "requirement": "The parent framework: Govern (cross-cutting), Map (context and risk identification), Measure (testing and metrics), Manage (prioritise, respond, monitor), plus seven trustworthiness characteristics the assessment scores against.",
+                  "when": "Since Jan 2023"
+            },
+            {
+                  "rule": "NIST AI 600-1 (Generative AI Profile)",
+                  "authority": "nist",
+                  "docSlug": "nist-ai-600-1",
+                  "requirement": "For generative-AI assistants in the treasury function: confabulation, data privacy, information security (prompt injection, data poisoning), and value-chain integration are the named risks, each with suggested actions mapped to RMF subcategories.",
+                  "when": "Since Jul 2024"
+            },
+            {
+                  "rule": "SR 26-2 / OCC Bulletin 2026-13 / FIL-15-2026",
+                  "authority": "federal-reserve",
+                  "docSlug": "fed-sr-26-2",
+                  "requirement": "Liquidity, interest-rate-risk, funding and cash-flow forecasting models are models in the 2026 definition: development evidence, independent validation with outcomes analysis, ongoing monitoring and governance scaled to materiality. Generative and agentic tools sit outside and need a separate governance path.",
+                  "when": "Since Apr 17, 2026"
+            },
+            {
+                  "rule": "SR 23-4 / OCC Bulletin 2023-17",
+                  "authority": "federal-reserve",
+                  "docSlug": "fed-sr-23-4",
+                  "requirement": "AI embedded in treasury management systems, cash-forecasting platforms or bank-provided portals is a third-party relationship: due diligence on the provider's security and resilience, contract terms on data access and incident notification, ongoing monitoring and an exit plan.",
+                  "when": "In force"
+            },
+            {
+                  "rule": "BCBS 239",
+                  "authority": "basel-committee",
+                  "docSlug": "bcbs-239",
+                  "requirement": "Risk data feeding liquidity and funding reports must be accurate, complete, timely and adaptable — the January 2026 Basel newsletter notes AI and automation depend on the same data quality, and data lineage is still 'a work in progress' at many banks.",
+                  "when": "G-SIBs since 2016"
+            },
+            {
+                  "rule": "BCBS Principles for Operational Resilience",
+                  "authority": "basel-committee",
+                  "docSlug": "bcbs-principles-operational-resilience-2021",
+                  "requirement": "Payments, funding and settlement are critical operations: map the internal and external dependencies — including AI components and their vendors — and keep tested continuity, incident and recovery programmes.",
+                  "when": "Since Mar 2021"
+            },
+            {
+                  "rule": "FinCEN Alert FIN-2024-Alert004 (deepfake media)",
+                  "authority": "fincen",
+                  "docSlug": "fincen-alert-2024-deepfake-media",
+                  "requirement": "Treasury and payments teams are the target of AI-generated voice and video used in business email compromise and payment fraud; FinCEN recommends phishing-resistant multifactor authentication, live verification and re-verification of high-risk counterparties.",
+                  "when": "Since Nov 2024"
+            },
+            {
+                  "rule": "FSB Sound Practice 5 — materiality and risk assessment",
+                  "authority": "fsb",
+                  "docSlug": "fsb-ai-sound-practices-consultation-2026",
+                  "requirement": "The international shape of a use-case assessment: materiality-based risk assessment before selection, then data governance, explainability, performance management, human oversight, cyber and third-party controls proportionate to the use.",
+                  "when": "Final report due Oct 2026"
+            },
+            {
+                  "rule": "Governor Cook on AI and the financial system",
+                  "authority": "federal-reserve",
+                  "docSlug": "fed-cook-speech-ai-economy-financial-system-2026",
+                  "requirement": "For AI in trading, hedging and funding decisions: correlated strategies, endogenous model collusion and market concentration are the stability channels the Fed is watching — an assessment of AI in markets-facing treasury activity should cover them.",
+                  "when": "May 2026"
+            }
+      ],
+      "detail": [
+            "The U.S. Treasury's own assessment has a structure worth copying because the sector's regulators helped write it. The March 2024 report, produced by the Office of Cybersecurity and Critical Infrastructure Protection under Executive Order 14110, sorted AI risk into a capability gap (large institutions build in-house, small ones lack data and expertise), a fraud data divide (too little cross-firm fraud data to train models), data supply-chain opacity (nobody can say what trained a vendor model or how customer inputs are reused), explainability of black-box and generative systems, and regulatory fragmentation. Each of those became a workstream of the AIEOG public-private group, and two of its six deliverables — the AI Lexicon and the FS AI RMF — were published on February 19, 2026. The remaining four (explainability, data 'nutrition labels', AI-enhanced fraud, identity and authentication) are still to come; a bank's assessment will need updating when they land.",
+            "The FS AI RMF is the practical template. It keeps NIST's four functions and adapts them to what a financial institution has to prove: under Govern, who is accountable for the AI use case and how it fits the risk appetite and existing regulatory obligations; under Map, what the system does, what data it uses, who is affected and what could go wrong; under Measure, how performance, robustness, bias, security and explainability are tested; under Manage, how the residual risk is accepted, monitored and retired. It is explicitly scalable — the AIEOG's stated aim was resources that small and mid-sized institutions can use — and explicitly non-binding. Binding expectations still arrive through the prudential regulators, which is why the requirement stack above pairs each Treasury document with the supervisory rule that examiners actually cite.",
+            "Inside a bank, the treasury function is where AI use cases and regulatory frameworks overlap most densely. Cash-flow and liquidity forecasting models are squarely inside the 2026 model risk definition and are among the most material models a bank runs, so they get full validation and outcomes analysis. Asset-liability and hedging models that reach into markets pick up the Fed's financial-stability concerns about correlated AI-driven strategies. Payments are the operational-resilience critical operation and the primary target of AI-enabled fraud — FinCEN's deepfake alert is addressed to exactly the controls a treasury team runs. Generative-AI assistants drafting funding memos or summarising counterparty documents sit outside model risk guidance and inside NIST AI 600-1's confabulation and data-leakage risks. And almost all of it arrives through vendors — treasury management systems, bank portals, cloud-hosted models — which makes SR 23-4 the first framework in the sequence, not the last.",
+            "A defensible AI treasury risk assessment therefore has five steps, each anchored to a document. Inventory every AI-enabled system in the function, including AI features switched on inside vendor platforms (SR 23-4; ESAs' July 2026 call for asset inventories that include AI components). Tier each by materiality — the FSB's Sound Practice 5 and the 2026 model risk guidance both make intensity of control follow materiality. Map each tier to its requirement stack: model risk, third-party, BCBS 239 data lineage, operational resilience, fraud and cyber, and consumer law where customers are affected. Measure against the FS AI RMF's Measure function — validation, robustness and adversarial testing, explainability for the decision-makers who rely on the output, drift monitoring. Manage: a named owner, a human able to override, thresholds at which automation stops, vendor exit plans and a re-assessment date, since the Treasury's December 2024 report asks for periodic re-evaluation rather than a one-time review.",
+            "What changes next is scheduled. The remaining AIEOG deliverables will add explainability and data-labelling expectations to the Map and Measure steps. The interagency request for information on AI and model risk management, promised in the April 2026 guidance, is the first federal document that will address generative and agentic AI in bank models directly. The FSB's final sound practices are due in October 2026 as a G20 deliverable, and FSOC's 2026 annual report in December will be the first full-year output of its AI Working Group. A treasury AI assessment written today should carry those three dates as review triggers."
+      ],
+      "practice": [
+            "Start the assessment with the vendor inventory, not the model inventory: most AI in a bank treasury function arrives as a feature inside a treasury management system or bank portal, and SR 23-4 is the framework that reaches it.",
+            "Use the FS AI RMF's four functions as the section headings of the assessment document. It is the template Treasury and the sector regulators wrote together, and it maps one-to-one onto NIST, which examiners and auditors already recognise.",
+            "Classify liquidity and cash-flow forecasting models as high-materiality under the 2026 model risk guidance and validate them accordingly; a generative-AI assistant that drafts the commentary around them is a different tier with a different control set.",
+            "Put deepfake-resistant payment controls in the AI risk assessment, not only in the fraud programme: FinCEN's red flags, phishing-resistant MFA and live re-verification of counterparties are the mitigations for the AI risk most likely to cost a treasury team money this year.",
+            "Document data lineage for every input to an AI treasury model. BCBS 239 is the standard supervisors cite when they ask how the data feeding AI is controlled, and the Basel Committee said in January 2026 that lineage is where banks still fall short.",
+            "Define the human override for every tier — who can stop an automated funding, hedging or payment action, on what evidence, and how fast — and test it, because the FSB, the OCC and the EU AI Act all treat human oversight as the control that scales with autonomy.",
+            "Schedule the re-assessment now: the remaining AIEOG deliverables, the interagency AI and model risk RFI, the FSB final report (October 2026) and FSOC's 2026 annual report (December 2026) are the four events that will change the requirement stack."
+      ]
+}
+    ],
     "related": [
       "occ",
       "federal-reserve",
@@ -899,7 +1162,7 @@ const REGULATOR_ENTRIES: Regulator[] = [
       "nist",
       "fsb"
     ],
-    "lastUpdated": "2026-08-26"
+    "lastUpdated": "2026-09-06"
   },
   {
     "slug": "ny-dfs",

@@ -30,6 +30,7 @@ export function TrackerShell({
             { href: "/ai-regulation/deadlines", label: "deadlines" },
             { href: "/ai-regulation/compliance-checklist", label: "checklist" },
             { href: "/ai-regulation/by-use-case", label: "by use case" },
+            { href: "/agentic-banking", label: "agents" },
             { href: "/#subscribe", label: "subscribe" }
           ]}
         />
@@ -61,6 +62,7 @@ export function TrackerShell({
             { href: "/ai-regulation/compliance-checklist", label: "checklist" },
             { href: "/ai-regulation/regulator-warnings", label: "warnings" },
             { href: "/ai-regulation/for-compliance-officers", label: "for compliance officers" },
+            { href: "/agentic-banking", label: "ai agents" },
             { href: "/issues", label: "archive" }
           ]}
         />

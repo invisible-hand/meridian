@@ -255,7 +255,9 @@ export default async function HomePage({
           <div className="lp-col">
             <span className="lp-col-label">STANDING</span>
             <span className="lp-col-text">
-              <Link href="/ai-regulation">18 regulators tracked, updated as rules change</Link>
+              <Link href="/ai-regulation">19 regulators tracked, updated as rules change</Link>
+              {" · "}
+              <Link href="/agentic-banking">an operating system for AI agents in your bank</Link>
             </span>
           </div>
         </div>

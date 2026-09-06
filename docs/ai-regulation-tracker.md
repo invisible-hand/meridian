@@ -53,6 +53,18 @@ document without it is invisible there. The FIRST_READS list in
 list outside the data files — revisit it only when a listed document is
 superseded (e.g. the FSB final report replacing the consultation).
 
+### The agents section (`/agentic-banking`) — data in `lib/agent-os.ts`
+
+The "operating system for AI agents in your bank" section (hub + `/control-plane`,
+`/lifecycle`, `/regulation`) renders from `lib/agent-os.ts`: eight control layers,
+eight lifecycle stages, the function map, the autonomy ladder, the dated timeline,
+maturity stages and every regulator's documented position on agents. Every `docSlug`
+there must exist in `DOCUMENTS` — `npm run tracker:check` enforces it (`checkAgentOs`).
+When a new document takes a position on generative or agentic AI, add it to
+`POSITIONS` and, if it is dated, to `TIMELINE`; bump `AGENT_OS_UPDATED` so the
+sitemap, IndexNow ping and `dateModified` follow. The six SVG figures in
+`app/agentic-banking/graphics.tsx` are data-driven and need no editing.
+
 ## Why this exists
 
 The tracker is AI-search (grounding-query) infrastructure: assistants and

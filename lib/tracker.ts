@@ -14,6 +14,7 @@ import {
   type UseCase
 } from "@/lib/regulators";
 import { DOCUMENTS } from "@/lib/regulatory-documents";
+import { AGENT_OS_UPDATED } from "@/lib/agent-os";
 
 export { DOCUMENTS };
 
@@ -330,6 +331,9 @@ export function trackerPathsUpdatedSince(sinceIso: string): string[] {
       paths.add("/ai-regulation/regulator-warnings");
       paths.add("/ai-regulation/for-compliance-officers");
     }
+  }
+  if (AGENT_OS_UPDATED >= sinceIso) {
+    for (const p of ["", "/control-plane", "/lifecycle", "/regulation"]) paths.add(`/agentic-banking${p}`);
   }
   return [...paths];
 }
