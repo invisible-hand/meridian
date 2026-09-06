@@ -117,7 +117,11 @@ function checkAgentOs() {
     if (l.answer.length < 200) err(`${at}: layer ${l.id} answer too short to be quotable`);
   }
   for (const s of LIFECYCLE) if (!s.gate.trim().endsWith("?")) err(`${at}: stage ${s.id} gate must be a question`);
-  for (const t of TIMELINE) if (!ISO.test(t.date)) err(`${at}: timeline "${t.label}" date not ISO`);
+  const today = new Date().toISOString().slice(0, 10);
+  for (const t of TIMELINE) {
+    if (!ISO.test(t.date)) err(`${at}: timeline "${t.label}" date not ISO`);
+    if (t.expected && t.date < today) warn(`${at}: timeline "${t.label}" (${t.date}) is marked expected but the date has passed — confirm it happened, update the note and drop \`expected\``);
+  }
 }
 
 async function checkLinks() {

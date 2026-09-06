@@ -43,6 +43,17 @@ question even where it reaches other authorities, and cite only documents that
 already exist in `DOCUMENTS`. `npm run tracker:check` enforces the id format,
 the question mark, a minimum answer length and every reference.
 
+**Keeping deep dives true (every run).** Deep dives quote dates and expectations
+("final report due October 2026", "share 26 %", "no guidance published as of
+August 2026", "from Jan 1, 2027"). When a scheduled event passes or a cited
+document is superseded, the deep dive on that authority (or document) must be
+re-read and its `answer`, `requirements[].when`, `detail` and `practice` updated
+in the same commit — then bump that entry's `lastUpdated` so the page's
+"Last updated" line and `dateModified` are honest. Grep for the event's name
+across `lib/regulators.ts`, `lib/regulatory-documents.ts` and `lib/agent-os.ts`
+to find every sentence that mentions it. An outdated deep dive is worse than
+none: it is the block models quote.
+
 One extra field to remember when adding documents: set **`warning: true`** on
 any document that is a warning to the industry — an alert (FinCEN), a
 Dear-CEO/industry letter (ECB, NY DFS), a risk report with an AI warning
@@ -62,7 +73,12 @@ maturity stages and every regulator's documented position on agents. Every `docS
 there must exist in `DOCUMENTS` — `npm run tracker:check` enforces it (`checkAgentOs`).
 When a new document takes a position on generative or agentic AI, add it to
 `POSITIONS` and, if it is dated, to `TIMELINE`; bump `AGENT_OS_UPDATED` so the
-sitemap, IndexNow ping and `dateModified` follow. The six SVG figures in
+sitemap, IndexNow ping and `dateModified` follow. `TIMELINE` entries marked
+`expected: true` are scheduled events (FSB final report, Colorado ADMT, EU AI Act
+high-risk date): when one passes, `tracker:check` warns — confirm it happened,
+rewrite the note in the past tense (or record the slip), link the document, and
+drop `expected`. Also re-read the `LAYERS`/`AUTONOMY`/`MATURITY` answers that
+mention the event. The six SVG figures in
 `app/agentic-banking/graphics.tsx` are data-driven and need no editing.
 
 ## Why this exists
