@@ -357,6 +357,9 @@ export default function AboutPage() {
               know which regulators are moving on algorithmic decision-making — and how fast.
               The Head of Payments who wants to know what Visa, Mastercard, and the
               neobanks are actually shipping, not what they&apos;re announcing in press releases.
+              If that is you, start with the{" "}
+              <Link href="/ai-regulation/for-bank-executives" style={{ color: "#1a3fcb" }}>executive briefing on AI</Link>
+              {" "}— what regulators expect of the board, the ten questions to ask, and a 30-day reading plan.
             </p>
 
             <p className="about-p">

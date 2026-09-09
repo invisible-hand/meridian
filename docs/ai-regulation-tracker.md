@@ -60,9 +60,14 @@ Dear-CEO/industry letter (ECB, NY DFS), a risk report with an AI warning
 section (OCC Semiannual Risk Perspective, FDIC Risk Review, FSB/FSOC
 stability reports). That flag is what feeds the warnings page; a warning-type
 document without it is invisible there. The FIRST_READS list in
-`app/ai-regulation/for-compliance-officers/page.tsx` is the one hand-picked
-list outside the data files — revisit it only when a listed document is
-superseded (e.g. the FSB final report replacing the consultation).
+`app/ai-regulation/for-compliance-officers/page.tsx` and the whole of
+`lib/executive-briefing.ts` (the board briefing at
+`/ai-regulation/for-bank-executives`: 2026 changes, board-expectations deep
+dive, ten questions, footprint table, agent deep dive, 30-day reading plan) are
+the hand-picked content outside the document data — revisit them when a listed
+document is superseded (e.g. the FSB final report replacing the consultation)
+or a quoted date passes, then bump `EXEC_BRIEFING_UPDATED`. `npm run
+tracker:check` (`checkExecutiveBriefing`) verifies every slug it cites.
 
 ### The agents section (`/agentic-banking`) — data in `lib/agent-os.ts`
 

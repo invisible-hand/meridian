@@ -10,6 +10,17 @@
 import { REGULATORS, USE_CASES, type RegDocument, type Regulator } from "../lib/regulators";
 import { DOCUMENTS } from "../lib/regulatory-documents";
 import { AGENT_OS_DOC_SLUGS, AGENT_OS_UPDATED, LAYERS, LIFECYCLE, TIMELINE } from "../lib/agent-os";
+import {
+  AGENT_DEEP_DIVE,
+  BOARD_DEEP_DIVE,
+  CHANGES_2026,
+  EXEC_BRIEFING_AUTHORITY_SLUGS,
+  EXEC_BRIEFING_DOC_SLUGS,
+  EXEC_BRIEFING_PUBLISHED,
+  EXEC_BRIEFING_UPDATED,
+  READING_PLAN,
+  TEN_QUESTIONS
+} from "../lib/executive-briefing";
 
 const OFFICIAL_HOSTS = [
   "occ.gov", "occ.treas.gov", "federalreserve.gov", "fdic.gov", "consumerfinance.gov",
@@ -124,6 +135,24 @@ function checkAgentOs() {
   }
 }
 
+function checkExecutiveBriefing() {
+  const at = "executive-briefing";
+  if (!ISO.test(EXEC_BRIEFING_PUBLISHED) || !ISO.test(EXEC_BRIEFING_UPDATED)) err(`${at}: dates not ISO`);
+  if (EXEC_BRIEFING_UPDATED < EXEC_BRIEFING_PUBLISHED) err(`${at}: updated before published`);
+  for (const slug of EXEC_BRIEFING_DOC_SLUGS) {
+    if (!DOCUMENTS.some((d) => d.slug === slug)) err(`${at}: docSlug "${slug}" does not exist`);
+  }
+  for (const slug of EXEC_BRIEFING_AUTHORITY_SLUGS) {
+    if (!REGULATORS.some((r) => r.slug === slug)) err(`${at}: authority "${slug}" does not exist`);
+  }
+  checkDeepDives(at, [BOARD_DEEP_DIVE, AGENT_DEEP_DIVE]);
+  for (const c of CHANGES_2026) if (!ISO.test(c.date)) err(`${at}: change "${c.what}" date not ISO`);
+  if (TEN_QUESTIONS.length !== 10) err(`${at}: the ten questions are ${TEN_QUESTIONS.length}`);
+  for (const q of TEN_QUESTIONS) if (!q.ask.trim().endsWith("?")) err(`${at}: "${q.ask.slice(0, 40)}" must be a question`);
+  if (READING_PLAN.length !== 4) err(`${at}: reading plan must be four weeks`);
+  for (const w of READING_PLAN) if (w.docs.length !== 3) err(`${at}: week ${w.week} must list three documents`);
+}
+
 async function checkLinks() {
   const urls = new Set<string>();
   for (const d of DOCUMENTS) urls.add(d.link);
@@ -131,6 +160,7 @@ async function checkLinks() {
   for (const r of REGULATORS) for (const m of r.milestones) if (m.link) urls.add(m.link);
   for (const r of REGULATORS) for (const dd of r.deepDives ?? []) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
   for (const d of DOCUMENTS) for (const dd of d.deepDives ?? []) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
+  for (const dd of [BOARD_DEEP_DIVE, AGENT_DEEP_DIVE]) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
   const list = [...urls];
   console.log(`checking ${list.length} links…`);
   const queue = [...list];
@@ -187,6 +217,7 @@ async function fetchStatus(url: string): Promise<number> {
     checkDocument(d);
   }
   checkAgentOs();
+  checkExecutiveBriefing();
   for (const r of REGULATORS) {
     if (!DOCUMENTS.some((d) => d.authority === r.slug)) warn(`regulator ${r.slug} has no documents`);
   }

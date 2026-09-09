@@ -3,6 +3,7 @@
 // deadlines, the use-case matrix, statuses and cross-links are all computed
 // from the documents so a single edit propagates everywhere.
 
+import { EXEC_BRIEFING_UPDATED } from "@/lib/executive-briefing";
 import {
   REGULATORS,
   TRACKER_LAST_REVIEWED,
@@ -330,8 +331,10 @@ export function trackerPathsUpdatedSince(sinceIso: string): string[] {
       paths.add("/ai-regulation/compliance-checklist");
       paths.add("/ai-regulation/regulator-warnings");
       paths.add("/ai-regulation/for-compliance-officers");
+      paths.add("/ai-regulation/for-bank-executives");
     }
   }
+  if (EXEC_BRIEFING_UPDATED >= sinceIso) paths.add("/ai-regulation/for-bank-executives");
   if (AGENT_OS_UPDATED >= sinceIso) {
     for (const p of ["", "/control-plane", "/lifecycle", "/regulation"]) paths.add(`/agentic-banking${p}`);
   }

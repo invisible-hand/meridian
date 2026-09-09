@@ -167,6 +167,7 @@ export default function AiRegulationHub() {
           <Link href="/ai-regulation/regulator-warnings">Regulator warnings →</Link>
           <Link href="/ai-regulation/by-use-case">Rules by use case →</Link>
           <Link href="/ai-regulation/for-compliance-officers">For compliance officers →</Link>
+          <Link href="/ai-regulation/for-bank-executives">For bank executives →</Link>
           <Link href="/agentic-banking">AI agents: the operating model →</Link>
         </div>
       </Section>

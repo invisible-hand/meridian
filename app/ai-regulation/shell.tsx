@@ -62,6 +62,7 @@ export function TrackerShell({
             { href: "/ai-regulation/compliance-checklist", label: "checklist" },
             { href: "/ai-regulation/regulator-warnings", label: "warnings" },
             { href: "/ai-regulation/for-compliance-officers", label: "for compliance officers" },
+            { href: "/ai-regulation/for-bank-executives", label: "for bank executives" },
             { href: "/agentic-banking", label: "ai agents" },
             { href: "/issues", label: "archive" }
           ]}
