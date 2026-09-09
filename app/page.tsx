@@ -258,6 +258,8 @@ export default async function HomePage({
               <Link href="/ai-regulation">19 regulators tracked, updated as rules change</Link>
               {" · "}
               <Link href="/agentic-banking">an operating system for AI agents in your bank</Link>
+              {" · "}
+              <Link href="/banks">what the 10 largest banks are doing with AI</Link>
             </span>
           </div>
         </div>

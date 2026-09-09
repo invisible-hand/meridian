@@ -266,6 +266,7 @@ export default function ForBankExecutivesPage() {
           <Link href="/ai-regulation/by-use-case">Rules by use case →</Link>
           <Link href="/ai-regulation/regulator-warnings">Regulator warnings →</Link>
           <Link href="/agentic-banking">AI agents: the operating model →</Link>
+          <Link href="/banks">What the 10 largest banks are doing with AI →</Link>
           <Link href="/issues">The daily brief archive →</Link>
         </div>
       </Section>

@@ -69,6 +69,23 @@ document is superseded (e.g. the FSB final report replacing the consultation)
 or a quoted date passes, then bump `EXEC_BRIEFING_UPDATED`. `npm run
 tracker:check` (`checkExecutiveBriefing`) verifies every slug it cites.
 
+### The banks section (`/banks`) — data in `lib/banks.ts` + `lib/banks/<slug>.ts`
+
+One page per bank on its AI strategy, from public sources only. `lib/banks.ts` holds the
+types and assembles `BANKS` from one module per bank in `lib/banks/`. Each bank carries a
+`sources[]` list (id, title, publisher, url, date) and every dated entry — timeline,
+use cases, numbers, quotes, leadership, platform — cites source ids. `npm run tracker:check`
+(`checkBanks`) fails on: an uncited entry, an unknown source id, a source on a host outside
+the allowed set (regulator, bank/vendor primary, trade press, and the tier-1 business press
+listed in `BANK_PRESS_HOSTS`), an unknown regulator/document slug, or a page thinner than the
+minimums (answer ≥ 400 chars, ≥ 4 key points, ≥ 6 timeline entries, ≥ 3 suggestions,
+≥ 2 FAQ). `--bank-links` adds the bank sources to the live link check. Bump the bank's
+`lastUpdated` when its text changes and `BANKS_UPDATED` for section-wide changes; both
+feed the sitemap and the IndexNow path list. Asset figures come from the Fed's Large
+Commercial Banks release (`FED_LBR`); refresh them quarterly. The "What the record
+suggests" cards are analysis and must stay observations, not advice. Next batches:
+ranks 11–20, then to 50 and 100 (repo memory `top-100-banks-ai-guide`).
+
 ### The agents section (`/agentic-banking`) — data in `lib/agent-os.ts`
 
 The "operating system for AI agents in your bank" section (hub + `/control-plane`,

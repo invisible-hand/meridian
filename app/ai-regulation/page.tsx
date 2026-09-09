@@ -169,6 +169,7 @@ export default function AiRegulationHub() {
           <Link href="/ai-regulation/for-compliance-officers">For compliance officers →</Link>
           <Link href="/ai-regulation/for-bank-executives">For bank executives →</Link>
           <Link href="/agentic-banking">AI agents: the operating model →</Link>
+          <Link href="/banks">The 10 largest banks&apos; AI strategies →</Link>
         </div>
       </Section>
 

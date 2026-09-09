@@ -21,6 +21,8 @@ import {
   READING_PLAN,
   TEN_QUESTIONS
 } from "../lib/executive-briefing";
+import { BANKS, BANKS_PUBLISHED, BANKS_UPDATED, BANK_AUTHORITY_SLUGS, BANK_DOC_SLUGS } from "../lib/banks";
+import { PRIMARY_HOSTS, REGULATOR_HOSTS, TRADE_HOSTS, hostOf } from "../lib/source-tiers";
 
 const OFFICIAL_HOSTS = [
   "occ.gov", "occ.treas.gov", "federalreserve.gov", "fdic.gov", "consumerfinance.gov",
@@ -153,6 +155,55 @@ function checkExecutiveBriefing() {
   for (const w of READING_PLAN) if (w.docs.length !== 3) err(`${at}: week ${w.week} must list three documents`);
 }
 
+// Bank pages may cite primary (bank/vendor), regulator and trade hosts plus the
+// tier-1 business press. Anything else (blogs, aggregators) is refused.
+const BANK_PRESS_HOSTS = ["cnbc.com", "reuters.com", "bloomberg.com", "ft.com", "wsj.com", "mckinsey.com", "thefinancialbrand.com", "bankingdive.com"];
+function bankHostOk(url: string): boolean {
+  const h = hostOf(url);
+  if (!h) return false;
+  return [...REGULATOR_HOSTS, ...PRIMARY_HOSTS, ...TRADE_HOSTS, ...BANK_PRESS_HOSTS].some((o) => h === o || h.endsWith(`.${o}`));
+}
+
+function checkBanks() {
+  const at = "banks";
+  if (!ISO.test(BANKS_PUBLISHED) || !ISO.test(BANKS_UPDATED)) err(`${at}: section dates not ISO`);
+  for (const slug of BANK_AUTHORITY_SLUGS) if (!REGULATORS.some((r) => r.slug === slug)) err(`${at}: authority "${slug}" does not exist`);
+  for (const slug of BANK_DOC_SLUGS) if (!DOCUMENTS.some((d) => d.slug === slug)) err(`${at}: docSlug "${slug}" does not exist`);
+  const seen = new Set<string>();
+  for (const b of BANKS) {
+    const bat = `bank ${b.slug}`;
+    if (!SLUG.test(b.slug)) err(`${bat}: slug not kebab-case`);
+    if (seen.has(b.slug)) err(`${bat}: duplicate slug`);
+    seen.add(b.slug);
+    if (!ISO.test(b.lastUpdated)) err(`${bat}: lastUpdated not ISO`);
+    if (b.answerFirst.length < 400) err(`${bat}: answerFirst too short to be quotable`);
+    if (b.keyPoints.length < 4) err(`${bat}: fewer than four key points`);
+    if (b.timeline.length < 6) err(`${bat}: fewer than six timeline entries`);
+    if (b.suggestions.length < 3) err(`${bat}: fewer than three suggestions`);
+    if (b.faq.length < 2) err(`${bat}: fewer than two FAQ entries`);
+    const ids = new Set<string>();
+    for (const s of b.sources) {
+      if (ids.has(s.id)) err(`${bat}: duplicate source id ${s.id}`);
+      ids.add(s.id);
+      if (!ISO.test(s.date)) err(`${bat}: source ${s.id} date not ISO`);
+      if (!bankHostOk(s.url)) err(`${bat}: source ${s.id} is not on an allowed host: ${s.url}`);
+    }
+    const used = new Set<string>();
+    const cite = (where: string, list: string[]) => {
+      if (list.length === 0) err(`${bat}: ${where} cites no source`);
+      for (const id of list) { used.add(id); if (!ids.has(id)) err(`${bat}: ${where} cites unknown source "${id}"`); }
+    };
+    if (b.platform) cite("platform", b.platform.sources);
+    for (const e of b.timeline) { if (!ISO.test(e.date)) err(`${bat}: timeline "${e.title}" date not ISO`); cite(`timeline "${e.title}"`, e.sources); }
+    for (const u of b.useCases) { if (!USE_CASES.includes(u.useCase)) err(`${bat}: use case "${u.useCase}" unknown`); cite(`use case "${u.name}"`, u.sources); }
+    for (const n of b.numbers) { if (!ISO.test(n.asOf)) err(`${bat}: number "${n.label}" asOf not ISO`); cite(`number "${n.label}"`, n.sources); }
+    for (const q of b.quotes) { if (!ISO.test(q.date)) err(`${bat}: quote by ${q.who} date not ISO`); cite(`quote by ${q.who}`, q.sources); }
+    for (const l of b.leadership) cite(`leader ${l.name}`, l.sources);
+    for (const id of ids) if (!used.has(id)) warn(`${bat}: source ${id} is never cited`);
+    for (const f of b.faq) if (!f.q.trim().endsWith("?")) err(`${bat}: FAQ "${f.q}" must be a question`);
+  }
+}
+
 async function checkLinks() {
   const urls = new Set<string>();
   for (const d of DOCUMENTS) urls.add(d.link);
@@ -161,6 +212,7 @@ async function checkLinks() {
   for (const r of REGULATORS) for (const dd of r.deepDives ?? []) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
   for (const d of DOCUMENTS) for (const dd of d.deepDives ?? []) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
   for (const dd of [BOARD_DEEP_DIVE, AGENT_DEEP_DIVE]) for (const q of dd.requirements ?? []) if (q.link) urls.add(q.link);
+  if (process.argv.includes("--bank-links")) for (const b of BANKS) for (const s of b.sources) urls.add(s.url);
   const list = [...urls];
   console.log(`checking ${list.length} links…`);
   const queue = [...list];
@@ -218,6 +270,7 @@ async function fetchStatus(url: string): Promise<number> {
   }
   checkAgentOs();
   checkExecutiveBriefing();
+  checkBanks();
   for (const r of REGULATORS) {
     if (!DOCUMENTS.some((d) => d.authority === r.slug)) warn(`regulator ${r.slug} has no documents`);
   }

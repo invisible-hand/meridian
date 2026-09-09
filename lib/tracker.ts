@@ -16,6 +16,7 @@ import {
 } from "@/lib/regulators";
 import { DOCUMENTS } from "@/lib/regulatory-documents";
 import { AGENT_OS_UPDATED } from "@/lib/agent-os";
+import { BANKS, BANKS_UPDATED, bankPath } from "@/lib/banks";
 
 export { DOCUMENTS };
 
@@ -335,6 +336,8 @@ export function trackerPathsUpdatedSince(sinceIso: string): string[] {
     }
   }
   if (EXEC_BRIEFING_UPDATED >= sinceIso) paths.add("/ai-regulation/for-bank-executives");
+  if (BANKS_UPDATED >= sinceIso) paths.add("/banks");
+  for (const b of BANKS) if (b.lastUpdated >= sinceIso) { paths.add(bankPath(b)); paths.add("/banks"); }
   if (AGENT_OS_UPDATED >= sinceIso) {
     for (const p of ["", "/control-plane", "/lifecycle", "/regulation"]) paths.add(`/agentic-banking${p}`);
   }

@@ -1,3 +1,4 @@
+import { BANKS, bankPath } from "@/lib/banks";
 import { REGULATORS, TRACKER_LAST_REVIEWED, isUsAuthority } from "@/lib/regulators";
 import { DOCUMENTS } from "@/lib/regulatory-documents";
 import { BASE_URL, SITE_DESCRIPTION, SITE_NAME } from "@/lib/seo";
@@ -38,6 +39,8 @@ Citation guidance: every document page links the regulator's own text — cite t
 ## Key pages
 
 - [Home](${abs("/")}): Subscribe to the daily brief
+- [AI strategy of the 10 largest US banks](${abs("/banks")}): Bank-by-bank pages on platforms, agents, budgets, headcount, leadership and regulators, every claim sourced
+${BANKS.map((b) => `- [${b.name} AI strategy](${abs(bankPath(b))}): ${oneLine(b.posture, 140)}`).join("\n")}
 - [AI agents in banking](${abs("/agentic-banking")}): An operating system for AI agents in a bank — eight control layers, the lifecycle, autonomy levels, and how regulators are moving, every claim sourced
 - [Control plane for AI agents](${abs("/agentic-banking/control-plane")}): The eight control layers, each with a quotable answer and its primary-source documents
 - [AI agent lifecycle](${abs("/agentic-banking/lifecycle")}): Eight gates from intake to retirement, with evidence and documents per gate

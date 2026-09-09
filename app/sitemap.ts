@@ -3,6 +3,7 @@ import { listSentDigests, ensureSchema } from "@/lib/db";
 import { REGULATORS } from "@/lib/regulators";
 import { DOCUMENTS, documentPath, latestDocumentUpdate } from "@/lib/tracker";
 import { BASE_URL } from "@/lib/seo";
+import { BANKS, BANKS_UPDATED, bankPath } from "@/lib/banks";
 import { AGENT_OS_UPDATED } from "@/lib/agent-os";
 
 // Revalidate at most every hour as a fallback. The send cron route invalidates
@@ -52,6 +53,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(AGENT_OS_UPDATED),
       changeFrequency: "weekly" as const,
       priority: i === 0 ? 0.8 : 0.7
+    })),
+    { url: `${BASE_URL}/banks`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 },
+    ...BANKS.map((b) => ({
+      url: `${BASE_URL}${bankPath(b)}`,
+      lastModified: new Date(b.lastUpdated),
+      changeFrequency: "weekly" as const,
+      priority: 0.7
     })),
     ...REGULATORS.map((r) => ({
       url: `${BASE_URL}/ai-regulation/${r.slug}`,
