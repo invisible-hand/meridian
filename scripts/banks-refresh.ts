@@ -68,6 +68,7 @@ function minusDays(iso: string, days: number): string {
     const known = new Set(b.sources.map((s) => s.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")));
     const seen = new Set<string>();
     const hits: Hit[] = [];
+    const nameRe = new RegExp(`\\b(${[b.name, b.shortName, b.ticker].map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "i");
     // Own domain first (from the bank's primary sources), then the press, then an open query.
     const ownHosts = Array.from(new Set(b.sources.map((s) => hostOf(s.url)).filter((h) => PRIMARY_HOSTS.some((p) => h === p || h.endsWith(`.${p}`)))));
     const plan: { q: string; site?: string }[] = [];
@@ -78,7 +79,9 @@ function minusDays(iso: string, days: number): string {
       for (const h of await search(p.q, after, p.site)) {
         const key = h.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "").split("?")[0];
         if (seen.has(key) || known.has(key) || !hostOk(h.url)) continue;
-        if (!/\b(ai|artificial intelligence|agent|agentic|llm|copilot|generative|machine learning)\b/i.test(`${h.title} ${h.snippet ?? ""}`)) continue;
+        const text = `${h.title} ${h.snippet ?? ""}`;
+        if (!/\b(ai|artificial intelligence|agent|agentic|llm|copilot|generative|machine learning)\b/i.test(text)) continue;
+        if (!nameRe.test(text)) continue;
         seen.add(key);
         hits.push(h);
       }
