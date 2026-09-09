@@ -1,0 +1,46 @@
+# Emails the latest entry of docs/banks-refresh-log.md whenever it changes on main.
+# The biweekly cloud routine ("Banks AI refresh") appends one entry per run — including
+# "no changes" runs — so every run produces exactly one email.
+name: banks-refresh-notify
+
+on:
+  push:
+    branches: [main]
+    paths: [docs/banks-refresh-log.md]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract the latest log entry
+        id: entry
+        run: |
+          # Newest entry is the first "## " section after the file header.
+          awk 'BEGIN{n=0} /^## /{n++} n==1{print} n==2{exit}' docs/banks-refresh-log.md > entry.md
+          test -s entry.md || { echo "no entry found"; exit 1; }
+          echo "subject=$(head -1 entry.md | sed 's/^## *//')" >> "$GITHUB_OUTPUT"
+      - name: Send via Resend
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
+          TO_EMAIL: andrey@fastmail.jp
+          SUBJECT: ${{ steps.entry.outputs.subject }}
+        run: |
+          test -n "$RESEND_API_KEY" || { echo "RESEND_API_KEY secret missing"; exit 1; }
+          FROM="${RESEND_FROM_EMAIL:-BankingNewsAI <digest@bankingnewsai.com>}"
+          BODY="$(cat entry.md)
+
+—
+Commit: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}
+Routines: https://claude.ai/code/routines"
+          jq -n --arg from "$FROM" --arg to "$TO_EMAIL" --arg subject "Banks refresh: $SUBJECT" --arg text "$BODY" \
+            '{from:$from, to:[$to], subject:$subject, text:$text}' > payload.json
+          code=$(curl -sS -o resp.json -w '%{http_code}' -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" --data @payload.json)
+          cat resp.json; echo
+          test "$code" = "200" || { echo "Resend returned $code"; exit 1; }

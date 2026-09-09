@@ -86,6 +86,12 @@ Commercial Banks release (`FED_LBR`); refresh them quarterly. The "What the reco
 suggests" cards are analysis and must stay observations, not advice. Batch 2 (Fed lead-bank ranks 10–22, minus
 Morgan Stanley's second bank) shipped 2026-09-09. Next: ranks 21–50 including Charles Schwab, then to 100 (repo memory
 `top-100-banks-ai-guide`). Figures in `app/banks/graphics.tsx` are data-driven; they need no edits when banks are added.
+Biweekly refresh: cloud routine "Banks AI refresh (biweekly)" (`trig_01J4geLpNA4NvCm8UjvZMcXc`,
+env `tracker-web`, cron `0 14 1,15 * *` = 1st and 15th, 7am Pacific) sweeps allowed hosts for
+every bank since its `lastUpdated`, edits the bank files, runs tracker:check (+`--bank-links`),
+tsc and build, pushes main, and appends an entry to `docs/banks-refresh-log.md`. The GitHub
+Action `banks-refresh-notify` emails that entry (Resend, secrets `RESEND_API_KEY` /
+`RESEND_FROM_EMAIL`) on every push that touches the log — a "no changes" run still emails.
 
 ### The agents section (`/agentic-banking`) — data in `lib/agent-os.ts`
 
