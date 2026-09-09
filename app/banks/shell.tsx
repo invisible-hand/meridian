@@ -44,6 +44,9 @@ export const bankCss = `
   .bk-card h3 a:hover { border-color: #1a3fcb; color: #1a3fcb; }
   .bk-card p { font-family: var(--font-sans), 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 1.65; color: #3a3a3a; margin: 0 0 8px; }
   .bk-card .bk-card-meta { font-family: var(--font-mono), 'Courier New', monospace; font-size: 10px; letter-spacing: 0.08em; color: #9a9a96; }
+  .bk-figure { margin: 8px 0 36px; }
+  .bk-figure svg { width: 100%; height: auto; display: block; }
+  .bk-figcaption { font-family: var(--font-mono), 'Courier New', monospace; font-size: 11px; letter-spacing: 0.08em; color: #9a9a96; margin-top: 10px; line-height: 1.6; }
   @media (max-width: 720px) { .bk-timeline li { grid-template-columns: 1fr; gap: 2px; } }
 `;
 

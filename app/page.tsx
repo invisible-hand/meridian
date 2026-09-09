@@ -201,6 +201,7 @@ export default async function HomePage({
           center="daily · six stories · in your inbox by 7 am ET"
           links={[
             { href: "/ai-regulation", label: "regulation" },
+            { href: "/banks", label: "banks" },
             { href: "/about", label: "about" },
             { href: "/issues", label: "archive" }
           ]}
@@ -259,7 +260,7 @@ export default async function HomePage({
               {" · "}
               <Link href="/agentic-banking">an operating system for AI agents in your bank</Link>
               {" · "}
-              <Link href="/banks">what the 10 largest banks are doing with AI</Link>
+              <Link href="/banks">what the 20 largest banks are doing with AI</Link>
             </span>
           </div>
         </div>

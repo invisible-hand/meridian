@@ -12,6 +12,7 @@ export const AGENT_NAV = [
   { href: "/agentic-banking/lifecycle", label: "lifecycle" },
   { href: "/agentic-banking/regulation", label: "what regulators say" },
   { href: "/ai-regulation", label: "tracker" },
+  { href: "/banks", label: "banks" },
   { href: "/#subscribe", label: "subscribe" }
 ];
 
@@ -114,6 +115,7 @@ export function AgentShell({
             { href: "/agentic-banking/lifecycle", label: "lifecycle" },
             { href: "/agentic-banking/regulation", label: "what regulators say" },
             { href: "/ai-regulation", label: "tracker" },
+            { href: "/banks", label: "banks" },
             { href: "/ai-regulation/documents", label: "documents" },
             { href: "/issues", label: "archive" }
           ]}

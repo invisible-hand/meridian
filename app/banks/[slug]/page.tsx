@@ -8,6 +8,7 @@ import { USE_CASE_LABELS, documentPath, formatDate, getDocument } from "@/lib/tr
 import { BANKS, BANKS_PUBLISHED, FED_LBR, bankPath, formatAssets, getBank, type Bank } from "@/lib/banks";
 import { Coverage } from "../../ai-regulation/coverage";
 import { BankShell, Section } from "../shell";
+import { BankTimelineFigure, PerimeterFigure, StatusLadderFigure } from "../graphics";
 
 export const revalidate = 86400;
 export const dynamicParams = false;
@@ -118,6 +119,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
 
       <Section label="Timeline">
         <h2 className="trk-h2-q">What has {b.shortName} done on AI, and when?</h2>
+        <BankTimelineFigure bank={b} n={1} />
         <ul className="bk-timeline">
           {timeline.map((e) => (
             <li key={`${e.date}-${e.title}`}>
@@ -133,6 +135,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
 
       <Section label="Where AI runs">
         <h2 className="trk-h2-q">Where does {b.shortName} use AI today?</h2>
+        <StatusLadderFigure bank={b} n={2} />
         <div className="trk-table-wrap">
           <table className="trk-table">
             <thead><tr><th>System</th><th className="trk-td-min">What it does</th><th>Status</th><th>Use case</th></tr></thead>
@@ -194,6 +197,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
 
       <Section label="Regulators">
         <h2 className="trk-h2-q">Which regulators govern {b.shortName}&apos;s AI?</h2>
+        <PerimeterFigure bank={b} names={Object.fromEntries(b.regulatory.map((r) => [r.authority, getRegulator(r.authority)?.name ?? r.authority]))} n={3} />
         <div className="trk-table-wrap">
           <table className="trk-table">
             <thead><tr><th>Authority</th><th className="trk-td-min">Why it matters here</th><th>Documents</th></tr></thead>

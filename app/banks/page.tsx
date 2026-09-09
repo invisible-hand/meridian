@@ -3,20 +3,21 @@ import Link from "next/link";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
 import { absoluteUrl } from "@/lib/seo";
 import { formatDate } from "@/lib/tracker";
-import { BANKS, BANKS_UPDATED, BANK_SOURCE_COUNT, FED_LBR, bankPath, formatAssets } from "@/lib/banks";
+import { BANKS, BANKS_UPDATED, BANK_COUNT, BANK_SOURCE_COUNT, FED_LBR, bankPath, formatAssets } from "@/lib/banks";
 import { BankShell, Section } from "./shell";
+import { AssetsFigure, MovesFigure } from "./graphics";
 
 const PATH = "/banks";
-const TITLE = "AI Strategy of the 10 Largest US Banks (2026) — Sourced, Bank by Bank";
+const TITLE = `AI Strategy of the ${BANK_COUNT} Largest US Banks (2026) — Sourced, Bank by Bank`;
 const DESCRIPTION =
-  "How JPMorgan Chase, Bank of America, Citigroup, Wells Fargo, Goldman Sachs, Morgan Stanley, U.S. Bancorp, Capital One, PNC and Truist are deploying AI: platforms, agents, budgets, headcount, leadership and regulators — every claim linked to a primary or tier-1 source.";
+  `How the ${BANK_COUNT} largest US banks — from JPMorgan Chase, Bank of America and Citigroup to BNY, TD, Fifth Third, American Express and M&T — are deploying AI: platforms, agents, budgets, headcount, leadership and regulators, every claim linked to a primary or tier-1 source.`;
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PATH },
   openGraph: { type: "website", url: PATH, title: TITLE, description: DESCRIPTION },
-  twitter: { card: "summary_large_image", title: "AI strategy of the 10 largest US banks", description: DESCRIPTION }
+  twitter: { card: "summary_large_image", title: `AI strategy of the ${BANK_COUNT} largest US banks`, description: DESCRIPTION }
 };
 
 export const revalidate = 86400;
@@ -30,11 +31,11 @@ export default function BanksHubPage() {
     },
     {
       q: "Do the big banks build their own AI models or buy them?",
-      a: "Mostly they build platforms and rent models: JPMorgan's LLM Suite and Goldman's GS AI Platform wrap third-party models; Morgan Stanley and Wells Fargo built on OpenAI and Google Cloud respectively. Capital One is the exception on the research side, training and customising its own models, and PNC announced in June 2026 that it is building an 'AI factory' with its own GPUs and language models to reduce dependence on token pricing."
+      a: "Mostly they build platforms and rent models: JPMorgan's LLM Suite and Goldman's GS AI Platform wrap third-party models; Morgan Stanley and Wells Fargo built on OpenAI and Google Cloud respectively. Capital One is the exception on the research side, training and customising its own models, and PNC announced in June 2026 that it is building an 'AI factory' with its own GPUs and language models to reduce dependence on token pricing. Among the next ten, TD builds through its Layer 6 lab, BNY runs OpenAI and Google models on its own Eliza platform, and M&T chose a single vendor tool, Microsoft Copilot, for stability."
     },
     {
       q: "How is this section sourced?",
-      a: `Every dated statement on a bank page cites a numbered source — the bank's own releases and filings, SEC documents, or reporting by CNBC, Reuters, Bloomberg, the Financial Times, the Wall Street Journal and American Banker. ${BANK_SOURCE_COUNT} sources across the ten pages; secondary blogs and aggregators are excluded. Asset figures are the lead bank's consolidated assets from the Federal Reserve's Large Commercial Banks release as of ${formatDate(FED_LBR.asOf)}.`
+      a: `Every dated statement on a bank page cites a numbered source — the bank's own releases and filings, SEC documents, or reporting by CNBC, Reuters, Bloomberg, the Financial Times, the Wall Street Journal and American Banker. ${BANK_SOURCE_COUNT} sources across the ${BANK_COUNT} pages; secondary blogs and aggregators are excluded. Asset figures are the lead bank's consolidated assets from the Federal Reserve's Large Commercial Banks release as of ${formatDate(FED_LBR.asOf)}.`
     }
   ];
   const schema = [
@@ -58,19 +59,24 @@ export default function BanksHubPage() {
   return (
     <BankShell
       eyebrow="Banks · AI strategy, bank by bank"
-      title={<>What the ten largest US banks<br /><em>are actually doing with AI.</em></>}
-      updated={`Last updated ${formatDate(updated)} · 10 banks · ${BANK_SOURCE_COUNT} sources · assets as of ${formatDate(FED_LBR.asOf)}`}
+      title={<>What the {BANK_COUNT} largest US banks<br /><em>are actually doing with AI.</em></>}
+      updated={`Last updated ${formatDate(updated)} · ${BANK_COUNT} banks · ${BANK_SOURCE_COUNT} sources · assets as of ${formatDate(FED_LBR.asOf)}`}
     >
       <JsonLd data={schema} />
       <p className="trk-answer">
-        The ten largest US bank holding companies have said a great deal about AI — on earnings calls, in shareholder letters,
+        The {BANK_COUNT} largest US banks have said a great deal about AI — on earnings calls, in shareholder letters,
         in engineering posts and to reporters — but almost never in one place. These pages assemble the public record for each
         bank: the platform it built, the agents it runs, the budget and headcount effects it has disclosed, who leads the
         program, which regulators it answers to, and what the record suggests. Every dated claim links to its source; nothing
         here comes from non-public information.
       </p>
 
-      <Section label="The ten">
+      <Section label="Scale and momentum">
+        <AssetsFigure banks={BANKS} asOf={formatDate(FED_LBR.asOf)} />
+        <MovesFigure banks={BANKS} years={[2023, 2024, 2025, 2026]} />
+      </Section>
+
+      <Section label={`The ${BANK_COUNT}`}>
         <div className="trk-table-wrap">
           <table className="trk-table">
             <thead><tr><th>#</th><th>Bank</th><th>Lead-bank assets</th><th className="trk-td-min">AI posture</th><th>Flagship</th></tr></thead>
@@ -93,7 +99,9 @@ export default function BanksHubPage() {
         <p className="trk-sub" style={{ marginTop: 10 }}>
           Assets are the lead bank&apos;s consolidated assets in the Federal Reserve&apos;s{" "}
           <a href={FED_LBR.url} target="_blank" rel="noopener noreferrer" style={{ color: "#1a3fcb" }}>Large Commercial Banks</a> release;
-          holding-company totals are larger for the broker-dealer groups (Goldman Sachs, Morgan Stanley).
+          holding-company totals are larger for the broker-dealer groups (Goldman Sachs, Morgan Stanley). Ranks 1–10 are the
+          ten largest US bank holding companies; ranks 11–20 follow the Federal Reserve&apos;s lead-bank order (Charles Schwab&apos;s
+          lead bank is a savings bank outside that release and will join in the next batch).
         </p>
       </Section>
 

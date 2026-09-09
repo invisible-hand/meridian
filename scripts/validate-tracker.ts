@@ -157,7 +157,7 @@ function checkExecutiveBriefing() {
 
 // Bank pages may cite primary (bank/vendor), regulator and trade hosts plus the
 // tier-1 business press. Anything else (blogs, aggregators) is refused.
-const BANK_PRESS_HOSTS = ["cnbc.com", "reuters.com", "bloomberg.com", "ft.com", "wsj.com", "mckinsey.com", "thefinancialbrand.com", "bankingdive.com"];
+const BANK_PRESS_HOSTS = ["cnbc.com", "reuters.com", "bloomberg.com", "ft.com", "wsj.com", "mckinsey.com", "thefinancialbrand.com", "bankingdive.com", "fortune.com", "fastcompany.com", "forbes.com"];
 function bankHostOk(url: string): boolean {
   const h = hostOf(url);
   if (!h) return false;

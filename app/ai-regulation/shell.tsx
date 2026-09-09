@@ -26,6 +26,7 @@ export function TrackerShell({
         <SiteHeader
           links={[
             { href: "/ai-regulation", label: "tracker" },
+            { href: "/banks", label: "banks" },
             { href: "/ai-regulation/documents", label: "documents" },
             { href: "/ai-regulation/deadlines", label: "deadlines" },
             { href: "/ai-regulation/compliance-checklist", label: "checklist" },

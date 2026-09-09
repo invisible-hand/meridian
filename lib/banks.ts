@@ -17,9 +17,21 @@ import { US_BANCORP } from "@/lib/banks/us-bancorp";
 import { CAPITAL_ONE } from "@/lib/banks/capital-one";
 import { PNC } from "@/lib/banks/pnc";
 import { TRUIST } from "@/lib/banks/truist";
+import { BNY_MELLON } from "@/lib/banks/bny-mellon";
+import { STATE_STREET } from "@/lib/banks/state-street";
+import { TD_BANK_US } from "@/lib/banks/td-bank-us";
+import { FIFTH_THIRD } from "@/lib/banks/fifth-third";
+import { HUNTINGTON } from "@/lib/banks/huntington";
+import { BMO_US } from "@/lib/banks/bmo-us";
+import { FIRST_CITIZENS } from "@/lib/banks/first-citizens";
+import { CITIZENS } from "@/lib/banks/citizens";
+import { AMERICAN_EXPRESS } from "@/lib/banks/american-express";
+import { MT_BANK } from "@/lib/banks/mt-bank";
 
 export const BANKS_PUBLISHED = "2026-09-09";
 export const BANKS_UPDATED = "2026-09-09";
+/** How many banks are in the current published set (used in copy). */
+export const BANK_COUNT = 20;
 /** Federal Reserve "Large Commercial Banks" release the asset figures come from. */
 export const FED_LBR = { asOf: "2026-03-31", url: "https://www.federalreserve.gov/releases/lbr/current/" };
 
@@ -67,7 +79,12 @@ export type Bank = {
   lastUpdated: string;
 };
 
-/** Ordered by holding-company size: the ten largest US bank holding companies. */
+/**
+ * Ordered by size. Batch 1 (1–10): the ten largest US bank holding companies.
+ * Batch 2 (11–20): the next ten by the Federal Reserve's lead-bank ranking
+ * (Charles Schwab's lead bank is a savings bank outside that release and
+ * is deferred to batch 3).
+ */
 export const BANKS: Bank[] = [
   JPMORGAN_CHASE,
   BANK_OF_AMERICA,
@@ -78,7 +95,17 @@ export const BANKS: Bank[] = [
   US_BANCORP,
   CAPITAL_ONE,
   PNC,
-  TRUIST
+  TRUIST,
+  BNY_MELLON,
+  STATE_STREET,
+  TD_BANK_US,
+  FIFTH_THIRD,
+  HUNTINGTON,
+  BMO_US,
+  FIRST_CITIZENS,
+  CITIZENS,
+  AMERICAN_EXPRESS,
+  MT_BANK
 ];
 
 export function getBank(slug: string): Bank | undefined {

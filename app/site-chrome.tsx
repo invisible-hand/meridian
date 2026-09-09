@@ -117,6 +117,7 @@ export function SiteFooter({ links, note = "curated by ai · delivered daily" }:
 export const PRIMARY_NAV: ChromeLink[] = [
   { href: "/ai-regulation", label: "regulation" },
   { href: "/agentic-banking", label: "agents" },
+  { href: "/banks", label: "banks" },
   { href: "/about", label: "about" },
   { href: "/issues", label: "archive" },
   { href: "/#subscribe", label: "subscribe" }
@@ -126,5 +127,6 @@ export const FOOTER_NAV: ChromeLink[] = [
   { href: "/issues", label: "archive" },
   { href: "/ai-regulation", label: "ai regulation tracker" },
   { href: "/agentic-banking", label: "ai agents in banking" },
+  { href: "/banks", label: "banks' ai strategies" },
   { href: "/about", label: "about" }
 ];

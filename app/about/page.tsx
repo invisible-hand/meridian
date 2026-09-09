@@ -278,6 +278,7 @@ export default function AboutPage() {
         <SiteHeader
           links={[
             { href: "/ai-regulation", label: "regulation" },
+            { href: "/banks", label: "banks" },
             { href: "/issues", label: "archive" },
             { href: "/#subscribe", label: "subscribe" }
           ]}

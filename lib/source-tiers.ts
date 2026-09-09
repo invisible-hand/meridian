@@ -17,6 +17,7 @@ export const PRIMARY_HOSTS = [
   "capitalone.com", "usbank.com", "pnc.com", "truist.com", "goldmansachs.com", "morganstanley.com",
   "schwab.com", "americanexpress.com", "discover.com", "synchrony.com", "ally.com", "fifththird.com",
   "keybank.com", "regions.com", "mtb.com", "citizensbank.com", "huntington.com",
+  "bny.com", "bnymellon.com", "statestreet.com", "td.com", "53.com", "bmo.com", "firstcitizens.com", "svb.com",
   // core / fintech vendors
   "fiserv.com", "fisglobal.com", "jackhenry.com", "ncino.com", "temenos.com", "mambu.com", "nymbus.com",
   "q2.com", "alkami.com", "plaid.com", "stripe.com", "adyen.com", "visa.com", "visa.co.uk", "mastercard.com",
