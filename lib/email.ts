@@ -23,9 +23,6 @@ const D = {
   mono:         "'IBM Plex Mono', 'Courier New', Courier, monospace",
 } as const;
 
-/** The person whose opinion the takes are. Override with DIGEST_BYLINE. */
-const BYLINE = process.env.DIGEST_BYLINE?.trim() || "Andrey Zagoruiko";
-
 export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): string {
   const bankingStories = digest.bankingStories ?? digest.stories ?? [];
   const aiStories = digest.aiStories ?? [];
@@ -45,10 +42,10 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
     : "";
 
   const bankingMeta = bankingStories.length > 0
-    ? `<span style="font-family:${D.mono};font-size:10px;color:#6b9cff;letter-spacing:0.12em;">🏦 ${bankingStories.length} BANKING</span>`
+    ? `<span style="font-family:${D.mono};font-size:11px;color:#6b9cff;letter-spacing:0.12em;white-space:nowrap;">🏦 ${bankingStories.length} BANKING</span>`
     : "";
   const aiMeta = aiStories.length > 0
-    ? `<span style="font-family:${D.mono};font-size:10px;color:#5ecb97;letter-spacing:0.12em;">🤖 ${aiStories.length} GENERAL AI</span>`
+    ? `<span style="font-family:${D.mono};font-size:11px;color:#5ecb97;letter-spacing:0.12em;white-space:nowrap;">🤖 ${aiStories.length} GENERAL AI</span>`
     : "";
   const metaSep = bankingStories.length > 0 && aiStories.length > 0
     ? `<span style="font-family:${D.mono};font-size:10px;color:#333;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>`
@@ -107,19 +104,13 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
               <a href="${issueUrl}" style="color:#ffffff;text-decoration:none;">Daily AI Brief</a>
             </p>
 
-            <!-- Date + edition counts -->
-            <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:8px;">
-              <tr>
-                <td>
-                  <p style="margin:0;font-family:${D.sans};font-size:14px;color:#8a8a8a;letter-spacing:0.02em;">
-                    ${escapeHtml(formattedDate)}&nbsp;&nbsp;·&nbsp;&nbsp;By ${escapeHtml(BYLINE)}
-                  </p>
-                </td>
-                <td align="right">
-                  ${bankingMeta}${metaSep}${aiMeta}
-                </td>
-              </tr>
-            </table>
+            <!-- Date, then edition counts on their own line -->
+            <p style="margin:8px 0 0;font-family:${D.sans};font-size:14px;color:#8a8a8a;letter-spacing:0.02em;">
+              ${escapeHtml(formattedDate)}
+            </p>
+            <p style="margin:10px 0 0;white-space:nowrap;">
+              ${bankingMeta}${metaSep}${aiMeta}
+            </p>
 
           </td>
         </tr>
@@ -139,7 +130,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
           <td style="background:${D.bg};padding:22px 40px 26px;border-top:1px solid ${D.divider};">
             <p style="margin:0;font-family:${D.mono};font-size:10px;color:${D.textMuted};letter-spacing:0.1em;line-height:2;text-transform:uppercase;">
               You subscribed to <a href="${BASE_URL}" style="color:${D.textMuted};text-decoration:underline;">BankingNewsAI</a>'s daily brief &nbsp;·&nbsp; <a href="${BASE_URL}/issues" style="color:${D.textMuted};text-decoration:underline;">All issues</a><br />
-              Written by ${escapeHtml(BYLINE)} &nbsp;·&nbsp; Delivered daily &nbsp;·&nbsp;
+              Delivered daily &nbsp;·&nbsp;
               ${recipientEmail
                 ? `<a href="${escapeHtml(unsubUrl(recipientEmail))}" style="color:${D.textMuted};text-decoration:underline;">Unsubscribe</a>`
                 : `<a href="/" style="color:${D.textMuted};text-decoration:none;">BankingNewsAI</a>`
@@ -242,10 +233,9 @@ function renderStory(story: DigestStory, index: number, accent: string): string 
 
         ${actionBlock}
 
-        <!-- Read link: "Read article →" from <publication> -->
-        <p style="margin:0;font-family:${D.sans};font-size:14px;color:${D.textMuted};">
-          <a href="${story.sourceUrl}" style="font-family:${D.mono};font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:underline;text-underline-offset:3px;">Read article →</a>
-          &nbsp;from ${escapeHtml(domain)}
+        <!-- Read link: "READ ARTICLE →  FROM <PUBLISHER>", one font, publisher not linked -->
+        <p style="margin:0;font-family:${D.mono};font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;line-height:1.6;">
+          <a href="${story.sourceUrl}" style="color:${accent};text-decoration:underline;text-underline-offset:3px;">Read article →</a><span style="color:${D.textMuted};text-decoration:none;">&nbsp;&nbsp;from ${escapeHtml(publisherName(domain))}</span>
         </p>
 
       </td>
@@ -265,6 +255,29 @@ function formatDate(iso: string): string {
   try {
     return new Date(iso).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
   } catch { return iso; }
+}
+
+/** A publisher name from a host, without dots so mail clients do not auto-link it. */
+const PUBLISHERS: Record<string, string> = {
+  "finance.yahoo.com": "Yahoo Finance", "media.truist.com": "Truist", "pymnts.com": "PYMNTS", "reuters.com": "Reuters",
+  "bloomberg.com": "Bloomberg", "ft.com": "Financial Times", "wsj.com": "Wall Street Journal", "cnbc.com": "CNBC",
+  "americanbanker.com": "American Banker", "bankingdive.com": "Banking Dive", "finextra.com": "Finextra",
+  "thefintechtimes.com": "The Fintech Times", "fintech.global": "FinTech Global", "prnewswire.com": "PR Newswire",
+  "businesswire.com": "Business Wire", "globenewswire.com": "GlobeNewswire", "openai.com": "OpenAI", "anthropic.com": "Anthropic",
+  "microsoft.com": "Microsoft", "blog.google": "Google", "bis.org": "BIS", "federalreserve.gov": "Federal Reserve",
+  "occ.gov": "OCC", "fdic.gov": "FDIC", "consumerfinance.gov": "CFPB", "sec.gov": "SEC", "theverge.com": "The Verge",
+  "techcrunch.com": "TechCrunch", "semafor.com": "Semafor", "axios.com": "Axios", "wimz.com": "Wimz",
+  "stripe.com": "Stripe", "goldmansachs.com": "Goldman Sachs", "jpmorgan.com": "JPMorgan", "cybersecuritynews.com": "Cybersecurity News",
+  "salesforce.com": "Salesforce"
+};
+export function publisherName(host: string): string {
+  const h = host.replace(/^www\./, "").toLowerCase();
+  if (PUBLISHERS[h]) return PUBLISHERS[h];
+  const parts = h.split(".");
+  const root = parts.length >= 2 ? parts.slice(-2).join(".") : h;
+  if (PUBLISHERS[root]) return PUBLISHERS[root];
+  const label = parts.length >= 2 ? parts[parts.length - 2] : h;
+  return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
 function extractDomain(url: string): string {

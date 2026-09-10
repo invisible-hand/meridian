@@ -1,3 +1,4 @@
+import { publisherName } from "@/lib/email";
 import { cache } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -145,17 +146,15 @@ function StoryCard({ story, index, accent }: {
       </div>
       )}
 
-      {/* Read link: "Read article →" from <publication> */}
-      <p style={{ margin: 0, fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif", fontSize: 14, color: "#9a9a9a" }}>
-        <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{
-          fontFamily: "var(--font-mono), 'Courier New', monospace",
-          fontSize: 11, fontWeight: 500, letterSpacing: "0.1em",
-          textTransform: "uppercase", color: accent,
-          textDecoration: "underline", textUnderlineOffset: 3
-        }}>
+      {/* Read link: "READ ARTICLE →  FROM <PUBLISHER>" */}
+      <p style={{
+        margin: 0, fontFamily: "var(--font-mono), 'Courier New', monospace",
+        fontSize: 11, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", lineHeight: 1.6
+      }}>
+        <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: accent, textDecoration: "underline", textUnderlineOffset: 3 }}>
           Read article →
         </a>
-        {" "}from {domain}
+        <span style={{ color: "#9a9a9a" }}>&nbsp;&nbsp;from {publisherName(domain)}</span>
       </p>
     </article>
   );
