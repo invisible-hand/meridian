@@ -100,10 +100,10 @@ export default function BanksHubPage() {
           Assets are the lead bank&apos;s consolidated assets in the Federal Reserve&apos;s{" "}
           <a href={FED_LBR.url} target="_blank" rel="noopener noreferrer" style={{ color: "#1a3fcb" }}>Large Commercial Banks</a> release;
           holding-company totals are larger for the broker-dealer groups (Goldman Sachs, Morgan Stanley). Rows 1–10 are the
-          ten largest US bank holding companies; Charles Schwab follows by holding-company assets (its lead bank is a savings
-          bank outside that release, so the figure shown is the group total); the rest follow the Federal Reserve&apos;s lead-bank
+          ten largest US bank holding companies; Charles Schwab and Axos Financial are placed by holding-company assets (their
+          lead banks are savings banks outside that release, so the figures shown are group totals); the rest follow the Federal Reserve&apos;s lead-bank
           order through rank 100. Four lead banks in that range are second banks of groups already covered (TD Bank USA, BNY Mellon N.A.,
-          FirstBank of Colorado under PNC, TriState Capital under Raymond James) and are folded into those pages; ranks 101–103 and 105
+          FirstBank of Colorado under PNC, TriState Capital under Raymond James) and are folded into those pages; ranks 101–103
           fill the count to 100 groups.
         </p>
       </Section>

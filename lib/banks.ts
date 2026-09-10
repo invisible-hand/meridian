@@ -71,6 +71,7 @@ import { TEXAS_CAPITAL } from "@/lib/banks/texas-capital";
 import { FULTON } from "@/lib/banks/fulton";
 import { GLACIER } from "@/lib/banks/glacier";
 import { EASTERN } from "@/lib/banks/eastern";
+import { AXOS } from "@/lib/banks/axos";
 import { SALLIE_MAE } from "@/lib/banks/sallie-mae";
 import { CITY_NATIONAL_FLORIDA } from "@/lib/banks/city-national-florida";
 import { UNITED_COMMUNITY } from "@/lib/banks/united-community";
@@ -106,7 +107,6 @@ import { ENTERPRISE_BANK } from "@/lib/banks/enterprise-bank";
 import { FB_FINANCIAL } from "@/lib/banks/fb-financial";
 import { FIRST_UNITED } from "@/lib/banks/first-united";
 import { BANNER } from "@/lib/banks/banner";
-import { NBT } from "@/lib/banks/nbt";
 
 export const BANKS_PUBLISHED = "2026-09-09";
 export const BANKS_UPDATED = "2026-09-10";
@@ -234,6 +234,7 @@ export const BANKS: Bank[] = [
   FULTON,
   GLACIER,
   EASTERN,
+  AXOS,
   SALLIE_MAE,
   CITY_NATIONAL_FLORIDA,
   UNITED_COMMUNITY,
@@ -268,8 +269,7 @@ export const BANKS: Bank[] = [
   ENTERPRISE_BANK,
   FB_FINANCIAL,
   FIRST_UNITED,
-  BANNER,
-  NBT
+  BANNER
 ];
 
 export function getBank(slug: string): Bank | undefined {

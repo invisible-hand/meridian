@@ -92,7 +92,8 @@ indexes some LinkedIn profiles (`site: "linkedin.com/in"`) but covers few bank e
 search; roles are marked "Former …" when a profile shows the person has moved on.
 Batch 4 (Fed lead-bank ranks 51–105, 50 groups → 100 banks) shipped 2026-09-10: ranks 62/65/68/83 are second banks of
 covered groups (TD Bank USA, BNY Mellon N.A., FirstBank of Colorado/PNC, TriState Capital/Raymond James) and 104 is a captive
-ILC (Toyota), so ranks 101–103 and 105 fill the count. Company press releases via Business Wire, GlobeNewswire, PR Newswire and
+ILC (Toyota), so ranks 101–103 fill the count; Axos Financial (federal savings association, outside the Fed release) is placed by
+holding-company assets with `fedRank: 0`, like Charles Schwab, and replaced NBT (rank 105) on 2026-09-10. Company press releases via Business Wire, GlobeNewswire, PR Newswire and
 Yahoo Finance syndication are allowed bank sources (`BANK_PRESS_HOSTS`) alongside the tier-1 press. The series is complete at 100;
 the biweekly refresh routine now covers all 100 pages. Figures in `app/banks/graphics.tsx` are data-driven; they need no edits when banks are added.
 Biweekly refresh: cloud routine "Banks AI refresh (biweekly)" (`trig_01J4geLpNA4NvCm8UjvZMcXc`,
