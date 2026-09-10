@@ -27,10 +27,10 @@ export const STATE_STREET: Bank = {
     "The investment arm's 2026 'grey swan' list puts AI 'failing to scale' at the top of under-priced risks — an unusually sceptical house view from an AI adopter."
   ],
   leadership: [
-    { name: "Ronald O'Hanley", role: "Chairman and CEO", sources: ["ab-treasury-cost-2026", "reuters-q1-2026"] },
-    { name: "Andrew Zitney", role: "Chief Information Officer (from CTO, July 2025)", sources: ["bankingdive-cio-2025"] },
-    { name: "Ann Fogarty", role: "Head of Global Delivery and COO, Investment Services", sources: ["ab-fogarty-2025"] },
-    { name: "Donna Milrod", role: "Chief Product Officer", sources: ["ab-milrod-2026"] }
+    { name: "Ronald O'Hanley", role: "Chairman and CEO", sources: ["ab-treasury-cost-2026", "reuters-q1-2026"], linkedin: "https://www.linkedin.com/in/ronald-o-hanley/" },
+    { name: "Andrew Zitney", role: "Chief Information Officer (from CTO, July 2025)", sources: ["bankingdive-cio-2025"], linkedin: "https://www.linkedin.com/in/andrew-zitney-8137898/" },
+    { name: "Ann Fogarty", role: "Head of Global Delivery and COO, Investment Services", sources: ["ab-fogarty-2025"], linkedin: "https://www.linkedin.com/in/ann-fogarty-b7a743a7/" },
+    { name: "Donna Milrod", role: "Chief Product Officer", sources: ["ab-milrod-2026"], linkedin: "https://www.linkedin.com/in/donna-m-milrod/" }
   ],
   timeline: [
     { date: "2020-01-01", title: "Cloud wealth-management data platform on Azure", detail: "The start of the cloud estate the AI work now runs on.", sources: ["bankingdive-cio-2025"] },

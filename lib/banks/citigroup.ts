@@ -27,10 +27,10 @@ export const CITIGROUP: Bank = {
     "Agentic payments in the cards business (Mastercard Agent Pay) and an AI Infrastructure Banking team formed in February 2026 to serve the build-out."
   ],
   leadership: [
-    { name: "Tim Ryan", role: "Head of Technology and Business Enablement", sources: ["reuters-ryan-2026"] },
-    { name: "Nikhil Joshi", role: "Chief Information Officer", sources: ["ab-agents-humans-2025"] },
-    { name: "Jonathan Lofthouse", role: "CIO, Markets (led the firm-wide AI rollout)", sources: ["ab-lofthouse-2026"] },
-    { name: "Pam Habner", role: "Head of US Branded Cards and Lending", sources: ["ab-habner-2026"] }
+    { name: "Tim Ryan", role: "Head of Technology and Business Enablement", sources: ["reuters-ryan-2026"], linkedin: "https://www.linkedin.com/in/timfryan/" },
+    { name: "Nikhil Joshi", role: "Chief Information Officer", sources: ["ab-agents-humans-2025"], linkedin: "https://www.linkedin.com/in/joshinik/" },
+    { name: "Jonathan Lofthouse", role: "Former Group CIO (left Citi in 2026); led the firm-wide AI rollout", sources: ["ab-lofthouse-2026"], linkedin: "https://www.linkedin.com/in/jonlofthouse/" },
+    { name: "Pam Habner", role: "Head of US Branded Cards and Lending", sources: ["ab-habner-2026"], linkedin: "https://www.linkedin.com/in/pamela-codispoti-habner-85781846/" }
   ],
   timeline: [
     { date: "2024-10-01", title: "Citi Stylus Workspaces rolled out", detail: "Adoption starts in the single digits; the champions programme is built to change that.", sources: ["wsj-superfans-2026"] },

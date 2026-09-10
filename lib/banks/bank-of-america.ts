@@ -27,8 +27,8 @@ export const BANK_OF_AMERICA: Bank = {
     "Governance posture is conservative by design: 'zero tolerance for things like hallucinations, bias', per the CTO; the CEO frames AI as a management responsibility, not a technology one."
   ],
   leadership: [
-    { name: "Hari Gopalkrishnan", role: "Chief Technology and Information Officer", sources: ["wsj-gopalkrishnan-2025", "ab-cto-2026"] },
-    { name: "Nikki Katz", role: "Head of Digital", sources: ["ab-katz-2026"] },
+    { name: "Hari Gopalkrishnan", role: "Chief Technology and Information Officer", sources: ["wsj-gopalkrishnan-2025", "ab-cto-2026"], linkedin: "https://www.linkedin.com/in/hari-gopalkrishnan-b1469b1/" },
+    { name: "Nikki Katz", role: "Head of Digital", sources: ["ab-katz-2026"], linkedin: "https://www.linkedin.com/in/nikkikatz/" },
     { name: "Kevin Milsom", role: "Head of Platforms AI Transformation", sources: ["bloomberg-promotions-2026"] }
   ],
   timeline: [

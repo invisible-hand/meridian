@@ -27,10 +27,10 @@ export const TD_BANK_US: Bank = {
     "Governance: enterprise Responsible AI Principles (July 2026) with seven commitments, an AI Risk Management framework and a Trustworthy AI team; a June 2026 Reuters report on workforce-monitoring software in financial-crimes teams shows the friction."
   ],
   leadership: [
-    { name: "Maksims Volkovs", role: "SVP and Chief AI Scientist, Layer 6", sources: ["ab-volkovs-2026", "td-big-awards-2026"] },
-    { name: "Ted Paris", role: "SVP, Head of Analytics, Intelligence and AI, TD Bank U.S.", sources: ["bankingdive-paris-agents-2026", "bankingdive-paris-trust-2025"] },
-    { name: "Raymond Chun", role: "Group President and CEO, TD Bank Group", sources: ["pymnts-value-2026", "reuters-layoffs-2025"] },
-    { name: "Leo Salom", role: "President and CEO, TD Bank (U.S.)", sources: ["td-layer6-ny-2025"] }
+    { name: "Maksims Volkovs", role: "SVP and Chief AI Scientist, Layer 6", sources: ["ab-volkovs-2026", "td-big-awards-2026"], linkedin: "https://www.linkedin.com/in/maksimsvolkovs/" },
+    { name: "Ted Paris", role: "SVP, Head of Analytics, Intelligence and AI, TD Bank U.S.", sources: ["bankingdive-paris-agents-2026", "bankingdive-paris-trust-2025"], linkedin: "https://www.linkedin.com/in/tedtparis/" },
+    { name: "Raymond Chun", role: "Group President and CEO, TD Bank Group", sources: ["pymnts-value-2026", "reuters-layoffs-2025"], linkedin: "https://www.linkedin.com/in/raymondchuntd/" },
+    { name: "Leo Salom", role: "President and CEO, TD Bank (U.S.)", sources: ["td-layer6-ny-2025"], linkedin: "https://www.linkedin.com/in/leosalomjr/" }
   ],
   timeline: [
     { date: "2018-01-01", title: "TD acquires Layer 6", detail: "The Toronto AI research firm becomes the group's AI R&D centre.", sources: ["td-layer6-ny-2025"] },

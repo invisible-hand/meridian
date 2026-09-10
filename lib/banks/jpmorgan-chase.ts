@@ -27,9 +27,9 @@ export const JPMORGAN_CHASE: Bank = {
     "A named launch partner for Anthropic's restricted Mythos model under Project Glasswing; Dimon calls frontier-model cyber risk 'very heightened'."
   ],
   leadership: [
-    { name: "Lori Beer", role: "Global Chief Information Officer", sources: ["ab-beer-2026"] },
-    { name: "Teresa Heitsenrether", role: "Chief Data & Analytics Officer (retiring end-2026)", sources: ["ab-heitsenrether-2025"] },
-    { name: "Derek Waldron", role: "Chief Analytics Officer", sources: ["cnbc-agents-2026"] },
+    { name: "Lori Beer", role: "Global Chief Information Officer", sources: ["ab-beer-2026"], linkedin: "https://www.linkedin.com/in/lori-beer-93355a/" },
+    { name: "Teresa Heitsenrether", role: "Chief Data & Analytics Officer (retiring end-2026)", sources: ["ab-heitsenrether-2025"], linkedin: "https://www.linkedin.com/in/teresa-heitsenrether-8a37901/" },
+    { name: "Derek Waldron", role: "Chief Analytics Officer", sources: ["cnbc-agents-2026"], linkedin: "https://www.linkedin.com/in/derek-waldron/" },
     { name: "Guy Halamish", role: "COO, Commercial & Investment Bank, with the AI mandate", sources: ["reuters-halamish-2026"] }
   ],
   timeline: [

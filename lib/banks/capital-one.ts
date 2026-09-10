@@ -28,8 +28,8 @@ export const CAPITAL_ONE: Bank = {
   ],
   leadership: [
     { name: "Richard Fairbank", role: "Founder, Chairman and CEO", sources: ["cof-ars-2026"] },
-    { name: "Prem Natarajan", role: "EVP, Chief Scientist and Head of Enterprise AI", sources: ["bankingdive-talent-2025", "bloomberg-moats-2026"] },
-    { name: "Andy Ozment", role: "EVP, Chief Technology Risk Officer", sources: ["ab-ozment-2026"] }
+    { name: "Prem Natarajan", role: "EVP, Chief Scientist and Head of Enterprise AI", sources: ["bankingdive-talent-2025", "bloomberg-moats-2026"], linkedin: "https://www.linkedin.com/in/natarajan/" },
+    { name: "Andy Ozment", role: "EVP, Chief Technology Risk Officer", sources: ["ab-ozment-2026"], linkedin: "https://www.linkedin.com/in/andyozment/" }
   ],
   timeline: [
     { date: "2024-12-01", title: "Enterprise AI at scale, presented at AWS re:Invent", detail: "The bank lays out use cases across AML, cybersecurity, digital and customer service, and its enterprise AI program.", sources: ["cof-transforming-2025"] },

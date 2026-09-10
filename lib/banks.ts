@@ -47,7 +47,9 @@ export type BankUseCase = {
 export type BankNumber = { label: string; value: string; asOf: string; sources: string[] };
 export type BankQuote = { who: string; role: string; date: string; quote: string; sources: string[] };
 export type BankRegulatory = { authority: string; why: string; docSlugs: string[] };
-export type BankLeader = { name: string; role: string; sources: string[] };
+/** `linkedin` is the person's public profile URL (https://www.linkedin.com/in/…), verified by
+ * hand against the profile's visible employer; omit rather than guess. */
+export type BankLeader = { name: string; role: string; sources: string[]; linkedin?: string };
 
 export type Bank = {
   slug: string;

@@ -27,8 +27,8 @@ export const FIRST_CITIZENS: Bank = {
     "Technology spend is rising in the P&L: third-party processing and equipment expense up as the bank invests in digital infrastructure and data-centre modernisation (Q2 2026)."
   ],
   leadership: [
-    { name: "Frank Holding Jr.", role: "Chairman and CEO", sources: ["reuters-fac-2026"] },
-    { name: "Hope Holding Bryant", role: "Vice Chairwoman; commands nearly half the balance sheet", sources: ["ab-bryant-2025"] },
+    { name: "Frank Holding Jr.", role: "Chairman and CEO", sources: ["reuters-fac-2026"], linkedin: "https://www.linkedin.com/in/frank-holding-jr-8847441a/" },
+    { name: "Hope Holding Bryant", role: "Vice Chairwoman; commands nearly half the balance sheet", sources: ["ab-bryant-2025"], linkedin: "https://www.linkedin.com/in/hope-bryant-3178621b/" },
     { name: "Craig Nix", role: "Chief Financial Officer", sources: ["reuters-nii-2026"] }
   ],
   timeline: [

@@ -47,6 +47,22 @@ export const bankCss = `
   .bk-figure { margin: 8px 0 36px; }
   .bk-figure svg { width: 100%; height: auto; display: block; }
   .bk-figcaption { font-family: var(--font-mono), 'Courier New', monospace; font-size: 11px; letter-spacing: 0.08em; color: #9a9a96; margin-top: 10px; line-height: 1.6; }
+  .bk-people { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px 28px; margin: 4px 0 8px; }
+  .bk-person { border-top: 1px solid #e4e4df; padding-top: 12px; }
+  .bk-person-name { font-family: var(--font-serif), 'Helvetica Neue', sans-serif; font-size: 1.08rem; letter-spacing: -0.015em; color: #111111; margin: 0 0 4px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .bk-person-role { font-family: var(--font-sans), 'Helvetica Neue', sans-serif; font-size: 13.5px; line-height: 1.55; color: #3a3a3a; margin: 0; }
+  .bk-li { font-family: var(--font-mono), 'Courier New', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #1a3fcb; text-decoration: none; border-bottom: 1px solid #c9d0f2; padding-bottom: 1px; }
+  .bk-li:hover { border-color: #1a3fcb; }
+  .bk-toc { display: none; }
+  @media (min-width: 1380px) {
+    .bk-toc { display: block; position: sticky; top: 96px; float: left; width: 150px; margin-left: -200px; margin-top: 6px; }
+    .bk-toc-title { font-family: var(--font-mono), 'Courier New', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #b3b3ae; margin: 0 0 12px; }
+    .bk-toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid #e4e4df; }
+    .bk-toc li { margin: 0; }
+    .bk-toc a { display: block; font-family: var(--font-sans), 'Helvetica Neue', sans-serif; font-size: 12.5px; line-height: 1.4; color: #8a8a86; text-decoration: none; padding: 5px 0 5px 14px; margin-left: -1px; border-left: 1px solid transparent; transition: color 120ms, border-color 120ms; }
+    .bk-toc a:hover { color: #111111; }
+    .bk-toc li.is-active a { color: #1a3fcb; border-left-color: #1a3fcb; }
+  }
   @media (max-width: 720px) { .bk-timeline li { grid-template-columns: 1fr; gap: 2px; } }
 `;
 
@@ -101,9 +117,9 @@ export function BankShell({
   );
 }
 
-export function Section({ label, children }: { label: string; children: ReactNode }) {
+export function Section({ label, id, children }: { label: string; id?: string; children: ReactNode }) {
   return (
-    <section className="trk-section">
+    <section className="trk-section" id={id}>
       <div className="trk-section-label">
         <span className="trk-section-label-text">{label}</span>
         <div className="trk-section-rule" />

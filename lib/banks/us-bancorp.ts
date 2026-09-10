@@ -27,9 +27,9 @@ export const US_BANCORP: Bank = {
     "Cost discipline is explicit: the AI chief talks about avoiding 'token-maxing' and matching model size to the task."
   ],
   leadership: [
-    { name: "Prashant Mehrotra", role: "EVP and Chief AI Officer", sources: ["ab-playbook-2026", "ab-tokens-2026", "wsj-mehrotra-2026"] },
-    { name: "Dilip Venkatachari", role: "Senior EVP, Chief Information and Technology Officer", sources: ["ab-venkatachari-2026", "wsj-venkatachari-2025"] },
-    { name: "Gunjan Kedia", role: "CEO", sources: ["wsj-kedia-2026"] }
+    { name: "Prashant Mehrotra", role: "EVP and Chief AI Officer", sources: ["ab-playbook-2026", "ab-tokens-2026", "wsj-mehrotra-2026"], linkedin: "https://www.linkedin.com/in/mehrotraprashant/" },
+    { name: "Dilip Venkatachari", role: "Senior EVP, Chief Information and Technology Officer", sources: ["ab-venkatachari-2026", "wsj-venkatachari-2025"], linkedin: "https://www.linkedin.com/in/dilipvenkatachari/" },
+    { name: "Gunjan Kedia", role: "CEO", sources: ["wsj-kedia-2026"], linkedin: "https://www.linkedin.com/in/gunjan-kedia-3746b727/" }
   ],
   timeline: [
     { date: "2022-01-01", title: "STAT statement analyser built in-house", detail: "Rolled out to merchant-services reps; later rebuilt on vision AI that reads poor-quality statements.", sources: ["usb-stat-2026"] },

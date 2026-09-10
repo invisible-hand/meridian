@@ -28,8 +28,8 @@ export const FIFTH_THIRD: Bank = {
   ],
   leadership: [
     { name: "Tim Spence", role: "Chairman, CEO and President", sources: ["bloomberg-spence-2026", "cnbc-spence-brex-2025"] },
-    { name: "Jude Schramm", role: "Chief Information Officer", sources: ["ab-schramm-2026", "fitb-schramm-2026"] },
-    { name: "Ben Hoffman", role: "Chief Strategy Officer and Head of Consumer Products", sources: ["fitb-ai-interface-2026"] },
+    { name: "Jude Schramm", role: "Chief Information Officer", sources: ["ab-schramm-2026", "fitb-schramm-2026"], linkedin: "https://www.linkedin.com/in/judeschramm/" },
+    { name: "Ben Hoffman", role: "Chief Strategy Officer and Head of Consumer Products", sources: ["fitb-ai-interface-2026"], linkedin: "https://www.linkedin.com/in/ben-hoffman-22a44412/" },
     { name: "Bryan Preston", role: "Chief Financial Officer", sources: ["ab-comerica-ai-2026"] }
   ],
   timeline: [

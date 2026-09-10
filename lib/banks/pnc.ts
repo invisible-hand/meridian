@@ -27,9 +27,9 @@ export const PNC: Bank = {
     "Scale ambition: the $4 billion-plus FirstBank acquisition (announced September 2025, converted June 2026) and a stated goal to double to $1 trillion of assets."
   ],
   leadership: [
-    { name: "Bill Demchak", role: "Chairman and CEO", sources: ["ab-factory-2026", "bloomberg-oddlots-2026"] },
-    { name: "Ned Carroll", role: "Head of Data and Automation", sources: ["ab-nutrition-2026", "ab-factory-2026"] },
-    { name: "Deborah Guild", role: "Head of Enterprise Technology and Security", sources: ["ab-guild-2025"] }
+    { name: "Bill Demchak", role: "Chairman and CEO", sources: ["ab-factory-2026", "bloomberg-oddlots-2026"], linkedin: "https://www.linkedin.com/in/william-demchak-b4b74b58/" },
+    { name: "Ned Carroll", role: "Head of Data and Automation", sources: ["ab-nutrition-2026", "ab-factory-2026"], linkedin: "https://www.linkedin.com/in/ned-carroll-1a65a51a1/" },
+    { name: "Deborah Guild", role: "Head of Enterprise Technology and Security", sources: ["ab-guild-2025"], linkedin: "https://www.linkedin.com/in/deborahguild/" }
   ],
   timeline: [
     { date: "2024-04-19", title: "Treasury AI survey: 76% of clients on an AI journey", detail: "PNC Treasury Management surveys finance professionals on AI adoption and goals.", sources: ["pnc-treasury-ai-2024"] },

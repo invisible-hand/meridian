@@ -27,9 +27,9 @@ export const MORGAN_STANLEY: Bank = {
     "Capacity creation is the internal doctrine — automation and generative AI to 'decouple scaling from forever adding more people'; strategic investor in agent-authorisation startup Arcade.dev."
   ],
   leadership: [
-    { name: "Michael Pizzi", role: "Head of Technology", sources: ["ab-pizzi-2026"] },
-    { name: "Mark Mitchell", role: "Chief Product Officer, Morgan Stanley at Work", sources: ["cnbc-agents-2026"] },
-    { name: "Vince Lumia", role: "Head of Field Management, Wealth Management", sources: ["ab-lumia-2026"] }
+    { name: "Michael Pizzi", role: "Head of Technology", sources: ["ab-pizzi-2026"], linkedin: "https://www.linkedin.com/in/michael-pizzi-9a8065b3/" },
+    { name: "Mark Mitchell", role: "Chief Product Officer, Morgan Stanley at Work", sources: ["cnbc-agents-2026"], linkedin: "https://www.linkedin.com/in/markreidmitchell/" },
+    { name: "Vince Lumia", role: "Head of Field Management, Wealth Management", sources: ["ab-lumia-2026"], linkedin: "https://www.linkedin.com/in/vincent-lumia-656b1b11/" }
   ],
   timeline: [
     { date: "2023-03-01", title: "OpenAI named strategic partner for wealth management", detail: "The firm's only wealth-management AI strategic partner; the relationship began in 2022.", sources: ["ms-debrief-2024", "cnbc-agents-2026"] },

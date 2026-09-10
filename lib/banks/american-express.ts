@@ -27,8 +27,8 @@ export const AMERICAN_EXPRESS: Bank = {
     "Portfolio: Amex GBT taken private by Long Lake for $6.3 billion in an AI-driven travel bet (May 2026); Amex GBT's Egencia connector now runs inside Anthropic's Claude."
   ],
   leadership: [
-    { name: "Stephen J. Squeri", role: "Chairman and CEO", sources: ["ft-squeri-letter-2026", "ab-earnings-q2-2026"] },
-    { name: "Christophe Le Caillec", role: "Chief Financial Officer", sources: ["reuters-outlook-2026"] }
+    { name: "Stephen J. Squeri", role: "Chairman and CEO", sources: ["ft-squeri-letter-2026", "ab-earnings-q2-2026"], linkedin: "https://www.linkedin.com/in/stevesqueri/" },
+    { name: "Christophe Le Caillec", role: "Chief Financial Officer", sources: ["reuters-outlook-2026"], linkedin: "https://www.linkedin.com/in/christophe-le-caillec-37941411/" }
   ],
   timeline: [
     { date: "2025-02-18", title: "Amex Ventures on frontier technology", detail: "The venture arm as the 'eyes and ears' on emerging tech for the business.", sources: ["bloomberg-ventures-2025"] },

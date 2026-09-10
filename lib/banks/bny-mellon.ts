@@ -29,7 +29,7 @@ export const BNY_MELLON: Bank = {
   leadership: [
     { name: "Robin Vince", role: "Chairman and CEO; OpenAI board member since July 2026", sources: ["bloomberg-openai-board-2026", "bankingdive-vince-2025"] },
     { name: "Leigh-Ann Russell", role: "Chief Information Officer and Global Head of Engineering", sources: ["cnbc-cio-2025", "bankingdive-costs-2025"] },
-    { name: "Dermot McDonogh", role: "Chief Financial Officer", sources: ["ab-paying-off-2026"] }
+    { name: "Dermot McDonogh", role: "Chief Financial Officer", sources: ["ab-paying-off-2026"], linkedin: "https://www.linkedin.com/in/dermot-mcdonogh-6911015b/" }
   ],
   timeline: [
     { date: "2025-01-22", title: "Enterprise gen-AI assistant and anomaly detection described", detail: "An AI solution for anomaly detection in daily calculations cuts hours to minutes; a firm-wide generative assistant helps staff find procedures.", sources: ["bny-growth-2025"] },

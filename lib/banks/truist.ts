@@ -27,10 +27,10 @@ export const TRUIST: Bank = {
     "Executive AI training done by hands-on scenarios rather than slides — weekly prompts discussed in the CEO huddle, with a board program on AI ethics and governance in design."
   ],
   leadership: [
-    { name: "Steve Hagerman", role: "Chief Information Officer", sources: ["ab-hagerman-2026"] },
-    { name: "Pascal Belaud", role: "Chief AI & Data Officer", sources: ["truist-belaud-2025"] },
-    { name: "Chris Ward", role: "Head of Enterprise Payments", sources: ["ab-ward-2026"] },
-    { name: "Mike Lyons", role: "CEO (from September 2026)", sources: ["bloomberg-lyons-2026"] }
+    { name: "Steve Hagerman", role: "Chief Information Officer", sources: ["ab-hagerman-2026"], linkedin: "https://www.linkedin.com/in/hagermansteve/" },
+    { name: "Pascal Belaud", role: "Chief AI & Data Officer", sources: ["truist-belaud-2025"], linkedin: "https://www.linkedin.com/in/pascalbelaud/" },
+    { name: "Chris Ward", role: "Head of Enterprise Payments", sources: ["ab-ward-2026"], linkedin: "https://www.linkedin.com/in/j-christopher-ward/" },
+    { name: "Mike Lyons", role: "CEO (from September 2026)", sources: ["bloomberg-lyons-2026"], linkedin: "https://www.linkedin.com/in/mike-lyons-02a72488/" }
   ],
   timeline: [
     { date: "2023-10-01", title: "Chief data, AI and analytics officer hired", detail: "Tom Mazzaferro joins from JPMorgan, HSBC and Western Union to lead data and AI.", sources: ["ab-mazzaferro-2025"] },

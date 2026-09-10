@@ -27,10 +27,10 @@ export const WELLS_FARGO: Bank = {
     "Efficiency is stated plainly: 30–35% coding efficiency gain, $612 million of severance in Q4 2025, headcount expected to fall further."
   ],
   leadership: [
-    { name: "Saul Van Beurden", role: "Head of AI; co-CEO, Consumer Banking and Lending", sources: ["wf-vanbeurden-2025", "bloomberg-shafiq-2026"] },
-    { name: "Tracy Kerrins", role: "CIO, Consumer Technology; Head of Enterprise Generative AI", sources: ["ab-kerrins-2025"] },
-    { name: "Faraz Shafiq", role: "Head of AI product adoption (from AWS)", sources: ["bloomberg-shafiq-2026", "ab-shafiq-2026"] },
-    { name: "Ather Williams III", role: "Head of Global Payments and Liquidity and Wholesale Digital", sources: ["ab-payments-2026"] }
+    { name: "Saul Van Beurden", role: "Head of AI; co-CEO, Consumer Banking and Lending", sources: ["wf-vanbeurden-2025", "bloomberg-shafiq-2026"], linkedin: "https://www.linkedin.com/in/saulvanbeurden/" },
+    { name: "Tracy Kerrins", role: "CIO, Consumer Technology; Head of Enterprise Generative AI", sources: ["ab-kerrins-2025"], linkedin: "https://www.linkedin.com/in/tracymkerrins/" },
+    { name: "Faraz Shafiq", role: "Head of AI product adoption (from AWS)", sources: ["bloomberg-shafiq-2026", "ab-shafiq-2026"], linkedin: "https://www.linkedin.com/in/fshafiq/" },
+    { name: "Ather Williams III", role: "Head of Global Payments and Liquidity and Wholesale Digital", sources: ["ab-payments-2026"], linkedin: "https://www.linkedin.com/in/atherw/" }
   ],
   timeline: [
     { date: "2021-01-01", title: "Google Cloud and Microsoft Azure chosen as cloud partners", detail: "The relationship that later carries Fargo and the agent rollout.", sources: ["ab-agentspace-2025"] },

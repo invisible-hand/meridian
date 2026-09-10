@@ -198,7 +198,11 @@ function checkBanks() {
     for (const u of b.useCases) { if (!USE_CASES.includes(u.useCase)) err(`${bat}: use case "${u.useCase}" unknown`); cite(`use case "${u.name}"`, u.sources); }
     for (const n of b.numbers) { if (!ISO.test(n.asOf)) err(`${bat}: number "${n.label}" asOf not ISO`); cite(`number "${n.label}"`, n.sources); }
     for (const q of b.quotes) { if (!ISO.test(q.date)) err(`${bat}: quote by ${q.who} date not ISO`); cite(`quote by ${q.who}`, q.sources); }
-    for (const l of b.leadership) cite(`leader ${l.name}`, l.sources);
+    for (const l of b.leadership) {
+      cite(`leader ${l.name}`, l.sources);
+      if (l.linkedin && !/^https:\/\/www\.linkedin\.com\/in\/[A-Za-z0-9%._-]+\/?$/.test(l.linkedin)) err(`${bat}: ${l.name} linkedin must be a https://www.linkedin.com/in/… profile URL`);
+    }
+    if (b.leadership.length && !b.leadership.some((l) => l.linkedin)) warn(`${bat}: no leader has a LinkedIn profile`);
     for (const id of ids) if (!used.has(id)) warn(`${bat}: source ${id} is never cited`);
     for (const f of b.faq) if (!f.q.trim().endsWith("?")) err(`${bat}: FAQ "${f.q}" must be a question`);
   }

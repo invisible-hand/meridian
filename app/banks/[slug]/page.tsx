@@ -8,6 +8,7 @@ import { USE_CASE_LABELS, documentPath, formatDate, getDocument } from "@/lib/tr
 import { BANKS, BANKS_PUBLISHED, FED_LBR, bankPath, formatAssets, getBank, type Bank } from "@/lib/banks";
 import { Coverage } from "../../ai-regulation/coverage";
 import { BankShell, Section } from "../shell";
+import { BankToc } from "../toc";
 import { BankTimelineFigure, PerimeterFigure, StatusLadderFigure } from "../graphics";
 
 export const revalidate = 86400;
@@ -56,6 +57,20 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
   const timeline = [...b.timeline].sort((x, y) => (x.date < y.date ? 1 : -1));
   const nameRe = new RegExp(`\\b(${[b.name, b.shortName].map((n) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "i");
 
+  const toc = [
+    { id: "glance", label: "At a glance" },
+    ...(b.platform ? [{ id: "platform", label: "The platform" }] : []),
+    { id: "timeline", label: "Timeline" },
+    { id: "where", label: "Where AI runs" },
+    { id: "numbers", label: "The numbers" },
+    { id: "words", label: "In their words" },
+    { id: "people", label: "AI leadership" },
+    { id: "regulators", label: "Regulators" },
+    { id: "suggests", label: "What it suggests" },
+    { id: "faq", label: "Questions" },
+    { id: "sources", label: "Sources" }
+  ];
+
   const faqEntities = b.faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } }));
   const schema = [
     {
@@ -93,10 +108,11 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
       ctaTitle={`When ${b.shortName} moves on AI, you'll read it here first.`}
     >
       <JsonLd data={schema} />
+      <BankToc items={toc} />
       <p className="bk-posture">{b.posture}</p>
       <p className="trk-answer">{b.answerFirst}</p>
 
-      <Section label="At a glance">
+      <Section label="At a glance" id="glance">
         <div className="bk-facts">
           <div className="bk-fact"><p className="bk-fact-k">Lead bank</p><p className="bk-fact-v">{b.leadBank}</p></div>
           <div className="bk-fact"><p className="bk-fact-k">Assets (lead bank, {formatDate(FED_LBR.asOf)})</p><p className="bk-fact-v">{formatAssets(b.assetsUsdMillions)}</p></div>
@@ -111,13 +127,13 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
       </Section>
 
       {b.platform && (
-        <Section label="The platform">
+        <Section label="The platform" id="platform">
           <h2 className="trk-h2-q">What is {b.platform.name}?</h2>
           <p className="trk-p">{b.platform.detail}<Cite ids={b.platform.sources} /></p>
         </Section>
       )}
 
-      <Section label="Timeline">
+      <Section label="Timeline" id="timeline">
         <h2 className="trk-h2-q">What has {b.shortName} done on AI, and when?</h2>
         <BankTimelineFigure bank={b} n={1} />
         <ul className="bk-timeline">
@@ -133,7 +149,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         </ul>
       </Section>
 
-      <Section label="Where AI runs">
+      <Section label="Where AI runs" id="where">
         <h2 className="trk-h2-q">Where does {b.shortName} use AI today?</h2>
         <StatusLadderFigure bank={b} n={2} />
         <div className="trk-table-wrap">
@@ -156,7 +172,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         </p>
       </Section>
 
-      <Section label="The numbers">
+      <Section label="The numbers" id="numbers">
         <h2 className="trk-h2-q">What has {b.shortName} disclosed in numbers?</h2>
         <div className="trk-table-wrap">
           <table className="trk-table">
@@ -174,7 +190,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         </div>
       </Section>
 
-      <Section label="In their words">
+      <Section label="In their words" id="words">
         {b.quotes.map((q) => (
           <blockquote className="bk-quote" key={q.quote.slice(0, 40)}>
             <p>“{q.quote}”<Cite ids={q.sources} /></p>
@@ -183,19 +199,22 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         ))}
       </Section>
 
-      <Section label="Who leads it">
-        <div className="trk-table-wrap">
-          <table className="trk-table">
-            <tbody>
-              {b.leadership.map((l) => (
-                <tr key={l.name}><td className="trk-td-mid trk-td-strong">{l.name}</td><td className="trk-td-min">{l.role}<Cite ids={l.sources} /></td></tr>
-              ))}
-            </tbody>
-          </table>
+      <Section label="AI leadership" id="people">
+        <h2 className="trk-h2-q">Who runs AI at {b.shortName}?</h2>
+        <div className="bk-people">
+          {b.leadership.map((l) => (
+            <div className="bk-person" key={l.name}>
+              <p className="bk-person-name">
+                {l.name}
+                {l.linkedin && <a className="bk-li" href={l.linkedin} target="_blank" rel="noopener noreferrer nofollow">LinkedIn ↗</a>}
+              </p>
+              <p className="bk-person-role">{l.role}<Cite ids={l.sources} /></p>
+            </div>
+          ))}
         </div>
       </Section>
 
-      <Section label="Regulators">
+      <Section label="Regulators" id="regulators">
         <h2 className="trk-h2-q">Which regulators govern {b.shortName}&apos;s AI?</h2>
         <PerimeterFigure bank={b} names={Object.fromEntries(b.regulatory.map((r) => [r.authority, getRegulator(r.authority)?.name ?? r.authority]))} n={3} />
         <div className="trk-table-wrap">
@@ -219,7 +238,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         </div>
       </Section>
 
-      <Section label="What the record suggests">
+      <Section label="What the record suggests" id="suggests">
         <h2 className="trk-h2-q">What does the public record suggest about {b.shortName}&apos;s AI strategy?</h2>
         <p className="trk-sub" style={{ marginBottom: 14 }}>Analysis by BankingNewsAI from the sources cited on this page. Observations, not advice.</p>
         <div className="bk-grid">
@@ -235,7 +254,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
 
       <Coverage matches={(t) => nameRe.test(t)} label={`${b.shortName} in the daily brief`} />
 
-      <Section label="Common questions">
+      <Section label="Common questions" id="faq">
         {b.faq.map((f) => (
           <div key={f.q}>
             <h2 className="trk-faq-q">{f.q}</h2>
@@ -244,7 +263,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         ))}
       </Section>
 
-      <Section label="Sources">
+      <Section label="Sources" id="sources">
         <ol className="bk-sources">
           {b.sources.map((s, i) => (
             <li key={s.id} id={`src-${i + 1}`}>
@@ -255,10 +274,10 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
         </ol>
       </Section>
 
-      <Section label="Other banks">
+      <Section label="Other banks" id="others">
         <div className="trk-related">
           {BANKS.filter((o) => o.slug !== b.slug).map((o) => <Link key={o.slug} href={bankPath(o)}>{o.shortName} →</Link>)}
-          <Link href="/banks">All ten →</Link>
+          <Link href="/banks">All {BANKS.length} →</Link>
         </div>
       </Section>
     </BankShell>

@@ -27,10 +27,10 @@ export const CITIZENS: Bank = {
     "Leadership: President Brendan Coughlin runs all business lines and the AI-led overhaul; his July 2026 expanded role positions him as the next CEO."
   ],
   leadership: [
-    { name: "Brendan Coughlin", role: "President; leads all business lines and the Reimagine the Bank program", sources: ["ab-coughlin-ceo-2026", "ab-reimagine-2026"] },
-    { name: "Michael Ruttledge", role: "Chief Information Officer", sources: ["ab-ruttledge-2026", "ab-inside-plan-2025"] },
+    { name: "Brendan Coughlin", role: "President; leads all business lines and the Reimagine the Bank program", sources: ["ab-coughlin-ceo-2026", "ab-reimagine-2026"], linkedin: "https://www.linkedin.com/in/brendan-coughlin-b924981/" },
+    { name: "Michael Ruttledge", role: "Chief Information Officer", sources: ["ab-ruttledge-2026", "ab-inside-plan-2025"], linkedin: "https://www.linkedin.com/in/michaelruttledge/" },
     { name: "Bruce Van Saun", role: "Chairman and CEO", sources: ["ab-tech-overhaul-2026"] },
-    { name: "Krish Swamy", role: "Chief Data and Analytics Officer", sources: ["ab-ai-enabled-bank-2026"] }
+    { name: "Krish Swamy", role: "Chief Data and Analytics Officer", sources: ["ab-ai-enabled-bank-2026"], linkedin: "https://www.linkedin.com/in/krishswamy/" }
   ],
   timeline: [
     { date: "2025-07-01", title: "Van Saun: 'reimagining the bank with AI in mind'", detail: "The objective, set out on the Q2 2025 call, is to redesign how the bank serves customers and runs itself with gen and agentic AI.", sources: ["ab-inside-plan-2025"] },

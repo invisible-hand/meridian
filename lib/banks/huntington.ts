@@ -27,10 +27,10 @@ export const HUNTINGTON: Bank = {
     "2026 expense discipline: some technology hiring and spending trimmed to hold expense growth in the lower half of guidance — AI investment is judged inside the budget, not around it."
   ],
   leadership: [
-    { name: "Zach Wasserman", role: "Chief Financial Officer; leads AI strategy, strategy and data analytics", sources: ["fortune-cfo-2026", "wsj-wasserman-2025", "ab-podcast-2025"] },
+    { name: "Zach Wasserman", role: "Chief Financial Officer; leads AI strategy, strategy and data analytics", sources: ["fortune-cfo-2026", "wsj-wasserman-2025", "ab-podcast-2025"], linkedin: "https://www.linkedin.com/in/zachary-wasserman-cfa-69913711/" },
     { name: "Steve Steinour", role: "Chairman and CEO", sources: ["reuters-cadence-staff-2025"] },
-    { name: "Brant Standridge", role: "President (from September 2026)", sources: ["bankingdive-president-2026"] },
-    { name: "Senthil Kumar", role: "Chief Risk Officer (from February 2026, ex-BNY)", sources: ["bankingdive-cro-2026"] }
+    { name: "Brant Standridge", role: "President (from September 2026)", sources: ["bankingdive-president-2026"], linkedin: "https://www.linkedin.com/in/brant-standridge/" },
+    { name: "Senthil Kumar", role: "Chief Risk Officer (from February 2026, ex-BNY)", sources: ["bankingdive-cro-2026"], linkedin: "https://www.linkedin.com/in/senthil--kumar/" }
   ],
   timeline: [
     { date: "2022-12-31", title: "Two AI agents in production", detail: "The baseline Wasserman later cites for the agentic build-out.", sources: ["fortune-cfo-2026"] },

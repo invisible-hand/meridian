@@ -27,9 +27,9 @@ export const MT_BANK: Bank = {
     "Where AI lands: credit monitoring and portfolio insight with RDC.AI (2026 Banking Tech Awards Editor's Choice); AI-powered cash application for commercial clients; participation in the Cari tokenised-deposit network and FIS's Project Keystone."
   ],
   leadership: [
-    { name: "Michael Wisler", role: "Senior EVP, Technology and Operations (CIO since 2018)", sources: ["fastcompany-wisler-2026", "forbes-buffalo-2026"] },
-    { name: "Andrew Foster", role: "Chief Data Officer", sources: ["ab-data-quality-2025"] },
-    { name: "Rhea Rajwani", role: "Head of AI Risk Oversight, Independent Risk Management", sources: ["ab-rajwani-2026"] },
+    { name: "Michael Wisler", role: "Senior EVP, Technology and Operations (CIO since 2018)", sources: ["fastcompany-wisler-2026", "forbes-buffalo-2026"], linkedin: "https://www.linkedin.com/in/michael-wisler-525582/" },
+    { name: "Andrew Foster", role: "Chief Data Officer", sources: ["ab-data-quality-2025"], linkedin: "https://www.linkedin.com/in/andrew-foster-cfa/" },
+    { name: "Rhea Rajwani", role: "Head of AI Risk Oversight, Independent Risk Management", sources: ["ab-rajwani-2026"], linkedin: "https://www.linkedin.com/in/rhearajwani/" },
     { name: "Kalyana Bedhu", role: "Head of AI Engineering (from August 2026)", sources: ["pymnts-bedhu-2026"] },
     { name: "René Jones", role: "Chairman and CEO", sources: ["mtb-letter-2026"] }
   ],

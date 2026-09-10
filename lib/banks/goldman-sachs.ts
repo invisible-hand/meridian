@@ -27,9 +27,9 @@ export const GOLDMAN_SACHS: Bank = {
     "Leadership is explicit about labour: Waldron's 'human assembly line', economists' 6% displacement estimate for US workers, and a partner's warning about 'cognitive atrophy' if bankers outsource reasoning to models."
   ],
   leadership: [
-    { name: "Marco Argenti", role: "Chief Information Officer", sources: ["cnbc-anthropic-2026", "ab-argenti-2026"] },
-    { name: "John Waldron", role: "President and Chief Operating Officer", sources: ["ab-assembly-line-2026"] },
-    { name: "Daniel Marcu", role: "Global Head of AI Engineering and Science", sources: ["wsj-journalhouse-2025"] }
+    { name: "Marco Argenti", role: "Chief Information Officer", sources: ["cnbc-anthropic-2026", "ab-argenti-2026"], linkedin: "https://www.linkedin.com/in/marcoargenti/" },
+    { name: "John Waldron", role: "President and Chief Operating Officer", sources: ["ab-assembly-line-2026"], linkedin: "https://www.linkedin.com/in/johnewaldron/" },
+    { name: "Daniel Marcu", role: "Global Head of AI Engineering and Science", sources: ["wsj-journalhouse-2025"], linkedin: "https://www.linkedin.com/in/daniel-marcu-9505864/" }
   ],
   timeline: [
     { date: "2024-01-01", title: "GitHub Copilot for 12,000 developers", detail: "The first firm-wide generative-AI deployment, to engineering.", sources: ["ab-prompts-2025"] },

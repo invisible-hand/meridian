@@ -27,10 +27,10 @@ export const BMO_US: Bank = {
     "Labour stance: 'It's lazy' — Milchanowski on AI-related layoffs; BMO says it can grow while keeping headcount level."
   ],
   leadership: [
-    { name: "Kristin Milchanowski", role: "Chief AI & Quantum Officer; Founding Director, BMO Institute for Applied AI & Quantum", sources: ["bmo-institute-2026", "ab-milchanowski-2026"] },
-    { name: "Aron Levine", role: "Group Head and President, BMO U.S. (from July 2025, ex-Bank of America)", sources: ["reuters-levine-2025"] },
+    { name: "Kristin Milchanowski", role: "Chief AI & Quantum Officer; Founding Director, BMO Institute for Applied AI & Quantum", sources: ["bmo-institute-2026", "ab-milchanowski-2026"], linkedin: "https://www.linkedin.com/in/kristinmilchanowski/" },
+    { name: "Aron Levine", role: "Group Head and President, BMO U.S. (from July 2025, ex-Bank of America)", sources: ["reuters-levine-2025"], linkedin: "https://www.linkedin.com/in/aron-levine/" },
     { name: "Steve Tennyson", role: "Chief Technology & Operations Officer", sources: ["bmo-institute-2026"] },
-    { name: "Mathew Mehrotra", role: "Group Head, Canadian Personal and Business Banking (digital sales, agile)", sources: ["ab-mehrotra-2026"] }
+    { name: "Mathew Mehrotra", role: "Group Head, Canadian Personal and Business Banking (digital sales, agile)", sources: ["ab-mehrotra-2026"], linkedin: "https://www.linkedin.com/in/mathew-mehrotra-0843a54/" }
   ],
   timeline: [
     { date: "2024-10-01", title: "Milchanowski becomes chief AI and data officer", detail: "Responsible for enterprise-wide AI, data, analytics and robotics strategy.", sources: ["ab-milchanowski-2026"] },
