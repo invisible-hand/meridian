@@ -40,7 +40,7 @@ function trunc(s: string, n: number): string {
 // ---------------------------------------------------------------------------
 
 export function AssetsFigure({ banks, asOf }: { banks: Bank[]; asOf: string }) {
-  const rowH = banks.length > 30 ? 26 : 34;
+  const rowH = banks.length > 60 ? 21 : banks.length > 30 ? 26 : 34;
   const top = 34;
   const left = 190;
   const barMax = 640;
@@ -59,9 +59,9 @@ export function AssetsFigure({ banks, asOf }: { banks: Bank[]; asOf: string }) {
         const top4 = i < 4;
         return (
           <g key={b.slug}>
-            <text x={left - 14} y={y + 19} fontFamily={SERIF} fontSize={14} fill={INK} textAnchor="end" letterSpacing={-0.2}>{b.shortName}</text>
-            <rect x={left} y={y + 6} width={w} height={rowH - 16} fill={top4 ? ACCENT : LIGHT} stroke={top4 ? ACCENT : HAIR} strokeWidth={1} />
-            <text x={left + w + 8} y={y + 19} fontFamily={MONO} fontSize={10.5} fill={SOFT}>{formatAssets(b.assetsUsdMillions)}</text>
+            <text x={left - 14} y={y + (rowH > 24 ? 19 : 15)} fontFamily={SERIF} fontSize={rowH > 24 ? 14 : 12} fill={INK} textAnchor="end" letterSpacing={-0.2}>{b.shortName}</text>
+            <rect x={left} y={y + (rowH > 24 ? 6 : 4)} width={w} height={rowH > 24 ? rowH - 16 : rowH - 8} fill={top4 ? ACCENT : LIGHT} stroke={top4 ? ACCENT : HAIR} strokeWidth={1} />
+            <text x={left + w + 8} y={y + (rowH > 24 ? 19 : 15)} fontFamily={MONO} fontSize={rowH > 24 ? 10.5 : 9.5} fill={SOFT}>{formatAssets(b.assetsUsdMillions)}</text>
           </g>
         );
       })}

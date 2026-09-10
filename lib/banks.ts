@@ -57,11 +57,61 @@ import { EVERBANK } from "@/lib/banks/everbank";
 import { BARCLAYS_US } from "@/lib/banks/barclays-us";
 import { RAYMOND_JAMES } from "@/lib/banks/raymond-james";
 import { ASSOCIATED } from "@/lib/banks/associated";
+import { PROSPERITY } from "@/lib/banks/prosperity";
+import { BANK_OZK } from "@/lib/banks/bank-ozk";
+import { DEUTSCHE_BANK_US } from "@/lib/banks/deutsche-bank-us";
+import { ATLANTIC_UNION } from "@/lib/banks/atlantic-union";
+import { COMMERCE } from "@/lib/banks/commerce";
+import { HANCOCK_WHITNEY } from "@/lib/banks/hancock-whitney";
+import { BANKUNITED } from "@/lib/banks/bankunited";
+import { FNBO } from "@/lib/banks/fnbo";
+import { BANC_OF_CALIFORNIA } from "@/lib/banks/banc-of-california";
+import { UNITED_BANKSHARES } from "@/lib/banks/united-bankshares";
+import { TEXAS_CAPITAL } from "@/lib/banks/texas-capital";
+import { FULTON } from "@/lib/banks/fulton";
+import { GLACIER } from "@/lib/banks/glacier";
+import { EASTERN } from "@/lib/banks/eastern";
+import { SALLIE_MAE } from "@/lib/banks/sallie-mae";
+import { CITY_NATIONAL_FLORIDA } from "@/lib/banks/city-national-florida";
+import { UNITED_COMMUNITY } from "@/lib/banks/united-community";
+import { ARVEST } from "@/lib/banks/arvest";
+import { AMERIS } from "@/lib/banks/ameris";
+import { WAFD } from "@/lib/banks/wafd";
+import { WESBANCO } from "@/lib/banks/wesbanco";
+import { RENASANT } from "@/lib/banks/renasant";
+import { FIRST_INTERSTATE } from "@/lib/banks/first-interstate";
+import { CUSTOMERS } from "@/lib/banks/customers";
+import { ROCKLAND_TRUST } from "@/lib/banks/rockland-trust";
+import { SIMMONS } from "@/lib/banks/simmons";
+import { FIRST_HAWAIIAN } from "@/lib/banks/first-hawaiian";
+import { CATHAY } from "@/lib/banks/cathay";
+import { BANK_OF_HAWAII } from "@/lib/banks/bank-of-hawaii";
+import { HOME_BANCSHARES } from "@/lib/banks/home-bancshares";
+import { FIRST_FINANCIAL_OHIO } from "@/lib/banks/first-financial-ohio";
+import { TOWNEBANK } from "@/lib/banks/townebank";
+import { BEACON } from "@/lib/banks/beacon";
+import { MECHANICS } from "@/lib/banks/mechanics";
+import { SEACOAST } from "@/lib/banks/seacoast";
+import { FIRST_MERCHANTS } from "@/lib/banks/first-merchants";
+import { OPTUM_BANK } from "@/lib/banks/optum-bank";
+import { CENTRAL_BANCOMPANY } from "@/lib/banks/central-bancompany";
+import { MERCHANTS_INDIANA } from "@/lib/banks/merchants-indiana";
+import { STIFEL_BANK } from "@/lib/banks/stifel-bank";
+import { TRUSTMARK } from "@/lib/banks/trustmark";
+import { BANK_OF_HOPE } from "@/lib/banks/bank-of-hope";
+import { SERVISFIRST } from "@/lib/banks/servisfirst";
+import { BUSEY } from "@/lib/banks/busey";
+import { COMMUNITY_BANK_NA } from "@/lib/banks/community-bank-na";
+import { ENTERPRISE_BANK } from "@/lib/banks/enterprise-bank";
+import { FB_FINANCIAL } from "@/lib/banks/fb-financial";
+import { FIRST_UNITED } from "@/lib/banks/first-united";
+import { BANNER } from "@/lib/banks/banner";
+import { NBT } from "@/lib/banks/nbt";
 
 export const BANKS_PUBLISHED = "2026-09-09";
 export const BANKS_UPDATED = "2026-09-10";
 /** How many banks are in the current published set (used in copy). */
-export const BANK_COUNT = 50;
+export const BANK_COUNT = 100;
 /** Federal Reserve "Large Commercial Banks" release the asset figures come from. */
 export const FED_LBR = { asOf: "2026-03-31", url: "https://www.federalreserve.gov/releases/lbr/current/" };
 
@@ -116,7 +166,8 @@ export type Bank = {
  * Ordered by size. Batch 1 (1–10): the ten largest US bank holding companies.
  * Charles Schwab follows by holding-company assets ($517bn); its lead bank is a
  * savings bank outside the Fed's commercial-bank release, so its fedRank is 0.
- * The rest follow the Federal Reserve's lead-bank ranking through rank 50.
+ * The rest follow the Federal Reserve's lead-bank ranking through rank 100 (second banks of
+ * covered groups skipped; ranks 101–103 and 105 fill the count to 100 groups).
  */
 export const BANKS: Bank[] = [
   JPMORGAN_CHASE,
@@ -168,7 +219,57 @@ export const BANKS: Bank[] = [
   EVERBANK,
   BARCLAYS_US,
   RAYMOND_JAMES,
-  ASSOCIATED
+  ASSOCIATED,
+  PROSPERITY,
+  BANK_OZK,
+  DEUTSCHE_BANK_US,
+  ATLANTIC_UNION,
+  COMMERCE,
+  HANCOCK_WHITNEY,
+  BANKUNITED,
+  FNBO,
+  BANC_OF_CALIFORNIA,
+  UNITED_BANKSHARES,
+  TEXAS_CAPITAL,
+  FULTON,
+  GLACIER,
+  EASTERN,
+  SALLIE_MAE,
+  CITY_NATIONAL_FLORIDA,
+  UNITED_COMMUNITY,
+  ARVEST,
+  AMERIS,
+  WAFD,
+  WESBANCO,
+  RENASANT,
+  FIRST_INTERSTATE,
+  CUSTOMERS,
+  ROCKLAND_TRUST,
+  SIMMONS,
+  FIRST_HAWAIIAN,
+  CATHAY,
+  BANK_OF_HAWAII,
+  HOME_BANCSHARES,
+  FIRST_FINANCIAL_OHIO,
+  TOWNEBANK,
+  BEACON,
+  MECHANICS,
+  SEACOAST,
+  FIRST_MERCHANTS,
+  OPTUM_BANK,
+  CENTRAL_BANCOMPANY,
+  MERCHANTS_INDIANA,
+  STIFEL_BANK,
+  TRUSTMARK,
+  BANK_OF_HOPE,
+  SERVISFIRST,
+  BUSEY,
+  COMMUNITY_BANK_NA,
+  ENTERPRISE_BANK,
+  FB_FINANCIAL,
+  FIRST_UNITED,
+  BANNER,
+  NBT
 ];
 
 export function getBank(slug: string): Bank | undefined {

@@ -90,7 +90,11 @@ outside the Fed release — the page eyebrow and hub note handle that case. `cha
 `linkedin` profile URL (only when a search-result title names the person with the bank or role; never guessed). Keenable
 indexes some LinkedIn profiles (`site: "linkedin.com/in"`) but covers few bank executives, so profile lookups run through web
 search; roles are marked "Former …" when a profile shows the person has moved on.
-Next: ranks 51–100 (repo memory `top-100-banks-ai-guide`). Figures in `app/banks/graphics.tsx` are data-driven; they need no edits when banks are added.
+Batch 4 (Fed lead-bank ranks 51–105, 50 groups → 100 banks) shipped 2026-09-10: ranks 62/65/68/83 are second banks of
+covered groups (TD Bank USA, BNY Mellon N.A., FirstBank of Colorado/PNC, TriState Capital/Raymond James) and 104 is a captive
+ILC (Toyota), so ranks 101–103 and 105 fill the count. Company press releases via Business Wire, GlobeNewswire, PR Newswire and
+Yahoo Finance syndication are allowed bank sources (`BANK_PRESS_HOSTS`) alongside the tier-1 press. The series is complete at 100;
+the biweekly refresh routine now covers all 100 pages. Figures in `app/banks/graphics.tsx` are data-driven; they need no edits when banks are added.
 Biweekly refresh: cloud routine "Banks AI refresh (biweekly)" (`trig_01J4geLpNA4NvCm8UjvZMcXc`,
 env `tracker-web`, cron `0 14 1,15 * *` = 1st and 15th, 7am Pacific) sweeps allowed hosts for
 every bank since its `lastUpdated`, edits the bank files, runs tracker:check (+`--bank-links`),

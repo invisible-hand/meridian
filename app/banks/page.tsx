@@ -10,7 +10,7 @@ import { AssetsFigure, MovesFigure } from "./graphics";
 const PATH = "/banks";
 const TITLE = `AI Strategy of the ${BANK_COUNT} Largest US Banks (2026) — Sourced, Bank by Bank`;
 const DESCRIPTION =
-  `How the ${BANK_COUNT} largest US banks — from JPMorgan Chase, Bank of America and Citigroup to BNY, TD, Fifth Third, American Express and M&T — are deploying AI: platforms, agents, budgets, headcount, leadership and regulators, every claim linked to a primary or tier-1 source.`;
+  `How the ${BANK_COUNT} largest US banks — from JPMorgan Chase, Bank of America and Citigroup through BNY, TD, Fifth Third and M&T to Customers Bank, Seacoast, Busey and NBT — are deploying AI: platforms, agents, budgets, headcount, leadership and regulators, every claim linked to a primary or tier-1 source.`;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -102,7 +102,9 @@ export default function BanksHubPage() {
           holding-company totals are larger for the broker-dealer groups (Goldman Sachs, Morgan Stanley). Rows 1–10 are the
           ten largest US bank holding companies; Charles Schwab follows by holding-company assets (its lead bank is a savings
           bank outside that release, so the figure shown is the group total); the rest follow the Federal Reserve&apos;s lead-bank
-          order through rank 50.
+          order through rank 100. Four lead banks in that range are second banks of groups already covered (TD Bank USA, BNY Mellon N.A.,
+          FirstBank of Colorado under PNC, TriState Capital under Raymond James) and are folded into those pages; ranks 101–103 and 105
+          fill the count to 100 groups.
         </p>
       </Section>
 
