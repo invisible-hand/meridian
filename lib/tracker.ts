@@ -397,12 +397,12 @@ export function digestText(content: unknown): string {
   if (!content || typeof content !== "object") return "";
   const c = content as {
     briefSummary?: string;
-    bankingStories?: { title?: string; executiveSummary?: string; businessImpact?: string }[];
-    aiStories?: { title?: string; executiveSummary?: string; businessImpact?: string }[];
-    stories?: { title?: string; executiveSummary?: string; businessImpact?: string }[];
+    bankingStories?: { title?: string; take?: string; executiveSummary?: string; businessImpact?: string }[];
+    aiStories?: { title?: string; take?: string; executiveSummary?: string; businessImpact?: string }[];
+    stories?: { title?: string; take?: string; executiveSummary?: string; businessImpact?: string }[];
   };
   const stories = [...(c.bankingStories ?? c.stories ?? []), ...(c.aiStories ?? [])];
-  return [c.briefSummary ?? "", ...stories.flatMap((s) => [s.title ?? "", s.executiveSummary ?? "", s.businessImpact ?? ""])].join("\n");
+  return [c.briefSummary ?? "", ...stories.flatMap((s) => [s.title ?? "", s.take ?? "", s.executiveSummary ?? "", s.businessImpact ?? ""])].join("\n");
 }
 
 export type IssueRef = { date: string; headline: string; storyTitle?: string };
@@ -417,14 +417,14 @@ export function issuesMentioning(
   for (const d of digests) {
     const c = d.content_json as {
       briefSummary?: string;
-      bankingStories?: { title?: string; executiveSummary?: string; businessImpact?: string }[];
-      aiStories?: { title?: string; executiveSummary?: string; businessImpact?: string }[];
-      stories?: { title?: string; executiveSummary?: string; businessImpact?: string }[];
+      bankingStories?: { title?: string; take?: string; executiveSummary?: string; businessImpact?: string }[];
+      aiStories?: { title?: string; take?: string; executiveSummary?: string; businessImpact?: string }[];
+      stories?: { title?: string; take?: string; executiveSummary?: string; businessImpact?: string }[];
     } | null;
     if (!c) continue;
     const stories = [...(c.bankingStories ?? c.stories ?? []), ...(c.aiStories ?? [])];
     const hit = stories.find((s) =>
-      matches([s.title ?? "", s.executiveSummary ?? "", s.businessImpact ?? ""].join("\n"))
+      matches([s.title ?? "", s.take ?? "", s.executiveSummary ?? "", s.businessImpact ?? ""].join("\n"))
     );
     if (hit || matches(c.briefSummary ?? "")) {
       out.push({ date: d.digest_date, headline: c.briefSummary ?? d.digest_date, storyTitle: hit?.title });

@@ -22,6 +22,9 @@ const D = {
   mono:         "'IBM Plex Mono', 'Courier New', Courier, monospace",
 } as const;
 
+/** The person whose opinion the takes are. Override with DIGEST_BYLINE. */
+const BYLINE = process.env.DIGEST_BYLINE?.trim() || "Andrey Zagoruiko";
+
 export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): string {
   const bankingStories = digest.bankingStories ?? digest.stories ?? [];
   const aiStories = digest.aiStories ?? [];
@@ -100,7 +103,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
               <tr>
                 <td>
                   <p style="margin:0;font-family:${D.sans};font-size:12px;color:#666;letter-spacing:0.02em;">
-                    ${escapeHtml(formattedDate)}&nbsp;&nbsp;·&nbsp;&nbsp;Fintech &amp; Banking Edition
+                    ${escapeHtml(formattedDate)}&nbsp;&nbsp;·&nbsp;&nbsp;By ${escapeHtml(BYLINE)}
                   </p>
                 </td>
                 <td align="right">
@@ -127,7 +130,7 @@ export function renderDigestHtml(digest: DailyDigest, recipientEmail?: string): 
           <td style="background:${D.bg};padding:22px 40px 26px;border-top:1px solid ${D.divider};">
             <p style="margin:0;font-family:${D.mono};font-size:9px;color:${D.textMuted};letter-spacing:0.1em;line-height:2;text-transform:uppercase;">
               You subscribed to BankingNewsAI's daily brief.
-              Curated by AI &nbsp;·&nbsp; Delivered daily &nbsp;·&nbsp;
+              Written by ${escapeHtml(BYLINE)} &nbsp;·&nbsp; Delivered daily &nbsp;·&nbsp;
               ${recipientEmail
                 ? `<a href="${escapeHtml(unsubUrl(recipientEmail))}" style="color:${D.textMuted};text-decoration:underline;">Unsubscribe</a>`
                 : `<a href="/" style="color:${D.textMuted};text-decoration:none;">BankingNewsAI</a>`
@@ -178,14 +181,45 @@ function renderStory(story: DigestStory, index: number, accent: string): string 
   const domain = extractDomain(story.sourceUrl);
   const pw = isPaywalled(story.sourceUrl);
   const num = String(index).padStart(2, "0");
+  const take = (story.take ?? "").trim();
+  const reader = (story.reader ?? "").trim();
+  const action = (story.businessImpact ?? "").trim();
+
+  // Headline + take are what the reader gets before scrolling; the summary is
+  // set smaller and lighter so it reads as supporting detail.
+  const takeBlock = take
+    ? `<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin:0 0 14px;">
+        <tr>
+          <td style="padding:0 0 0 14px;border-left:3px solid ${accent};">
+            ${reader ? `<p style="margin:0 0 4px;font-family:${D.mono};font-size:9px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:${accent};">For ${escapeHtml(reader)}</p>` : ""}
+            <p style="margin:0;font-family:${D.sans};font-size:15px;font-weight:500;color:${D.textPrimary};line-height:1.6;">${escapeHtml(take)}</p>
+          </td>
+        </tr>
+      </table>`
+    : "";
+
+  const summaryStyle = take
+    ? `margin:0 0 14px;font-family:${D.sans};font-size:13px;color:#6f6f6f;line-height:1.65;`
+    : `margin:0 0 16px;font-family:${D.sans};font-size:14px;color:${D.textSecondary};line-height:1.75;`;
+
+  const actionBlock = action
+    ? `<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:14px;">
+        <tr>
+          <td style="padding:10px 14px;background:#faf9f7;">
+            <p style="margin:0 0 3px;font-family:${D.mono};font-size:9px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:${accent};">&rarr;&nbsp;Action</p>
+            <p style="margin:0;font-family:${D.sans};font-size:13px;color:${D.textPrimary};line-height:1.55;">${renderAction(action)}</p>
+          </td>
+        </tr>
+      </table>`
+    : "";
 
   return `
   <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
-      <td style="padding:24px 40px 24px;border-bottom:1px solid ${D.divider};${pw ? "background:#fffbeb;" : ""}">
+      <td style="padding:24px 40px 22px;border-bottom:1px solid ${D.divider};${pw ? "background:#fffbeb;" : ""}">
 
         <!-- Domain + index -->
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:10px;">
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:8px;">
           <tr>
             <td valign="middle">
               <span style="font-family:${D.mono};font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:${D.textMuted};">${escapeHtml(domain)}</span>
@@ -196,21 +230,15 @@ function renderStory(story: DigestStory, index: number, accent: string): string 
           </tr>
         </table>
 
-        <!-- Title -->
-        <p style="margin:0 0 12px;font-family:${D.serif};font-size:20px;font-weight:700;color:${D.textPrimary};line-height:1.3;letter-spacing:-0.01em;">${escapeHtml(story.title)}</p>
+        <!-- Headline: the take -->
+        <p style="margin:0 0 12px;font-family:${D.serif};font-size:22px;font-weight:700;color:${D.textPrimary};line-height:1.25;letter-spacing:-0.01em;">${escapeHtml(story.title)}</p>
 
-        <!-- Summary -->
-        <p style="margin:0 0 16px;font-family:${D.sans};font-size:14px;color:${D.textSecondary};line-height:1.75;">${escapeHtml(story.executiveSummary)}</p>
+        ${takeBlock}
 
-        <!-- Action callout -->
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:16px;">
-          <tr>
-            <td style="padding:11px 16px;border-left:2px solid ${accent};background:#faf9f7;">
-              <p style="margin:0 0 4px;font-family:${D.mono};font-size:9px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:${accent};">&rarr;&nbsp;Action</p>
-              <p style="margin:0;font-family:${D.sans};font-size:14px;color:${D.textPrimary};line-height:1.55;">${renderAction(story.businessImpact)}</p>
-            </td>
-          </tr>
-        </table>
+        <!-- Summary: supporting facts -->
+        <p style="${summaryStyle}">${escapeHtml(story.executiveSummary)}</p>
+
+        ${actionBlock}
 
         <!-- Read link — text, not a button -->
         <a href="${story.sourceUrl}"

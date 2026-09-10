@@ -1,6 +1,13 @@
 export type DigestStory = {
+  /** The take as a headline: what the event means for a bank, not the announcement. */
   title: string;
+  /** The one specific reader the take is written for, e.g. "the payments head at a mid-size bank". */
+  reader?: string;
+  /** One or two sentences of opinion: the tension or decision this creates for that reader's bank. */
+  take?: string;
+  /** Two or three sentences of facts that support the take. */
   executiveSummary: string;
+  /** "Team: instruction." when a bank could open a ticket on it; empty string when there is nothing to do. */
   businessImpact: string;
   sourceUrl: string;
 };

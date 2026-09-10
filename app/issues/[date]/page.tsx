@@ -94,16 +94,40 @@ function StoryCard({ story, index, accent }: {
         {story.title}
       </h2>
 
+      {/* Take */}
+      {story.take && (
+        <div style={{ borderLeft: `3px solid ${accent}`, padding: "0 0 0 14px", margin: "0 0 14px" }}>
+          {story.reader && (
+            <p style={{
+              margin: "0 0 4px",
+              fontFamily: "var(--font-mono), 'Courier New', monospace",
+              fontSize: 9, fontWeight: 500, letterSpacing: "0.16em",
+              textTransform: "uppercase", color: accent
+            }}>
+              For {story.reader}
+            </p>
+          )}
+          <p style={{
+            margin: 0,
+            fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
+            fontSize: 15, fontWeight: 500, color: "#111111", lineHeight: 1.6
+          }}>
+            {story.take}
+          </p>
+        </div>
+      )}
+
       {/* Summary */}
       <p style={{
         margin: "0 0 16px",
         fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
-        fontSize: 14, color: "#5a5a5a", lineHeight: 1.75
+        fontSize: story.take ? 13 : 14, color: story.take ? "#6f6f6f" : "#5a5a5a", lineHeight: story.take ? 1.65 : 1.75
       }}>
         {story.executiveSummary}
       </p>
 
       {/* Action callout */}
+      {story.businessImpact?.trim() && (
       <div style={{
         borderLeft: `2px solid ${accent}`,
         background: "#ffffff",
@@ -126,6 +150,7 @@ function StoryCard({ story, index, accent }: {
           <ActionText text={story.businessImpact} />
         </p>
       </div>
+      )}
 
       {/* Read link */}
       <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{

@@ -20,6 +20,8 @@ import { sourceTier, TIER_LABEL, hostOf } from "@/lib/source-tiers";
 // ── Schemas ───────────────────────────────────────────────────────────────────
 const storySchema = z.object({
   title: z.string().min(1),
+  reader: z.string().default(""),
+  take: z.string().default(""),
   executiveSummary: z.string().min(1),
   businessImpact: z.string().default(""),
   sourceUrl: z.string().url()
@@ -37,13 +39,15 @@ const scoreSchema = z.object({
 });
 
 const selectSchema = z.object({
-  banking: z.array(z.object({ idx: z.number().int(), reason: z.string().default("") })).default([]),
-  ai: z.array(z.object({ idx: z.number().int(), reason: z.string().default("") })).default([])
+  banking: z.array(z.object({ idx: z.number().int(), angle: z.string().default(""), reason: z.string().default("") })).default([]),
+  ai: z.array(z.object({ idx: z.number().int(), angle: z.string().default(""), reason: z.string().default("") })).default([])
 });
 
 const verifySchema = z.object({
   supported: z.boolean().default(true),
   title: z.string().optional(),
+  reader: z.string().optional(),
+  take: z.string().optional(),
   executiveSummary: z.string().optional(),
   businessImpact: z.string().optional(),
   problems: z.array(z.string()).default([])
@@ -59,30 +63,36 @@ const EXCLUDE_KEYWORDS = ["film", "streaming", "gaming", "box office", "celebrit
 const EXCLUDE_URL_PATTERNS = ["/video/", "/videos/", "youtube.com", "youtu.be", "tiktok.com", "/podcast/", "/webinar", "/events/"];
 
 // ── Style rules shared by the writing and verification prompts ───────────────
-const STYLE_RULES = `Style rules (apply to every field):
-- Plain, direct sentences. Subject, verb, object. Present or past tense as the facts require.
-- State what happened, who did it, when, and the numbers. Names of institutions, products, regulators, dollar amounts, dates and percentages from the source text belong in the summary.
-- No mannered prose. Do not use: "signals", "underscores", "highlights", "marks a", "in a move that", "landmark", "significant", "major shift", "game-changer", "poised to", "it remains to be seen", "amid", "as ... continues to", "reshaping", "transforming", "landscape", "ecosystem", "journey", "leverage", "unlock", "robust", "seamless", "cutting-edge", "next-generation", "revolutionary", "at the forefront", "notably", "importantly", "crucially". No rhetorical questions. No metaphors. No adjectives that only express importance.
-- Do not editorialise. Do not speculate about what may happen. Do not write "this shows" or "this means" unless the sentence then states a fact.
-- Only state facts that appear in the source text. If the text does not give a number, do not invent one. Rounding is fine: write $12.93 billion, not $12,930,300,000; keep the unit the source uses.
-- title: one line stating what happened, with the actor named. No colon-led headline patterns, no puns.
-- executiveSummary: 4 to 5 sentences, 90 to 130 words, of facts from the source text. Sentence one states the event: who did what, when. The following sentences carry the substance the text gives: how it works or what it covers, the scale (markets, customers, volumes, dollar amounts, percentages), who is affected and how, the timeline or effective dates, and what the actor says comes next. Every sentence must add a new fact; do not restate the event or pad. Stay on the event: background figures, third-party surveys and industry statistics quoted in the text get at most one sentence. Prefer the specific detail (the product, the model, the rule section, the counterparty) over the general description. Readers who want more will open the article.
-- businessImpact: one instruction in the form "Team: instruction." — the team or function at a US bank first (e.g. "Fraud operations:", "Model risk:", "Treasury technology:", "Legal and compliance:"), then one concrete thing to do or check, at most 25 words. Do not write "Direct X to", "Require X to", "Ask X to"; address the team directly. No "consider", "monitor", "explore", "keep an eye on".`;
+const STYLE_RULES = `Who reads this: one executive at a US bank, in two lines, on a phone, deciding whether to forward it to a colleague. Readability first. Every story carries a point of view.
+
+Language rules (every field):
+- Plain, direct sentences. Subject, verb, object. Short words. No mannered prose.
+- Do not use: "signals", "underscores", "highlights", "marks a", "in a move that", "landmark", "significant", "major shift", "game-changer", "poised to", "it remains to be seen", "amid", "as ... continues to", "reshaping", "transforming", "landscape", "ecosystem", "journey", "leverage", "unlock", "robust", "seamless", "cutting-edge", "next-generation", "revolutionary", "at the forefront", "notably", "importantly", "crucially". No rhetorical questions. No metaphors. No adjectives that only express importance.
+- Every fact (name, number, date, product, counterparty) must appear in the source text. Never invent one. Rounding is fine; keep the unit the source uses.
+
+Fields:
+- title: the take, not the announcement. At most 14 words. Say what the event means for a bank, in plain words, as a person would say it across a desk. Not "X announces Y". Example of the bar: instead of "Meta integrates Link wallet for agents with Muse" write "Meta's agent can now spend your customers' money, through Stripe, not you". No colon-led patterns, no puns, no questions.
+- reader: the one specific person the take is for, as a lowercase noun phrase of 4 to 9 words: "the payments head at a mid-size bank", "a model-risk officer at a regional bank", "the CISO of a community bank". Never "banking executives" or "bank leaders" in general.
+- take: one or two sentences, at most 45 words, of opinion written to that reader. Name the tension or decision this event creates for their bank: what it takes from them, what it forces them to decide, what assumption it breaks. An implication may go beyond the text; a fact may not. Do not restate the event.
+- executiveSummary: two or three sentences, 35 to 70 words, of facts from the source text that support the take. State the event in sentence one (who did what), then only the details the take depends on: the mechanism, the scale, who is affected. Cut announcement dates, headcounts, office openings, community grants, secondary quotes, background surveys and industry statistics.
+- businessImpact: include only when a bank could open a ticket on it. Form: "Team: instruction." — the team or function at a US bank first ("Fraud operations:", "Model risk:", "Payments product:", "Legal and compliance:"), then one concrete thing to do or check, at most 25 words. Test: could a regional US bank act on this next week? If the action would be "review the announcement", something only the announcing company could do, or a restatement of the story as an imperative, return an empty string instead. No "consider", "monitor", "explore", "keep an eye on". Bar: "Payments authentication: Check passkey, customer-authorization and spending-rule controls for agent-initiated card payments." Not the bar: "Technology leadership: Review Bellevue recruiting plans."`;
 
 const SELECT_PROMPT_TEXT = `You are the editor of a daily brief for executives at US banks. Two sections: "banking" (AI at banks, lenders, payments companies, fintechs serving banks, and financial regulators) and "ai" (general AI developments an executive must know: model releases, capabilities, pricing, enterprise deployments, major lab and chip moves, policy).
 
-Pick up to 3 stories for each section from the candidates. Rules:
+Pick up to 3 stories for each section from the candidates. Four strong stories beat six with padding; two beat four. Rules:
 - One event is one story. If several candidates cover the same event, choose the best one: the original announcement, regulator page or filing beats coverage; a named publisher beats a wire copy; the most complete text beats a stub.
 - Prefer US institutions and US regulators. UK/EU regulators and major European banks are acceptable when they beat the US alternatives on substance. Skip the rest of the world unless it directly affects US institutions or the vendors they buy from.
 - Prefer concrete events with names and numbers over opinion, market research, listicles, event recaps and vendor marketing without an event.
 - Skip anything that repeats a title in recentTitles (already published this week).
 - Spread coverage: do not pick two stories about the same company in one section unless both are clearly the day's top events.
+- Every pick must carry a banking angle: something a US bank would have to decide, defend, buy, stop or check because of it. Drop stories that have none (an office opening, a data-centre investment abroad, a hiring plan, a funding round with no product) unless you can state a real implication for a bank in one sentence.
+- General AI stories must translate into a banking implication. Example: an agent-swarm release becomes "model-risk frameworks assume a human reviews the model's reasoning; multi-agent systems break that assumption".
 - Fewer than 3 is fine when the candidates are weak. Do not pick a weak story to fill a slot.
-Return strict JSON: {"banking":[{"idx":1,"reason":"one sentence"}],"ai":[{"idx":2,"reason":"one sentence"}]}`;
+Return strict JSON: {"banking":[{"idx":1,"angle":"the banking implication in one sentence, written for one specific reader"}],"ai":[{"idx":2,"angle":"..."}]}`;
 
-const WRITE_PROMPT_TEXT = `Write one story for a daily brief read by executives at US banks, from the article text provided. Use only facts in the text.
+const WRITE_PROMPT_TEXT = `Write one story for a daily brief read by executives at US banks, from the article text provided. The editor's angle is given; sharpen it, do not soften it. Facts come only from the text; the take is your opinion for one named reader.
 ${STYLE_RULES}
-Return strict JSON: {"title":"...","executiveSummary":"...","businessImpact":"...","sourceUrl":"<the url provided, unchanged>"}`;
+Return strict JSON: {"title":"...","reader":"...","take":"...","executiveSummary":"...","businessImpact":"...","sourceUrl":"<the url provided, unchanged>"}`;
 
 /** Shown on the admin page: the editorial and writing instructions in force. */
 export const LLM_PROMPT = `SELECTION\n${SELECT_PROMPT_TEXT}\n\nWRITING\n${WRITE_PROMPT_TEXT}`;
@@ -190,14 +200,11 @@ export async function generateFintechDigest(): Promise<DailyDigest> {
     selectionReasons = { banking: selection.banking.map((s) => s.reason), ai: selection.ai.map((s) => s.reason) };
 
     // Stage 4 + 5 — write and verify, in parallel per story.
-    const writeAll = async (picks: Candidate[]) =>
-      (await Promise.all(picks.map((c) => writeAndVerify(c, apiKey, model, llmErrors)))).filter(
+    const writeAll = async (picks: { candidate: Candidate; reason: string }[]) =>
+      (await Promise.all(picks.map((p) => writeAndVerify(p.candidate, p.reason, apiKey, model, llmErrors)))).filter(
         (s): s is DigestStory => s !== null
       );
-    [bankingStories, aiStories] = await Promise.all([
-      writeAll(selection.banking.map((s) => s.candidate)),
-      writeAll(selection.ai.map((s) => s.candidate))
-    ]);
+    [bankingStories, aiStories] = await Promise.all([writeAll(selection.banking), writeAll(selection.ai)]);
     bankingStories = dedupeStories(bankingStories).slice(0, 3);
     aiStories = dedupeStories(aiStories).filter((s) => !bankingStories.some((b) => normalizeUrl(b.sourceUrl) === normalizeUrl(s.sourceUrl))).slice(0, 3);
   }
@@ -374,8 +381,8 @@ async function selectStories(
       ai: aiTop.slice(0, 3).map((candidate) => ({ candidate, reason: "fallback: top score" }))
     };
   }
-  const resolve = (picks: { idx: number; reason: string }[]) =>
-    picks.map((p) => ({ candidate: byIdx.get(p.idx), reason: p.reason }))
+  const resolve = (picks: { idx: number; angle: string; reason: string }[]) =>
+    picks.map((p) => ({ candidate: byIdx.get(p.idx), reason: p.angle || p.reason }))
       .filter((p): p is { candidate: Candidate; reason: string } => Boolean(p.candidate))
       .slice(0, 3);
   return { banking: resolve(parsed.data.banking), ai: resolve(parsed.data.ai) };
@@ -384,11 +391,15 @@ async function selectStories(
 // ── Stage 4 + 5: write, then verify ───────────────────────────────────────────
 const WRITE_PROMPT = WRITE_PROMPT_TEXT;
 
-const VERIFY_PROMPT = `You check a drafted story against its source text. For every sentence in the draft, confirm the source text supports it. Remove or correct any sentence with a name, number, date or claim the text does not contain. Remove any phrase that breaks the style rules below. Keep the rest unchanged: do not shorten, compress or reword sentences the text supports, and do not add sentences.
+const VERIFY_PROMPT = `You check a drafted story against its source text.
+- executiveSummary: every sentence must be supported by the text. Remove or correct any sentence with a name, number, date or claim the text does not contain. Do not reword supported sentences and do not add sentences.
+- title and take: these are opinion and may state an implication the text does not; keep them. Correct only a specific fact in them (a name, number, product, counterparty) that the text contradicts or does not contain. Do not soften them and do not remove the point of view.
+- businessImpact: return an empty string if it fails the ticket test in the rules below; otherwise keep it.
+- Remove any phrase in any field that breaks the language rules below.
 ${STYLE_RULES}
-Return strict JSON: {"supported":true|false,"title":"...","executiveSummary":"...","businessImpact":"...","problems":["..."]} where the three text fields are the corrected versions (identical to the draft when nothing needed changing).`;
+Return strict JSON: {"supported":true|false,"title":"...","reader":"...","take":"...","executiveSummary":"...","businessImpact":"...","problems":["..."]} where the text fields are the corrected versions (identical to the draft when nothing needed changing).`;
 
-async function writeAndVerify(c: Candidate, apiKey: string, model: string, llmErrors: string[]): Promise<DigestStory | null> {
+async function writeAndVerify(c: Candidate, angle: string, apiKey: string, model: string, llmErrors: string[]): Promise<DigestStory | null> {
   const text = (c.text ?? c.summary ?? "").slice(0, 7000);
   if (text.length < 200) {
     llmErrors.push(`write: no usable text for ${c.url}`);
@@ -396,7 +407,7 @@ async function writeAndVerify(c: Candidate, apiKey: string, model: string, llmEr
   }
   const drafted = await callLlm(
     apiKey, model, WRITE_PROMPT,
-    JSON.stringify({ url: c.url, source: hostOf(c.url), published: c.published_at, title: c.title, text }),
+    JSON.stringify({ url: c.url, source: hostOf(c.url), published: c.published_at, title: c.title, editorAngle: angle, text }),
     llmErrors, "write"
   );
   const draft = storySchema.safeParse(drafted);
@@ -414,11 +425,14 @@ async function writeAndVerify(c: Candidate, apiKey: string, model: string, llmEr
   const verified = verifySchema.safeParse(checked);
   if (!verified.success) return story;
   const v = verified.data;
-  if (v.executiveSummary && v.executiveSummary.length > 60) {
+  if (v.executiveSummary && v.executiveSummary.length > 40) {
     story.title = v.title || story.title;
+    story.reader = v.reader ?? story.reader;
+    story.take = v.take || story.take;
     story.executiveSummary = v.executiveSummary;
     story.businessImpact = v.businessImpact ?? story.businessImpact;
   }
+  story.businessImpact = cleanAction(story.businessImpact);
   if (v.problems.length > 0) llmErrors.push(`verify(${hostOf(c.url)}): ${v.problems.slice(0, 3).join(" | ").slice(0, 300)}`);
   return story;
 }
@@ -477,6 +491,14 @@ async function callLlm(
 }
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
+/** Actions that fail the ticket test come back as an empty string, never as filler. */
+function cleanAction(text: string): string {
+  const t = (text ?? "").trim();
+  if (!t || /^(none|n\/a|no action|-|—)\.?$/i.test(t)) return "";
+  if (/^[^:]{0,60}:\s*(review|read|see|note|follow)\s+(the\s+)?(announcement|article|writeup|release|press release)/i.test(t)) return "";
+  return t;
+}
+
 function isExcludedUrl(url: string): boolean {
   const lower = url.toLowerCase();
   return EXCLUDE_URL_PATTERNS.some((p) => lower.includes(p));
