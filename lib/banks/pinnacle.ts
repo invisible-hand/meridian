@@ -30,9 +30,9 @@ export const PINNACLE: Bank = {
     { name: "Kevin Blair", role: "President and CEO (ex-Synovus CEO)", sources: ["ab-hires-2026", "reuters-leadership-2025"], linkedin: "https://www.linkedin.com/in/kevin-blair-849a767/" },
     { name: "Terry Turner", role: "Chairman; founding CEO of Pinnacle", sources: ["bankingdive-csuite-2025", "bankingdive-not-truist-2025"] },
     { name: "Kevin Johnson", role: "Head of AI", sources: ["ab-johnson-2026"], linkedin: "https://www.linkedin.com/in/k3vindjohnson/" },
-    { name: "Shellie Creson", role: "Chief Risk Officer", sources: ["ab-creson-2026"] },
-    { name: "Jamie Gregory", role: "Chief Financial Officer", sources: ["reuters-leadership-2025"] },
-    { name: "Jennifer Smith Brittain", role: "Senior Director, Experience Strategy and Digital Experience", sources: ["ab-wallet-2026"] }
+    { name: "Shellie Creson", role: "Chief Risk Officer", sources: ["ab-creson-2026"], linkedin: "https://www.linkedin.com/in/shellie-creson-9467495/" },
+    { name: "Jamie Gregory", role: "Chief Financial Officer", sources: ["reuters-leadership-2025"], linkedin: "https://www.linkedin.com/in/jamie-gregory-7030455/" },
+    { name: "Jennifer Smith Brittain", role: "Senior Director, Experience Strategy and Digital Experience", sources: ["ab-wallet-2026"], linkedin: "https://www.linkedin.com/in/jsmithbrittain/" }
   ],
   timeline: [
     { date: "2025-07-24", title: "Merger of equals with Synovus announced", detail: "An $8.6 billion all-stock deal creating a Southeast bank with more than $115 billion in combined assets.", sources: ["reuters-merger-2025", "wsj-merger-2025"] },

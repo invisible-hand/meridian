@@ -27,7 +27,7 @@ export const SOUTHSTATE: Bank = {
     "Leadership: CEO John Corbett; president Richard Murray; Chris Nichols (president, institutional banking) as the AI and digital-assets voice; a former CIO, Martin Davis, on the board."
   ],
   leadership: [
-    { name: "John Corbett", role: "Chief Executive Officer", sources: ["ft-q2-2026"] },
+    { name: "John Corbett", role: "Chief Executive Officer", sources: ["ft-q2-2026"], linkedin: "https://www.linkedin.com/in/john-corbett-b24a1813/" },
     { name: "Richard Murray", role: "President", sources: ["ssb-talent-2026"] },
     { name: "Chris Nichols", role: "President, Institutional Banking; supports AI, digital assets, payments and fintech investing", sources: ["ab-nichols-2026", "ab-genai-vendors-2025"], linkedin: "https://www.linkedin.com/in/cknichols/" },
     { name: "Walt Wear", role: "AI Enablement Manager", sources: ["ssb-podcast-2026"], linkedin: "https://www.linkedin.com/in/walter-wear/" },

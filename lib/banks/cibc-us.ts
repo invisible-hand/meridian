@@ -27,11 +27,11 @@ export const CIBC_US: Bank = {
     "AI as a lending market: CIBC Innovation Banking financed Gradient AI, EnsoData and Modo Energy in 2026; a digital-assets head hired from Accenture in May 2026."
   ],
   leadership: [
-    { name: "Kevin Li", role: "President and CEO, CIBC Bank USA (from November 2025)", sources: ["ab-li-2025", "ab-us-results-2026"] },
-    { name: "Harry Culham", role: "President and CEO, CIBC (from 1 November 2025)", sources: ["bankingdive-dodig-2025", "bankingdive-li-2025"] },
+    { name: "Kevin Li", role: "President and CEO, CIBC Bank USA (from November 2025)", sources: ["ab-li-2025", "ab-us-results-2026"], linkedin: "https://www.linkedin.com/in/kevin-li-8918b4134/" },
+    { name: "Harry Culham", role: "President and CEO, CIBC (from 1 November 2025)", sources: ["bankingdive-dodig-2025", "bankingdive-li-2025"], linkedin: "https://www.linkedin.com/in/harryculham/" },
     { name: "Jaime Tatis", role: "EVP, Chief Data and Artificial Intelligence Officer", sources: ["ft-awards-2026", "cibc-tatis-2026"], linkedin: "https://www.linkedin.com/in/jaime-tatis-37608512/" },
     { name: "Chris Patterson", role: "VP, Enterprise AI Platforms and Solutions", sources: ["cibc-agentic-2026", "cibc-genai-2025"], linkedin: "https://www.linkedin.com/in/chris-patterson-9081422/" },
-    { name: "John Lee", role: "Head of Digital Assets (from May 2026, ex-Accenture)", sources: ["bloomberg-lee-2026"] }
+    { name: "John Lee", role: "Head of Digital Assets (from May 2026, ex-Accenture)", sources: ["bloomberg-lee-2026"], linkedin: "https://www.linkedin.com/in/johnhclee/" }
   ],
   timeline: [
     { date: "2025-01-30", title: "'Creating value through experimentation'", detail: "The bank's framing of how generative AI is changing long-standing AI use.", sources: ["cibc-experimentation-2025"] },

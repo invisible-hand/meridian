@@ -29,10 +29,10 @@ export const FIRST_HORIZON: Bank = {
   leadership: [
     { name: "Bryan Jordan", role: "Chairman, President and CEO", sources: ["bankingdive-ma-2025"] },
     { name: "Mohan Sankararaman", role: "Chief Information Officer (also styled Chief Innovation Officer); 17 years at the bank", sources: ["ab-cio-2026", "ab-cio-profile-2026"], linkedin: "https://www.linkedin.com/in/mohan-sankararaman/" },
-    { name: "Tammy LoCascio", role: "Senior EVP and Chief Operating Officer", sources: ["ab-locascio-2025"] },
-    { name: "Hope Dmuchowski", role: "Senior EVP and Chief Financial Officer", sources: ["fhn-craft-2026", "bankingdive-raleigh-2026"] },
+    { name: "Tammy LoCascio", role: "Senior EVP and Chief Operating Officer", sources: ["ab-locascio-2025"], linkedin: "https://www.linkedin.com/in/tammy-locascio-7b183a5/" },
+    { name: "Hope Dmuchowski", role: "Senior EVP and Chief Financial Officer", sources: ["fhn-craft-2026", "bankingdive-raleigh-2026"], linkedin: "https://www.linkedin.com/in/hope-dmuchowski-1872441/" },
     { name: "Catherine Wood", role: "SVP, Head of Commercial Banking Strategy (from July 2026); AI opportunities across the commercial lifecycle", sources: ["fhn-wood-2026"], linkedin: "https://www.linkedin.com/in/catherine-wood-36488784/" },
-    { name: "Steven Jones", role: "Chief Information Security Officer", sources: ["fhn-cyberscams-2026"] }
+    { name: "Steven Jones", role: "Chief Information Security Officer (retired at end-2025; Kevin Gowen now Chief Security Officer)", sources: ["fhn-cyberscams-2026"], linkedin: "https://www.linkedin.com/in/steven-jones-5a27aa6/" }
   ],
   timeline: [
     { date: "2025-08-27", title: "Charlotte hiring doubled down", detail: "Consumer-banking and office expansion in the Carolinas.", sources: ["bankingdive-charlotte-2025"] },

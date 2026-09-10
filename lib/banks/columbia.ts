@@ -27,9 +27,9 @@ export const COLUMBIA: Bank = {
     "Leadership: Clint Stein (CEO), Chris Merrywell (president, Columbia Bank), Tory Nixon (president, Columbia Bank, on the Business Barometer)."
   ],
   leadership: [
-    { name: "Clint Stein", role: "President and CEO, Columbia Banking System", sources: ["ab-merger-2025", "ab-no-ma-2025"] },
+    { name: "Clint Stein", role: "President and CEO, Columbia Banking System", sources: ["ab-merger-2025", "ab-no-ma-2025"], linkedin: "https://www.linkedin.com/in/clint-stein-34138151/" },
     { name: "Chris Merrywell", role: "President, Columbia Bank", sources: ["ft-q1-2026"] },
-    { name: "Tory Nixon", role: "President, Columbia Bank (Business Barometer)", sources: ["ft-barometer-2026"] }
+    { name: "Tory Nixon", role: "President, Columbia Bank (Business Barometer)", sources: ["ft-barometer-2026"], linkedin: "https://www.linkedin.com/in/torran-nixon-902b054/" }
   ],
   timeline: [
     { date: "2025-04-24", title: "Pacific Premier acquisition announced", detail: "A $2 billion all-stock deal for Southern California scale.", sources: ["bankingdive-pacific-premier-2025"] },

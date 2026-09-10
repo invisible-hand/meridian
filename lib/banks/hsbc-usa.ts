@@ -27,12 +27,12 @@ export const HSBC_USA: Bank = {
     "US leadership: Jason Henderson became US CEO in December 2025 after Lisa McGeough's eight-month tenure; Racquel Oden runs US international wealth and private banking."
   ],
   leadership: [
-    { name: "Jason Henderson", role: "Chief Executive Officer, HSBC USA (from December 2025)", sources: ["bankingdive-henderson-2025"] },
+    { name: "Jason Henderson", role: "Chief Executive Officer, HSBC USA (from December 2025)", sources: ["bankingdive-henderson-2025"], linkedin: "https://www.linkedin.com/in/jasonhenderson70/" },
     { name: "Georges Elhedery", role: "Group Chief Executive, HSBC Holdings", sources: ["bankingdive-genai-2026", "bankingdive-caio-2026"] },
     { name: "David Rice", role: "Group Chief AI Officer (from 1 April 2026)", sources: ["bankingdive-caio-2026"], linkedin: "https://www.linkedin.com/in/david-rice-845931145/" },
-    { name: "Mario Shamtani", role: "Group Chief Technology Officer; central AI platform", sources: ["bankingdive-caio-2026"] },
-    { name: "Racquel Oden", role: "Head of International Wealth Management and Private Banking, US", sources: ["ft-trust-2026"] },
-    { name: "Tom Halpin", role: "Head of Global Payments Solutions, North America", sources: ["bankingdive-halpin-2026"] }
+    { name: "Mario Shamtani", role: "Group Chief Technology Officer; central AI platform", sources: ["bankingdive-caio-2026"], linkedin: "https://www.linkedin.com/in/mario-shamtani-5b86161/" },
+    { name: "Racquel Oden", role: "Head of International Wealth Management and Private Banking, US", sources: ["ft-trust-2026"], linkedin: "https://www.linkedin.com/in/racquel-oden-06277461/" },
+    { name: "Tom Halpin", role: "Head of Global Payments Solutions, North America", sources: ["bankingdive-halpin-2026"], linkedin: "https://www.linkedin.com/in/tom-halpin-88243299/" }
   ],
   timeline: [
     { date: "2025-10-21", title: "Marrying AI with accountability in payments", detail: "A look at how HSBC frames AI in global money movement: data, regulation and risk as one choreography.", sources: ["pymnts-accountability-2025"] },

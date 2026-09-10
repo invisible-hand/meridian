@@ -27,12 +27,12 @@ export const SCHWAB: Bank = {
     "Organisation: CIO Dennis Howard now runs technology, operations and data together (July 2026); record Q2 2026 revenue $7.1 billion and $2.8 billion net income; AI spend undisclosed."
   ],
   leadership: [
-    { name: "Rick Wurster", role: "President and CEO", sources: ["bloomberg-accelerant-2026", "bloomberg-boost-2026"] },
+    { name: "Rick Wurster", role: "President and CEO", sources: ["bloomberg-accelerant-2026", "bloomberg-boost-2026"], linkedin: "https://www.linkedin.com/in/rickwurster/" },
     { name: "Dennis Howard", role: "Chief Information Officer; head of technology, operations and data (from July 2026)", sources: ["bankingdive-transitions-2026"], linkedin: "https://www.linkedin.com/in/denniswhoward/" },
     { name: "Jonathan Craig", role: "Head of Retail Investing", sources: ["schwab-insights-2026"], linkedin: "https://www.linkedin.com/in/jonathanmcraig/" },
-    { name: "Neesha Hathi", role: "Head of Wealth Advisory and Banking Services (from July 2026)", sources: ["bankingdive-transitions-2026"] },
-    { name: "Tyler Woulfe", role: "CEO, Charles Schwab Bank (from July 2026)", sources: ["bankingdive-transitions-2026"] },
-    { name: "Lisa Salvi", role: "Head of Business Consulting and Education, Schwab Advisor Services", sources: ["schwab-ria-2026"] }
+    { name: "Neesha Hathi", role: "Head of Wealth Advisory and Banking Services (from July 2026)", sources: ["bankingdive-transitions-2026"], linkedin: "https://www.linkedin.com/in/neesha-hathi/" },
+    { name: "Tyler Woulfe", role: "CEO, Charles Schwab Bank (from July 2026)", sources: ["bankingdive-transitions-2026"], linkedin: "https://www.linkedin.com/in/tyler-woulfe-1733527/" },
+    { name: "Lisa Salvi", role: "Head of Business Consulting and Education, Schwab Advisor Services", sources: ["schwab-ria-2026"], linkedin: "https://www.linkedin.com/in/lisa-salvi-1699982/" }
   ],
   timeline: [
     { date: "2025-02-05", title: "Schwab Knowledge Assistant disclosed", detail: "Gen-AI search with cited answers for client-service representatives; ML fraud and NLP models noted.", sources: ["schwab-knowledge-2025"] },

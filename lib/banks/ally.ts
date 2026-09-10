@@ -27,12 +27,12 @@ export const ALLY: Bank = {
     "Leadership and shape: Mark Mathewson (ex-Capital One) became CIDO on 20 July 2026; Sathish Muthukrishnan is senior adviser; the company sold its credit-card book, exited mortgage origination and trimmed headcount twice in 2025 to focus on auto, deposits and corporate finance. $197 billion in assets, 9.5 million customers."
   ],
   leadership: [
-    { name: "Michael Rhodes", role: "Chief Executive Officer", sources: ["ally-mathewson-2026", "reuters-cardworks-2025"] },
+    { name: "Michael Rhodes", role: "Chief Executive Officer", sources: ["ally-mathewson-2026", "reuters-cardworks-2025"], linkedin: "https://www.linkedin.com/in/michael-g-rhodes/" },
     { name: "Mark Mathewson", role: "Chief Information and Data Officer (from 20 July 2026, ex-Capital One)", sources: ["ally-mathewson-2026"], linkedin: "https://www.linkedin.com/in/mark-mathewson/" },
-    { name: "Sathish Muthukrishnan", role: "Former Chief Information, Data and Digital Officer; now Senior Advisor", sources: ["ab-personas-2026", "ab-muthukrishnan-2026"], linkedin: "https://www.linkedin.com/in/sathishmuthukrishnan/" },
-    { name: "Arvy Rajasekaran", role: "CIO, Architecture and Corporate Technology; led the Personas project", sources: ["ab-personas-2026"] },
+    { name: "Sathish Muthukrishnan", role: "Former Chief Information, Data and Digital Officer (left Ally in 2026; now at UnitedHealth Group per his LinkedIn)", sources: ["ab-personas-2026", "ab-muthukrishnan-2026"], linkedin: "https://www.linkedin.com/in/sathishmuthukrishnan/" },
+    { name: "Arvy Rajasekaran", role: "Former divisional CIO, Architecture and Corporate Technology (left Ally in mid-2026); led the Personas project", sources: ["ab-personas-2026"], linkedin: "https://www.linkedin.com/in/aarvy/" },
     { name: "Andrea Brimmer", role: "Chief Marketing Officer; owns UX, communications and the AI-search strategy", sources: ["fortune-brimmer-2026"], linkedin: "https://www.linkedin.com/in/andrea-brimmer-a4345a68/" },
-    { name: "Stephanie Richard", role: "Chief Risk Officer (from November 2024)", sources: ["ab-richard-2026"] }
+    { name: "Stephanie Richard", role: "Chief Risk Officer (from November 2024)", sources: ["ab-richard-2026"], linkedin: "https://www.linkedin.com/in/richardstephanienicole/" }
   ],
   timeline: [
     { date: "2023-09-19", title: "Ally.ai launches", detail: "A proprietary, cloud-based platform with traditional and generative AI, foundational models and data-security protections.", sources: ["ally-launch-2023"] },

@@ -27,11 +27,11 @@ export const OLD_NATIONAL: Bank = {
     "No AI platform, chief AI officer, use-case count or budget has been announced."
   ],
   leadership: [
-    { name: "Jim Ryan", role: "Chairman and CEO", sources: ["onb-q2-2026", "ab-bremer-2025"] },
-    { name: "Tim Burke", role: "President and Chief Operating Officer (from July 2025, ex-KeyBank)", sources: ["bankingdive-burke-2025"] },
+    { name: "Jim Ryan", role: "Chairman and CEO", sources: ["onb-q2-2026", "ab-bremer-2025"], linkedin: "https://www.linkedin.com/in/jim-ryan-ceo-onb/" },
+    { name: "Tim Burke", role: "President and Chief Operating Officer (from July 2025, ex-KeyBank)", sources: ["bankingdive-burke-2025"], linkedin: "https://www.linkedin.com/in/timothy-burke-8a91938/" },
     { name: "Jason Berkowitz", role: "Chief Technology Officer", sources: ["ft-axletree-2026"] },
-    { name: "Jeff Newcom", role: "Chief Operations Officer", sources: ["onb-quavo-2026"] },
-    { name: "Phil Lehner", role: "President, Consumer Lending", sources: ["ab-affirm-2026"] }
+    { name: "Jeff Newcom", role: "Chief Operations Officer", sources: ["onb-quavo-2026"], linkedin: "https://www.linkedin.com/in/jeff-newcom-403a91b/" },
+    { name: "Phil Lehner", role: "President, Consumer Lending", sources: ["ab-affirm-2026"], linkedin: "https://www.linkedin.com/in/phil-lehner-7154a738/" }
   ],
   timeline: [
     { date: "2025-01-21", title: "Bremer deal on track; more deals possible", detail: "A $1.4 billion acquisition adding $16 billion of assets and 70 branches in Minnesota, North Dakota and Wisconsin.", sources: ["ab-bremer-2025"] },

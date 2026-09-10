@@ -27,12 +27,12 @@ export const NORTHERN_TRUST: Bank = {
     "Scale and independence: $18 trillion in assets under custody and administration, $1.6–1.8 trillion under management; the CEO said in July 2025 the bank had never entertained a sale after a BNY approach."
   ],
   leadership: [
-    { name: "Michael O'Grady", role: "Chairman and CEO", sources: ["bankingdive-takeover-2025", "ab-ipos-2026"] },
+    { name: "Michael O'Grady", role: "Chairman and CEO", sources: ["bankingdive-takeover-2025", "ab-ipos-2026"], linkedin: "https://www.linkedin.com/in/michaeljogrady815/" },
     { name: "Tom South", role: "EVP and Chief Information Officer (since September 2018)", sources: ["nt-south-bio", "nt-ms-conference-2026"], linkedin: "https://www.linkedin.com/in/thomassouth/" },
     { name: "Kelley Conway", role: "Chief Data and Analytics Officer", sources: ["nt-osi-2026"], linkedin: "https://www.linkedin.com/in/kelleyconway/" },
-    { name: "Jez Davies", role: "Chief Information Architect", sources: ["nt-osi-2026"] },
-    { name: "Pamela Lucina", role: "Head of Family Office Solutions", sources: ["cnbc-chatbots-2026"] },
-    { name: "Justin Chapman", role: "Group Head of Strategic Partnerships, Digital Assets and Financial Markets", sources: ["ab-custody-2026"] }
+    { name: "Jez Davies", role: "Chief Information Architect", sources: ["nt-osi-2026"], linkedin: "https://www.linkedin.com/in/jez-davies/" },
+    { name: "Pamela Lucina", role: "Head of Family Office Solutions", sources: ["cnbc-chatbots-2026"], linkedin: "https://www.linkedin.com/in/pamela-lucina-9138a668/" },
+    { name: "Justin Chapman", role: "Group Head of Strategic Partnerships, Digital Assets and Financial Markets", sources: ["ab-custody-2026"], linkedin: "https://www.linkedin.com/in/justin-chapman-bbb3239/" }
   ],
   timeline: [
     { date: "2025-03-17", title: "Tokenisation and AI in fraud detection", detail: "A Northern Trust executive on crypto rule changes; the bank's Matrix Zenith platform dates from 2017.", sources: ["bankingdive-tokenization-2025"] },

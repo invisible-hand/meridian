@@ -27,12 +27,12 @@ export const REGIONS: Bank = {
     "Deal posture: no bank acquisitions; bolt-ons (EnerBank, Frazer Lanier) and an accelerated plan for 150 new branches in Florida, Georgia and Tennessee."
   ],
   leadership: [
-    { name: "John Turner", role: "Chairman, President and CEO", sources: ["pymnts-productivity-2026", "ab-core-2025"] },
-    { name: "Anil Chadha", role: "Chief Financial Officer (succeeded David Turner in 2026)", sources: ["ab-ai-exposure-2026", "ab-cfo-2026"] },
-    { name: "Chun Schiros", role: "SVP, Head of Enterprise Data Science", sources: ["ab-schiros-2025"] },
-    { name: "Kristen Rankin", role: "Head of Digital", sources: ["bankingdive-app-2025"] },
-    { name: "Kate Danella", role: "Chief Administrative Officer (from September 2026); formerly head of consumer banking", sources: ["bankingdive-cao-2026"] },
-    { name: "Bryan Ford", role: "Head of Treasury Management; American Banker Most Innovative People in Finance 2026", sources: ["pymnts-ford-2026"] }
+    { name: "John Turner", role: "Chairman, President and CEO", sources: ["pymnts-productivity-2026", "ab-core-2025"], linkedin: "https://www.linkedin.com/in/johnturnerregions/" },
+    { name: "Anil Chadha", role: "Chief Financial Officer (succeeded David Turner in 2026)", sources: ["ab-ai-exposure-2026", "ab-cfo-2026"], linkedin: "https://www.linkedin.com/in/anil-chadha-a311111/" },
+    { name: "Chun Schiros", role: "Former SVP, Head of Enterprise Data Science (left Regions in 2024)", sources: ["ab-schiros-2025"], linkedin: "https://www.linkedin.com/in/chun-schiros-phd-90a16344/" },
+    { name: "Kristen Rankin", role: "Former Head of Digital (joined SouthState in 2026)", sources: ["bankingdive-app-2025"], linkedin: "https://www.linkedin.com/in/kristen-rankin/" },
+    { name: "Kate Danella", role: "Chief Administrative Officer (from September 2026); formerly head of consumer banking", sources: ["bankingdive-cao-2026"], linkedin: "https://www.linkedin.com/in/katedanella/" },
+    { name: "Bryan Ford", role: "Head of Treasury Management; American Banker Most Innovative People in Finance 2026", sources: ["pymnts-ford-2026"], linkedin: "https://www.linkedin.com/in/bryan-ford-18655825/" }
   ],
   timeline: [
     { date: "2025-01-28", title: "USAA sues over mobile-deposit patents", detail: "Settled in February 2026.", sources: ["reuters-usaa-2025", "reuters-settle-2026"] },

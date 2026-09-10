@@ -29,8 +29,8 @@ export const WESTERN_ALLIANCE: Bank = {
   leadership: [
     { name: "Ken Vecchione", role: "President and CEO", sources: ["wal-investorday-2026"] },
     { name: "Dale Gibbons", role: "Vice Chairman and Chief Banking Officer, Deposit Initiatives & Innovation (CFO until January 2026)", sources: ["ft-venuex-2026", "bankingdive-cfo-2025"], linkedin: "https://www.linkedin.com/in/gibbonsdale/" },
-    { name: "Carl Eberling", role: "Managing Director, Juris Banking; CIO from May 2021; leads the settlement-services fraud programme", sources: ["ab-eberling-2025", "ab-fraud-2025"] },
-    { name: "Vishal Idnani", role: "Chief Financial Officer (from January 2026, ex-JPMorgan)", sources: ["bankingdive-cfo-2025"] }
+    { name: "Carl Eberling", role: "Managing Director, Juris Banking; CIO from May 2021; leads the settlement-services fraud programme", sources: ["ab-eberling-2025", "ab-fraud-2025"], linkedin: "https://www.linkedin.com/in/carl-eberling-b991253/" },
+    { name: "Vishal Idnani", role: "Chief Financial Officer (from January 2026, ex-JPMorgan)", sources: ["bankingdive-cfo-2025"], linkedin: "https://www.linkedin.com/in/vishal-idnani-bbb83a87/" }
   ],
   timeline: [
     { date: "2025-03-21", title: "Third-party breach exposes 22,000 customers", detail: "A vulnerability in a vendor's file-transfer software.", sources: ["bankingdive-breach-2025"] },

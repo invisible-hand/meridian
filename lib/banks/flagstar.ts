@@ -27,10 +27,10 @@ export const FLAGSTAR: Bank = {
     "Governance: StarIQ was 'built specifically for regulated financial services environments'; a former Comptroller of the Currency runs the bank."
   ],
   leadership: [
-    { name: "Joseph Otting", role: "Chairman, President and CEO (from April 2024; former Comptroller of the Currency)", sources: ["ab-profit-2026", "bankingdive-succession-2026"] },
+    { name: "Joseph Otting", role: "Chairman, President and CEO (from April 2024; former Comptroller of the Currency)", sources: ["ab-profit-2026", "bankingdive-succession-2026"], linkedin: "https://www.linkedin.com/in/joseph-otting-911b3b5/" },
     { name: "Chris Higgins", role: "EVP, Chief Information and Operations Officer (from late 2024)", sources: ["bankingdive-cio-2026", "ab-datacenters-2026"], linkedin: "https://www.linkedin.com/in/chiggins2/" },
-    { name: "Jason Pope", role: "EVP, Chief Technology Officer", sources: ["flagstar-techteam-2026", "flagstar-ip-2026"] },
-    { name: "Lee Smith", role: "Chief Financial Officer", sources: ["ab-profit-2026", "bankingdive-core-2026"] }
+    { name: "Jason Pope", role: "EVP, Chief Technology Officer", sources: ["flagstar-techteam-2026", "flagstar-ip-2026"], linkedin: "https://www.linkedin.com/in/pope-jason/" },
+    { name: "Lee Smith", role: "Chief Financial Officer", sources: ["ab-profit-2026", "bankingdive-core-2026"], linkedin: "https://www.linkedin.com/in/leemsmith10/" }
   ],
   timeline: [
     { date: "2025-01-30", title: "Sixty branches to close as $600 million of costs come out", detail: "The turnaround plan's cost leg; profitability expected in 2025.", sources: ["bankingdive-branches-2025", "reuters-profitable-2025"] },

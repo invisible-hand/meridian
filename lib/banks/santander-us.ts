@@ -27,11 +27,11 @@ export const SANTANDER_US: Bank = {
     "Leadership: Christiana Riley is US country head and CEO of Santander Holdings USA; John Ciulla (ex-Webster) is CEO of Santander Bank, N.A.; the US tech chief Dan Griffiths left for USAA in February 2026."
   ],
   leadership: [
-    { name: "Christiana Riley", role: "CEO, Santander US and US country head", sources: ["bankingdive-webster-2026", "ft-webster-close-2026"] },
-    { name: "John Ciulla", role: "CEO, Santander Bank, N.A. (from the Webster acquisition; former Webster CEO)", sources: ["bankingdive-webster-2026"] },
-    { name: "Ana Botín", role: "Executive Chair, Banco Santander", sources: ["bloomberg-botin-2026", "ab-graveyard-2026"] },
+    { name: "Christiana Riley", role: "CEO, Santander US and US country head", sources: ["bankingdive-webster-2026", "ft-webster-close-2026"], linkedin: "https://www.linkedin.com/in/christiana-riley/" },
+    { name: "John Ciulla", role: "CEO, Santander Bank, N.A. (from the Webster acquisition; former Webster CEO)", sources: ["bankingdive-webster-2026"], linkedin: "https://www.linkedin.com/in/john-r-ciulla/" },
+    { name: "Ana Botín", role: "Executive Chair, Banco Santander", sources: ["bloomberg-botin-2026", "ab-graveyard-2026"], linkedin: "https://www.linkedin.com/in/anabotin/" },
     { name: "Drew Burchard", role: "Head of Digital Banking, combined bank (formerly head of product and platforms)", sources: ["bankingdive-webster-mgmt-2026"], linkedin: "https://www.linkedin.com/in/drew-burchard-4670bb15/" },
-    { name: "Swati Bhatia", role: "Former head of Openbank US and US retail (left June 2026)", sources: ["bankingdive-webster-mgmt-2026"] }
+    { name: "Swati Bhatia", role: "Former head of Openbank US and US retail (left June 2026)", sources: ["bankingdive-webster-mgmt-2026"], linkedin: "https://www.linkedin.com/in/bhatiaswati/" }
   ],
   timeline: [
     { date: "2025-02-03", title: "Christiana Riley named US CEO", detail: "Part of a global restructuring that removed the regional divisions.", sources: ["bankingdive-riley-2025"] },

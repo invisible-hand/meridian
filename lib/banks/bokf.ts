@@ -22,7 +22,7 @@ export const BOKF: Bank = {
     "Reputation: 18th among banks by customer reputation in 2026 (score 79.7), down from 10th in 2025."
   ],
   leadership: [
-    { name: "Stacy Kymes", role: "President and CEO", sources: ["ab-mortgage-2026", "cnbc-kymes-2025"] },
+    { name: "Stacy Kymes", role: "President and CEO", sources: ["ab-mortgage-2026", "cnbc-kymes-2025"], linkedin: "https://www.linkedin.com/in/stacy-kymes-718460b6/" },
     { name: "Shanthi Pudota", role: "SVP, Chief Data and Analytics Officer (enterprise data and AI strategy)", sources: ["ab-pudota-2026"], linkedin: "https://www.linkedin.com/in/shanthipudota/" },
     { name: "Brian Henderson", role: "Chief Investment Officer", sources: ["statement-energy-2024"] }
   ],

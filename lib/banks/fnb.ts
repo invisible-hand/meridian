@@ -31,7 +31,7 @@ export const FNB: Bank = {
     { name: "Chris Chan", role: "Chief Strategy Officer (AI and data-science directors report here)", sources: ["fnb-ai-directors-2025"] },
     { name: "Santosh Sinha", role: "SVP, Director of AI and Innovation", sources: ["fnb-ai-directors-2025"], linkedin: "https://www.linkedin.com/in/santoshsinha13/" },
     { name: "Sundeep Tangirala", role: "SVP, Director of Data Science", sources: ["fnb-ai-directors-2025"], linkedin: "https://www.linkedin.com/in/sundeeptangirala/" },
-    { name: "Vincent Calabrese", role: "Chief Financial Officer", sources: ["ft-q2-2026"] }
+    { name: "Vincent Calabrese", role: "Chief Financial Officer", sources: ["ft-q2-2026"], linkedin: "https://www.linkedin.com/in/vince-calabrese-66b47614/" }
   ],
   timeline: [
     { date: "2025-09-02", title: "Southeast expansion with eStore-equipped branches", detail: "Almost 30 new branches over five years; analysts single out FNB's technology.", sources: ["ab-southeast-2025"] },

@@ -27,11 +27,11 @@ export const VALLEY: Bank = {
     "Growth: senior hires for partner banking, digital and customer care (February 2026); Providence Financial in Chicago for $247 million (August 2026); AI used to compete for deposits (Bloomberg, 2025)."
   ],
   leadership: [
-    { name: "Ira Robbins", role: "Chairman and CEO", sources: ["valley-q1-2026"] },
+    { name: "Ira Robbins", role: "Chairman and CEO", sources: ["valley-q1-2026"], linkedin: "https://www.linkedin.com/in/ira-robbins/" },
     { name: "Russell Barrett", role: "Chief Operating Officer; formerly chief transformation officer", sources: ["ab-barrett-2026", "bankingdive-buildbuy-2026"], linkedin: "https://www.linkedin.com/in/russellsbarrett/" },
     { name: "Nickolaus Lachman", role: "SVP, Head of AI and Data Science", sources: ["ab-lachman-2026"], linkedin: "https://www.linkedin.com/in/nickolauslachman/" },
-    { name: "Travis Lan", role: "Chief Financial Officer", sources: ["bankingdive-csuite-2025"] },
-    { name: "Stephen Schroth", role: "Head of Digital and Assisted Channels (from February 2026)", sources: ["ft-leaders-2026"] }
+    { name: "Travis Lan", role: "Chief Financial Officer", sources: ["bankingdive-csuite-2025"], linkedin: "https://www.linkedin.com/in/travis-lan-509bb04/" },
+    { name: "Stephen Schroth", role: "Head of Digital and Assisted Channels (from February 2026)", sources: ["ft-leaders-2026"], linkedin: "https://www.linkedin.com/in/stephenschroth/" }
   ],
   timeline: [
     { date: "2025-03-03", title: "CFO and commercial leadership set", detail: "Travis Lan confirmed as CFO.", sources: ["bankingdive-csuite-2025"] },

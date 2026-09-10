@@ -27,7 +27,7 @@ export const BNY_MELLON: Bank = {
     "July 2026: CEO Robin Vince appointed to OpenAI's for-profit and nonprofit boards ahead of its IPO."
   ],
   leadership: [
-    { name: "Robin Vince", role: "Chairman and CEO; OpenAI board member since July 2026", sources: ["bloomberg-openai-board-2026", "bankingdive-vince-2025"] },
+    { name: "Robin Vince", role: "Chairman and CEO; OpenAI board member since July 2026", sources: ["bloomberg-openai-board-2026", "bankingdive-vince-2025"], linkedin: "https://www.linkedin.com/in/robin-vince/" },
     { name: "Leigh-Ann Russell", role: "Chief Information Officer and Global Head of Engineering", sources: ["cnbc-cio-2025", "bankingdive-costs-2025"] },
     { name: "Dermot McDonogh", role: "Chief Financial Officer", sources: ["ab-paying-off-2026"], linkedin: "https://www.linkedin.com/in/dermot-mcdonogh-6911015b/" }
   ],

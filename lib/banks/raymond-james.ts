@@ -27,10 +27,10 @@ export const RAYMOND_JAMES: Bank = {
     "Results: record fiscal Q2 and Q3 2026 revenue ($3.86 billion, $3.93 billion); $1.76 trillion client assets; record $54.8 billion bank loans."
   ],
   leadership: [
-    { name: "Paul Shoukry", role: "Chief Executive Officer", sources: ["ft-solganik-2025", "rj-rai-2026"] },
+    { name: "Paul Shoukry", role: "Chief Executive Officer", sources: ["ft-solganik-2025", "rj-rai-2026"], linkedin: "https://www.linkedin.com/in/paulshoukry/" },
     { name: "Stuart Feld", role: "Chief AI Officer", sources: ["ft-solganik-2025"], linkedin: "https://www.linkedin.com/in/stuart-feld/" },
     { name: "David Solganik", role: "Head of AI Strategy", sources: ["ft-solganik-2025"], linkedin: "https://www.linkedin.com/in/david-solganik/" },
-    { name: "Vin Campagnoli", role: "EVP, Technology and Operations", sources: ["ft-solganik-2025"] },
+    { name: "Vin Campagnoli", role: "EVP, Technology and Operations", sources: ["ft-solganik-2025"], linkedin: "https://www.linkedin.com/in/vincampagnoli/" },
     { name: "Andy Zolper", role: "Chief Information Officer", sources: ["rj-zoom-2025"], linkedin: "https://www.linkedin.com/in/andyzolper/" }
   ],
   timeline: [

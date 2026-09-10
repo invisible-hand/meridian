@@ -87,7 +87,9 @@ suggests" cards are analysis and must stay observations, not advice. Batch 2 (Fe
 Morgan Stanley's second bank) shipped 2026-09-09; batch 3 (ranks 22–50 plus Charles Schwab, 50 banks total) shipped
 2026-09-10. Charles Schwab carries `fedRank: 0` and holding-company assets because its lead bank is a savings bank
 outside the Fed release — the page eyebrow and hub note handle that case. `charter` is free text. Leaders may carry a
-`linkedin` profile URL (only when the search-result title names the person with the bank or role; never guessed).
+`linkedin` profile URL (only when a search-result title names the person with the bank or role; never guessed). Keenable
+indexes some LinkedIn profiles (`site: "linkedin.com/in"`) but covers few bank executives, so profile lookups run through web
+search; roles are marked "Former …" when a profile shows the person has moved on.
 Next: ranks 51–100 (repo memory `top-100-banks-ai-guide`). Figures in `app/banks/graphics.tsx` are data-driven; they need no edits when banks are added.
 Biweekly refresh: cloud routine "Banks AI refresh (biweekly)" (`trig_01J4geLpNA4NvCm8UjvZMcXc`,
 env `tracker-web`, cron `0 14 1,15 * *` = 1st and 15th, 7am Pacific) sweeps allowed hosts for

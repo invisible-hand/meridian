@@ -27,9 +27,9 @@ export const EAST_WEST: Bank = {
     "Leadership: Dominic Ng, chairman and CEO since 1992, credits nimbleness and discipline; CFO Christopher Del Moral-Niles speaks for the bank at investor conferences."
   ],
   leadership: [
-    { name: "Dominic Ng", role: "Chairman and CEO", sources: ["ewb-q4-2025", "ab-top-performers-2026"] },
-    { name: "Christopher Del Moral-Niles", role: "Chief Financial Officer", sources: ["ft-conferences-2026"] },
-    { name: "Robert Lo", role: "EVP, Head of Commercial Real Estate Banking", sources: ["ft-axs-2026"] }
+    { name: "Dominic Ng", role: "Chairman and CEO", sources: ["ewb-q4-2025", "ab-top-performers-2026"], linkedin: "https://www.linkedin.com/in/dominic-ng-chairman-and-ceo-east-west-bank-062b7029/" },
+    { name: "Christopher Del Moral-Niles", role: "Chief Financial Officer", sources: ["ft-conferences-2026"], linkedin: "https://www.linkedin.com/in/chris-del-moral-niles/" },
+    { name: "Robert Lo", role: "EVP, Head of Commercial Real Estate Banking", sources: ["ft-axs-2026"], linkedin: "https://www.linkedin.com/in/robert-lo-839b0145/" }
   ],
   timeline: [
     { date: "2025-01-23", title: "Record 2024 results", detail: "Net income of $1.2 billion; a 17% return on average tangible common equity.", sources: ["ewb-q4-2024"] },

@@ -27,11 +27,11 @@ export const FROST: Bank = {
     "No disclosed AI budget, AI leader or internal gen-AI rollout; hiring for AI engineering and AI application security."
   ],
   leadership: [
-    { name: "Phil Green", role: "Chairman and CEO, Cullen/Frost Bankers", sources: ["bankingdive-texas-2026"] },
+    { name: "Phil Green", role: "Chairman and CEO, Cullen/Frost Bankers", sources: ["bankingdive-texas-2026"], linkedin: "https://www.linkedin.com/in/phil-green-frost/" },
     { name: "Jimmy Stead", role: "Chief Consumer Banking and Technology Officer", sources: ["bankingdive-stead-2025"], linkedin: "https://www.linkedin.com/in/jimmy-stead-frost/" },
-    { name: "Katie Keating", role: "EVP, Director of Consumer Products and Strategy", sources: ["ft-blend-2026"] },
-    { name: "Brad Bremer", role: "SVP, Consumer Deposit Products", sources: ["ft-blend-2026"] },
-    { name: "Beverly Hankinson", role: "SVP, Mortgage Loan Advisors Manager", sources: ["ab-mortgage-2026"] }
+    { name: "Katie Keating", role: "EVP, Director of Consumer Products and Strategy", sources: ["ft-blend-2026"], linkedin: "https://www.linkedin.com/in/keatingkatie/" },
+    { name: "Brad Bremer", role: "SVP, Consumer Deposit Products", sources: ["ft-blend-2026"], linkedin: "https://www.linkedin.com/in/brad-bremer-0a9341ba/" },
+    { name: "Beverly Hankinson", role: "SVP, Mortgage Loan Advisors Manager", sources: ["ab-mortgage-2026"], linkedin: "https://www.linkedin.com/in/beverly-hankinson-frost/" }
   ],
   timeline: [
     { date: "2025-01-29", title: "'AI will make banking apps simpler'", detail: "Stead on the next decade of mobile banking.", sources: ["bankingdive-stead-2025"] },

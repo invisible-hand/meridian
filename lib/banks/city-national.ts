@@ -27,11 +27,11 @@ export const CITY_NATIONAL: Bank = {
     "Disclosure: no bank-level AI budgets, use-case counts or headcount figures; the Borealis platform and RBC targets are the only quantified AI record."
   ],
   leadership: [
-    { name: "Howard Hammond", role: "Chief Executive Officer, City National Bank (ex-Fifth Third)", sources: ["ab-rbc-strategy-2025", "cnb-labj-2026"] },
-    { name: "Greg Carmichael", role: "Executive Chair, RBC US; former Fifth Third CEO", sources: ["ab-rbc-strategy-2025"] },
+    { name: "Howard Hammond", role: "Chief Executive Officer, City National Bank (ex-Fifth Third)", sources: ["ab-rbc-strategy-2025", "cnb-labj-2026"], linkedin: "https://www.linkedin.com/in/howardhammond1/" },
+    { name: "Greg Carmichael", role: "Executive Chair, RBC US; former Fifth Third CEO", sources: ["ab-rbc-strategy-2025"], linkedin: "https://www.linkedin.com/in/gregdcarmichael/" },
     { name: "Jaya Kandaswamy", role: "SVP, Product, AI and Innovation", sources: ["ab-kandaswamy-2026", "ab-kandaswamy-2025"], linkedin: "https://www.linkedin.com/in/jkanda/" },
     { name: "Joe Yurosek", role: "President, Commercial Banking", sources: ["cnb-labj-2026", "ab-rbc-strategy-2025"] },
-    { name: "Dave McKay", role: "President and CEO, Royal Bank of Canada", sources: ["ab-front-foot-2025", "ab-texas-2026"] }
+    { name: "Dave McKay", role: "President and CEO, Royal Bank of Canada", sources: ["ab-front-foot-2025", "ab-texas-2026"], linkedin: "https://www.linkedin.com/in/dave-mckay-4189071/" }
   ],
   timeline: [
     { date: "2025-03-27", title: "RBC's revised US strategy", detail: "Cross-selling, a mortgage expansion and a move toward one RBC brand; Fifth Third alumni lead the turnaround.", sources: ["ab-rbc-strategy-2025"] },

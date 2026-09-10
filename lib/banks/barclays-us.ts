@@ -28,8 +28,8 @@ export const BARCLAYS_US: Bank = {
   ],
   leadership: [
     { name: "Denny Nealon", role: "CEO, Barclays US Consumer Bank", sources: ["ab-bestegg-2025"], linkedin: "https://www.linkedin.com/in/denny-nealon-763663b/" },
-    { name: "Tony Castañon", role: "Chief Operating Officer, Barclays US Consumer Bank", sources: ["barclays-genai-2026"] },
-    { name: "Lili Tomovich", role: "Chief Marketing and Experience Officer", sources: ["bankingdive-cmo-2025"] },
+    { name: "Tony Castañon", role: "Chief Operating Officer, Barclays US Consumer Bank (until mid-2026)", sources: ["barclays-genai-2026"] },
+    { name: "Lili Tomovich", role: "Chief Marketing and Experience Officer", sources: ["bankingdive-cmo-2025"], linkedin: "https://www.linkedin.com/in/ltomovich/" },
     { name: "Sahana Athreya", role: "Global Head of Data Science and Applied AI, Barclays Research (group)", sources: ["ft-athreya-2026"], linkedin: "https://www.linkedin.com/in/sahana-athreya/" }
   ],
   timeline: [

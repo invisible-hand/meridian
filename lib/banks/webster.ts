@@ -27,11 +27,11 @@ export const WEBSTER: Bank = {
     "Scale at close: nearly eight million US customers for the combined bank and a top-five Northeast deposit franchise; Webster had about $85 billion in assets."
   ],
   leadership: [
-    { name: "John Ciulla", role: "CEO, Santander Bank, N.A.; former Chairman and CEO, Webster Financial", sources: ["bankingdive-webster-2026", "bankingdive-100b-2025"] },
+    { name: "John Ciulla", role: "CEO, Santander Bank, N.A.; former Chairman and CEO, Webster Financial", sources: ["bankingdive-webster-2026", "bankingdive-100b-2025"], linkedin: "https://www.linkedin.com/in/john-r-ciulla/" },
     { name: "Vikram Nafde", role: "Chief Information Officer, Webster Bank (CIO since 2022)", sources: ["bankingdive-100b-2025"], linkedin: "https://www.linkedin.com/in/vikramnafde/" },
-    { name: "Chris Motl", role: "Head of Commercial Banking, combined bank", sources: ["bankingdive-webster-mgmt-2026"] },
-    { name: "James Griffin", role: "Head of National Retail Distribution and Consumer Lending, combined bank", sources: ["bankingdive-webster-mgmt-2026"] },
-    { name: "Katherine Lane", role: "Senior Managing Director, Transformation Lead and Finance Front Lines Control Officer", sources: ["ab-lane-2025"] }
+    { name: "Chris Motl", role: "Head of Commercial Banking, combined bank", sources: ["bankingdive-webster-mgmt-2026"], linkedin: "https://www.linkedin.com/in/christopher-motl-17b6a895/" },
+    { name: "James Griffin", role: "Head of National Retail Distribution and Consumer Lending, combined bank", sources: ["bankingdive-webster-mgmt-2026"], linkedin: "https://www.linkedin.com/in/jamesmgriffinnyc/" },
+    { name: "Katherine Lane", role: "Senior Managing Director, Transformation Lead and Finance Front Lines Control Officer", sources: ["ab-lane-2025"], linkedin: "https://www.linkedin.com/in/katie-lane-cpa-cia-01358816/" }
   ],
   timeline: [
     { date: "2025-03-14", title: "Building for the $100 billion line", detail: "Data, cyber, digital and regulatory-reporting investment; about 200 hires planned for 2025.", sources: ["bankingdive-100b-2025"] },

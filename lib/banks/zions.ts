@@ -27,12 +27,12 @@ export const ZIONS: Bank = {
     "Efficiency and risk: headcount down from ~10,300 (2019) to under 9,200, efficiency ratio 62.6% in 2025; a $50 million loss on two fraudulent loans in October 2025; tokenised-deposit and stablecoin trials planned for 2026."
   ],
   leadership: [
-    { name: "Harris Simmons", role: "Chairman and CEO, Zions Bancorporation", sources: ["ab-tech-leadership-2026", "reuters-q3-2025"] },
+    { name: "Harris Simmons", role: "Chairman and CEO, Zions Bancorporation", sources: ["ab-tech-leadership-2026", "reuters-q3-2025"], linkedin: "https://www.linkedin.com/in/harris-simmons-74218a77/" },
     { name: "Scott McLean", role: "President and Chief Operating Officer", sources: ["ab-tech-leadership-2026", "bankingdive-smith-2026"] },
-    { name: "Margaret Mayer", role: "Chief Information Officer (from March 2026; ex-Discover, Capital One)", sources: ["bankingdive-smith-2026", "ab-tech-leadership-2026"] },
-    { name: "Ken Collins", role: "Chief Transformation and Operations Officer", sources: ["bankingdive-smith-2026", "ab-tech-leadership-2026"] },
-    { name: "Jennifer Smith", role: "Former Chief Technology and Operations Officer (2015–March 2026); led the core replacement and gen-AI rollout", sources: ["ab-smith-2025", "bankingdive-smith-2026"] },
-    { name: "Nate Callister", role: "CEO, Zions Bank (from January 2026, ex-Wells Fargo)", sources: ["bankingdive-callister-2025"] }
+    { name: "Margaret Mayer", role: "Chief Information Officer (from March 2026; ex-Discover, Capital One)", sources: ["bankingdive-smith-2026", "ab-tech-leadership-2026"], linkedin: "https://www.linkedin.com/in/margaret-mayer/" },
+    { name: "Ken Collins", role: "Chief Transformation and Operations Officer", sources: ["bankingdive-smith-2026", "ab-tech-leadership-2026"], linkedin: "https://www.linkedin.com/in/ken-collins-017b009/" },
+    { name: "Jennifer Smith", role: "Former Chief Technology and Operations Officer (2015–March 2026); led the core replacement and gen-AI rollout", sources: ["ab-smith-2025", "bankingdive-smith-2026"], linkedin: "https://www.linkedin.com/in/jenniferannesmith/" },
+    { name: "Nate Callister", role: "CEO, Zions Bank (from January 2026, ex-Wells Fargo)", sources: ["bankingdive-callister-2025"], linkedin: "https://www.linkedin.com/in/nathan-callister-2906a1/" }
   ],
   timeline: [
     { date: "2024-12-31", title: "Core replacement complete, gen AI integrated", detail: "The multi-year overhaul of loan and deposit cores finishes with generative AI built in.", sources: ["ab-smith-2025"] },

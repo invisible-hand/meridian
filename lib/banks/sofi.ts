@@ -27,7 +27,7 @@ export const SOFI: Bank = {
     "Scale and growth: 15.8 million members, record $1.2 billion Q2 2026 revenue, $157 million net income, guidance raised to $4.75 to $4.85 billion; leadership ranked ninth (Noto) and 22nd (Rishel) among 2026 innovators."
   ],
   leadership: [
-    { name: "Anthony Noto", role: "Chief Executive Officer", sources: ["ab-noto-2026", "ab-cashcoach-2025"] },
+    { name: "Anthony Noto", role: "Chief Executive Officer", sources: ["ab-noto-2026", "ab-cashcoach-2025"], linkedin: "https://www.linkedin.com/in/anthonynoto/" },
     { name: "Jeremy Rishel", role: "Chief Technology Officer", sources: ["ab-rishel-2026"], linkedin: "https://www.linkedin.com/in/jeremyrishel/" },
     { name: "Brian Walsh", role: "Head of Advice and Planning (SoFi Coach)", sources: ["bankingdive-coach-2026"], linkedin: "https://www.linkedin.com/in/brianmwalsh/" }
   ],

@@ -29,7 +29,7 @@ export const FIRST_CITIZENS: Bank = {
   leadership: [
     { name: "Frank Holding Jr.", role: "Chairman and CEO", sources: ["reuters-fac-2026"], linkedin: "https://www.linkedin.com/in/frank-holding-jr-8847441a/" },
     { name: "Hope Holding Bryant", role: "Vice Chairwoman; commands nearly half the balance sheet", sources: ["ab-bryant-2025"], linkedin: "https://www.linkedin.com/in/hope-bryant-3178621b/" },
-    { name: "Craig Nix", role: "Chief Financial Officer", sources: ["reuters-nii-2026"] }
+    { name: "Craig Nix", role: "Chief Financial Officer", sources: ["reuters-nii-2026"], linkedin: "https://www.linkedin.com/in/craig-nix-419a25a5/" }
   ],
   timeline: [
     { date: "2023-03-27", title: "Acquires the failed Silicon Valley Bank", detail: "A government-orchestrated deal that brings the go-to bank for startups — and its AI-heavy client base — into First Citizens.", sources: ["bloomberg-svb-name-2026"] },

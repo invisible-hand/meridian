@@ -27,11 +27,11 @@ export const ASSOCIATED: Bank = {
     "Growth context: American National acquired ($604 million, closed April 2026); commercial lending up ~43% in five years; Q2 2026 adjusted earnings $140 million."
   ],
   leadership: [
-    { name: "Andy Harmening", role: "President and CEO", sources: ["bankingdive-harmening-2026", "ft-q2-2026"] },
+    { name: "Andy Harmening", role: "President and CEO", sources: ["bankingdive-harmening-2026", "ft-q2-2026"], linkedin: "https://www.linkedin.com/in/andyharmening/" },
     { name: "Alexander Bush", role: "EVP, Chief Data Officer and Chief Information Officer", sources: ["ab-bush-2026"], linkedin: "https://www.linkedin.com/in/alexbush/" },
     { name: "Brianna Elsass", role: "Chief Digital Officer (from July 2026)", sources: ["bankingdive-elsass-2026"], linkedin: "https://www.linkedin.com/in/briannaelsass/" },
     { name: "Andy Miner", role: "Senior Director, AI for Corporate and Commercial Banking", sources: ["asb-miner-2026"], linkedin: "https://www.linkedin.com/in/andy-miner/" },
-    { name: "Phillip Trier", role: "EVP, Head of Corporate and Commercial Banking", sources: ["asb-miner-2026"] }
+    { name: "Phillip Trier", role: "EVP, Head of Corporate and Commercial Banking", sources: ["asb-miner-2026"], linkedin: "https://www.linkedin.com/in/philliptrier/" }
   ],
   timeline: [
     { date: "2025-06-10", title: "AI Academy launched for young people", detail: "Summer programme with the Boys & Girls Clubs, led by the CIO.", sources: ["asb-academy-2025"] },

@@ -27,10 +27,10 @@ export const UBS_USA: Bank = {
     "Leadership churn and compliance: Mike Dargan left for N26 (December 2025), the global banking AI lab head left for JPMorgan (February 2026); FinCEN fined UBS Financial Services $125 million in August 2026."
   ],
   leadership: [
-    { name: "Sergio Ermotti", role: "Group Chief Executive Officer", sources: ["bankingdive-programs-2026"] },
+    { name: "Sergio Ermotti", role: "Group Chief Executive Officer", sources: ["bankingdive-programs-2026"], linkedin: "https://www.linkedin.com/in/sergiopermotti/" },
     { name: "Daniele Magazzeni", role: "Group Chief AI Officer (from 1 January 2026, ex-JPMorgan)", sources: ["ubs-caio-2025", "bankingdive-leadership-2025"], linkedin: "https://www.linkedin.com/in/danielemagazzeni/" },
     { name: "Greg Peirce", role: "Co-Head of Global Banking APAC and AI Business Sponsor, Investment Bank", sources: ["ft-finster-2026"] },
-    { name: "Mike Dargan", role: "Former Group Chief Operations and Technology Officer (left for N26, December 2025)", sources: ["ab-dargan-2026", "bankingdive-leadership-2025"] }
+    { name: "Mike Dargan", role: "Former Group Chief Operations and Technology Officer (left for N26, December 2025)", sources: ["ab-dargan-2026", "bankingdive-leadership-2025"], linkedin: "https://www.linkedin.com/in/mike-dargan-79898116/" }
   ],
   timeline: [
     { date: "2025-05-15", title: "AI avatars of analysts sent to clients", detail: "Scripts and digital twins built with OpenAI and Synthesia, driven by client demand for research video.", sources: ["pymnts-avatars-2025"] },

@@ -27,10 +27,10 @@ export const KEYBANK: Bank = {
     "Scale: about $184–190 billion in assets, 15 states, roughly 950 branches; the consumer bank is about 60% of deposits, which is where the app-side AI work lands."
   ],
   leadership: [
-    { name: "Chris Gorman", role: "Chairman and CEO", sources: ["pymnts-calls-2026", "bankingdive-no-interest-2025"] },
-    { name: "Clark Khayat", role: "Chief Financial Officer; leads technology and operations since March 2026", sources: ["bankingdive-cio-resigns-2026"] },
-    { name: "Mo Ramani", role: "Chief Risk Officer (from January 2025, ex-Truist)", sources: ["wsj-digital-cro-2026", "bankingdive-cro-2025"] },
-    { name: "Emily Gessner", role: "Head of Consumer Digital (moving to Commercial Digital, mid-2026)", sources: ["bankingdive-relationships-2026", "ab-cognitive-2025"] }
+    { name: "Chris Gorman", role: "Chairman and CEO", sources: ["pymnts-calls-2026", "bankingdive-no-interest-2025"], linkedin: "https://www.linkedin.com/in/chris-gorman-14960413/" },
+    { name: "Clark Khayat", role: "Chief Financial Officer; leads technology and operations since March 2026", sources: ["bankingdive-cio-resigns-2026"], linkedin: "https://www.linkedin.com/in/clark-khayat-441688/" },
+    { name: "Mo Ramani", role: "Chief Risk Officer (from January 2025, ex-Truist)", sources: ["wsj-digital-cro-2026", "bankingdive-cro-2025"], linkedin: "https://www.linkedin.com/in/moramani/" },
+    { name: "Emily Gessner", role: "Head of Consumer Digital (moving to Commercial Digital, mid-2026)", sources: ["bankingdive-relationships-2026", "ab-cognitive-2025"], linkedin: "https://www.linkedin.com/in/emily-gessner/" }
   ],
   timeline: [
     { date: "2025-01-15", title: "Truist's deputy CRO hired as chief risk officer", detail: "Mo Ramani replaces Darrin Benhart, who becomes chief regulatory officer.", sources: ["bankingdive-cro-2025"] },

@@ -27,9 +27,9 @@ export const UMB: Bank = {
     "Scale after the deal: about $73 billion in assets by early 2026, the largest bank in Missouri, with national institutional and fund-services businesses."
   ],
   leadership: [
-    { name: "Mariner Kemper", role: "Chairman and CEO", sources: ["bankingdive-measured-2026", "ab-conversion-2025"] },
+    { name: "Mariner Kemper", role: "Chairman and CEO", sources: ["bankingdive-measured-2026", "ab-conversion-2025"], linkedin: "https://www.linkedin.com/in/mariner-kemper/" },
     { name: "Uma Wilson", role: "EVP, Chief Information and Product Officer", sources: ["ab-wilson-2025"], linkedin: "https://www.linkedin.com/in/uma-wilson-ctp-aap-7422298/" },
-    { name: "Ram Shankar", role: "Chief Financial Officer", sources: ["ab-conversion-2025"] },
+    { name: "Ram Shankar", role: "Chief Financial Officer", sources: ["ab-conversion-2025"], linkedin: "https://www.linkedin.com/in/ram-shankar-ab746524/" },
     { name: "James Rine", role: "President and CEO, UMB Bank", sources: ["ab-conversion-2025"] }
   ],
   timeline: [

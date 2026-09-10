@@ -22,9 +22,9 @@ export const EVERBANK: Bank = {
     "Post-merger the bank stays a national bank under the OCC, keeps the EverBank name and lists on Nasdaq as EVBK; closing expected Q1 2027."
   ],
   leadership: [
-    { name: "Greg Seibly", role: "Chief Executive Officer, EverBank Financial Corp", sources: ["ft-merger-2026", "everbank-sterling-2025"] },
+    { name: "Greg Seibly", role: "Chief Executive Officer, EverBank Financial Corp", sources: ["ft-merger-2026", "everbank-sterling-2025"], linkedin: "https://www.linkedin.com/in/greg-seibly-89318b7/" },
     { name: "Prateek Sangal", role: "Head of Digital and Customer Platforms", sources: ["ab-sangal-2026"], linkedin: "https://www.linkedin.com/in/prateeksangal/" },
-    { name: "Aric Graham", role: "Head of Corporate Banking", sources: ["everbank-corporate-2025"] }
+    { name: "Aric Graham", role: "Head of Corporate Banking", sources: ["everbank-corporate-2025"], linkedin: "https://www.linkedin.com/in/aric-graham-681b0a6/" }
   ],
   timeline: [
     { date: "2025-04-01", title: "Sterling Bank & Trust acquisition completed", detail: "Expands EverBank's presence in California.", sources: ["everbank-sterling-2025"] },
