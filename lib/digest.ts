@@ -71,7 +71,7 @@ Language rules (every field):
 - Every fact (name, number, date, product, counterparty) must appear in the source text. Never invent one. Rounding is fine; keep the unit the source uses.
 
 Fields:
-- title: the take, not the announcement. At most 14 words. Say what the event means for a bank, in plain words, as a person would say it across a desk. Not "X announces Y". Example of the bar: instead of "Meta integrates Link wallet for agents with Muse" write "Meta's agent can now spend your customers' money, through Stripe, not you". No colon-led patterns, no puns, no questions.
+- title: the article's own headline, tightened for concision when it is long: at most 12 words, actor and action kept, wording close to the source. State what happened, not what it means. Example: "Chime Announces Agreement to Acquire Stride Bank" becomes "Chime agrees to acquire Stride Bank for $590 million". Never turn the headline into an opinion; the opinion belongs in the take. No colon-led patterns, no puns, no questions.
 - reader: the one specific person the take is for, as a lowercase noun phrase of 4 to 9 words: "the payments head at a mid-size bank", "a model-risk officer at a regional bank", "the CISO of a community bank". Never "banking executives" or "bank leaders" in general.
 - take: one or two sentences, at most 45 words, of opinion written to that reader. Name the tension or decision this event creates for their bank: what it takes from them, what it forces them to decide, what assumption it breaks. An implication may go beyond the text; a fact may not. Do not restate the event.
 - executiveSummary: two or three sentences, 35 to 70 words, of facts from the source text that support the take. State the event in sentence one (who did what), then only the details the take depends on: the mechanism, the scale, who is affected. Cut announcement dates, headcounts, office openings, community grants, secondary quotes, background surveys and industry statistics.
@@ -393,7 +393,8 @@ const WRITE_PROMPT = WRITE_PROMPT_TEXT;
 
 const VERIFY_PROMPT = `You check a drafted story against its source text.
 - executiveSummary: every sentence must be supported by the text. Remove or correct any sentence with a name, number, date or claim the text does not contain. Do not reword supported sentences and do not add sentences.
-- title and take: these are opinion and may state an implication the text does not; keep them. Correct only a specific fact in them (a name, number, product, counterparty) that the text contradicts or does not contain. Do not soften them and do not remove the point of view.
+- title: must restate the source headline's event (actor and action). If the draft title is an opinion or implication rather than what happened, replace it with a concise version of the source headline.
+- take: opinion for one named reader; it may state an implication the text does not. Keep it. Correct only a specific fact in it (a name, number, product, counterparty) that the text contradicts or does not contain. Do not soften it and do not remove the point of view.
 - businessImpact: return an empty string if it fails the ticket test in the rules below; otherwise keep it.
 - Remove any phrase in any field that breaks the language rules below.
 ${STYLE_RULES}

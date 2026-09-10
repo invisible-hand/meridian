@@ -66,15 +66,8 @@ function StoryCard({ story, index, accent }: {
 
   return (
     <article style={{ padding: "28px 0", borderBottom: "1px solid #e9e9e5" }}>
-      {/* Domain + big faded number */}
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
-        <span style={{
-          fontFamily: "var(--font-mono), 'Courier New', monospace",
-          fontSize: 10, fontWeight: 500, letterSpacing: "0.16em",
-          textTransform: "uppercase", color: "#b3b3ae"
-        }}>
-          {domain}
-        </span>
+      {/* Big faded number */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", marginBottom: 4 }}>
         <span aria-hidden="true" style={{
           fontFamily: "var(--font-serif), 'Helvetica Neue', sans-serif",
           fontSize: 44, fontWeight: 900, color: "#e9e9e5", lineHeight: 1,
@@ -88,10 +81,10 @@ function StoryCard({ story, index, accent }: {
       <h2 style={{
         margin: "0 0 12px",
         fontFamily: "var(--font-serif), 'Helvetica Neue', sans-serif",
-        fontSize: 20, fontWeight: 700, color: "#111111",
-        lineHeight: 1.3, letterSpacing: "-0.01em"
+        fontSize: 24, fontWeight: 700, color: "#111111",
+        lineHeight: 1.25, letterSpacing: "-0.01em"
       }}>
-        {story.title}
+        <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>{story.title}</a>
       </h2>
 
       {/* Take */}
@@ -101,7 +94,7 @@ function StoryCard({ story, index, accent }: {
             <p style={{
               margin: "0 0 4px",
               fontFamily: "var(--font-mono), 'Courier New', monospace",
-              fontSize: 9, fontWeight: 500, letterSpacing: "0.16em",
+              fontSize: 10, fontWeight: 500, letterSpacing: "0.16em",
               textTransform: "uppercase", color: accent
             }}>
               For {story.reader}
@@ -110,7 +103,7 @@ function StoryCard({ story, index, accent }: {
           <p style={{
             margin: 0,
             fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
-            fontSize: 15, fontWeight: 500, color: "#111111", lineHeight: 1.6
+            fontSize: 17, fontWeight: 500, color: "#111111", lineHeight: 1.55
           }}>
             {story.take}
           </p>
@@ -121,7 +114,7 @@ function StoryCard({ story, index, accent }: {
       <p style={{
         margin: "0 0 16px",
         fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
-        fontSize: story.take ? 13 : 14, color: story.take ? "#6f6f6f" : "#5a5a5a", lineHeight: story.take ? 1.65 : 1.75
+        fontSize: story.take ? 15 : 16, color: story.take ? "#5f5f5f" : "#5a5a5a", lineHeight: story.take ? 1.65 : 1.7
       }}>
         {story.executiveSummary}
       </p>
@@ -145,22 +138,25 @@ function StoryCard({ story, index, accent }: {
         <p style={{
           margin: 0,
           fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif",
-          fontSize: 14, color: "#111111", lineHeight: 1.55
+          fontSize: 15, color: "#111111", lineHeight: 1.55
         }}>
           <ActionText text={story.businessImpact} />
         </p>
       </div>
       )}
 
-      {/* Read link */}
-      <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{
-        fontFamily: "var(--font-mono), 'Courier New', monospace",
-        fontSize: 10, fontWeight: 500, letterSpacing: "0.1em",
-        textTransform: "uppercase", color: accent,
-        textDecoration: "underline", textUnderlineOffset: 3
-      }}>
-        Read article →
-      </a>
+      {/* Read link: "Read article →" from <publication> */}
+      <p style={{ margin: 0, fontFamily: "var(--font-sans), 'Helvetica Neue', sans-serif", fontSize: 14, color: "#9a9a9a" }}>
+        <a href={story.sourceUrl} target="_blank" rel="noopener noreferrer" style={{
+          fontFamily: "var(--font-mono), 'Courier New', monospace",
+          fontSize: 11, fontWeight: 500, letterSpacing: "0.1em",
+          textTransform: "uppercase", color: accent,
+          textDecoration: "underline", textUnderlineOffset: 3
+        }}>
+          Read article →
+        </a>
+        {" "}from {domain}
+      </p>
     </article>
   );
 }
