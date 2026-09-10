@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { BANK_COUNT } from "@/lib/banks";
 import { addOrActivateSubscriber, ensureSchema } from "@/lib/db";
 import { JsonLd, homeSchema } from "@/lib/json-ld";
 import { FOOTER_NAV, SiteFooter, SiteHeader, chromeCss } from "./site-chrome";
@@ -260,7 +261,7 @@ export default async function HomePage({
               {" · "}
               <Link href="/agentic-banking">an operating system for AI agents in your bank</Link>
               {" · "}
-              <Link href="/banks">what the 20 largest banks are doing with AI</Link>
+              <Link href="/banks">what the {BANK_COUNT} largest banks are doing with AI</Link>
             </span>
           </div>
         </div>

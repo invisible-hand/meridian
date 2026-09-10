@@ -99,9 +99,10 @@ export default function BanksHubPage() {
         <p className="trk-sub" style={{ marginTop: 10 }}>
           Assets are the lead bank&apos;s consolidated assets in the Federal Reserve&apos;s{" "}
           <a href={FED_LBR.url} target="_blank" rel="noopener noreferrer" style={{ color: "#1a3fcb" }}>Large Commercial Banks</a> release;
-          holding-company totals are larger for the broker-dealer groups (Goldman Sachs, Morgan Stanley). Ranks 1–10 are the
-          ten largest US bank holding companies; ranks 11–20 follow the Federal Reserve&apos;s lead-bank order (Charles Schwab&apos;s
-          lead bank is a savings bank outside that release and will join in the next batch).
+          holding-company totals are larger for the broker-dealer groups (Goldman Sachs, Morgan Stanley). Rows 1–10 are the
+          ten largest US bank holding companies; Charles Schwab follows by holding-company assets (its lead bank is a savings
+          bank outside that release, so the figure shown is the group total); the rest follow the Federal Reserve&apos;s lead-bank
+          order through rank 50.
         </p>
       </Section>
 

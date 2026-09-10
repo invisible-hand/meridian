@@ -40,7 +40,7 @@ function trunc(s: string, n: number): string {
 // ---------------------------------------------------------------------------
 
 export function AssetsFigure({ banks, asOf }: { banks: Bank[]; asOf: string }) {
-  const rowH = 34;
+  const rowH = banks.length > 30 ? 26 : 34;
   const top = 34;
   const left = 190;
   const barMax = 640;

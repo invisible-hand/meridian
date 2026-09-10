@@ -102,7 +102,7 @@ export default async function BankPage({ params }: { params: Promise<{ slug: str
 
   return (
     <BankShell
-      eyebrow={<><Link href="/banks" style={{ color: "inherit", textDecoration: "none" }}>Banks</Link> · {b.ticker} · Fed rank #{b.fedRank}</>}
+      eyebrow={<><Link href="/banks" style={{ color: "inherit", textDecoration: "none" }}>Banks</Link> · {b.ticker} · {b.fedRank ? `Fed rank #${b.fedRank}` : "Savings-bank group"}</>}
       title={<>{b.name}:<br /><em>the AI strategy, sourced.</em></>}
       updated={`Last updated ${formatDate(b.lastUpdated)} · ${b.timeline.length} dated moves · ${b.sources.length} sources`}
       ctaTitle={`When ${b.shortName} moves on AI, you'll read it here first.`}

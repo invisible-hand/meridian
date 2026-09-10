@@ -27,11 +27,41 @@ import { FIRST_CITIZENS } from "@/lib/banks/first-citizens";
 import { CITIZENS } from "@/lib/banks/citizens";
 import { AMERICAN_EXPRESS } from "@/lib/banks/american-express";
 import { MT_BANK } from "@/lib/banks/mt-bank";
+import { SCHWAB } from "@/lib/banks/schwab";
+import { KEYBANK } from "@/lib/banks/keybank";
+import { ALLY } from "@/lib/banks/ally";
+import { NORTHERN_TRUST } from "@/lib/banks/northern-trust";
+import { HSBC_USA } from "@/lib/banks/hsbc-usa";
+import { REGIONS } from "@/lib/banks/regions";
+import { PINNACLE } from "@/lib/banks/pinnacle";
+import { UBS_USA } from "@/lib/banks/ubs-usa";
+import { SANTANDER_US } from "@/lib/banks/santander-us";
+import { CITY_NATIONAL } from "@/lib/banks/city-national";
+import { WESTERN_ALLIANCE } from "@/lib/banks/western-alliance";
+import { ZIONS } from "@/lib/banks/zions";
+import { FLAGSTAR } from "@/lib/banks/flagstar";
+import { WEBSTER } from "@/lib/banks/webster";
+import { FIRST_HORIZON } from "@/lib/banks/first-horizon";
+import { EAST_WEST } from "@/lib/banks/east-west";
+import { OLD_NATIONAL } from "@/lib/banks/old-national";
+import { UMB } from "@/lib/banks/umb";
+import { SOUTHSTATE } from "@/lib/banks/southstate";
+import { COLUMBIA } from "@/lib/banks/columbia";
+import { CIBC_US } from "@/lib/banks/cibc-us";
+import { VALLEY } from "@/lib/banks/valley";
+import { BOKF } from "@/lib/banks/bokf";
+import { FROST } from "@/lib/banks/frost";
+import { FNB } from "@/lib/banks/fnb";
+import { SOFI } from "@/lib/banks/sofi";
+import { EVERBANK } from "@/lib/banks/everbank";
+import { BARCLAYS_US } from "@/lib/banks/barclays-us";
+import { RAYMOND_JAMES } from "@/lib/banks/raymond-james";
+import { ASSOCIATED } from "@/lib/banks/associated";
 
 export const BANKS_PUBLISHED = "2026-09-09";
-export const BANKS_UPDATED = "2026-09-09";
+export const BANKS_UPDATED = "2026-09-10";
 /** How many banks are in the current published set (used in copy). */
-export const BANK_COUNT = 20;
+export const BANK_COUNT = 50;
 /** Federal Reserve "Large Commercial Banks" release the asset figures come from. */
 export const FED_LBR = { asOf: "2026-03-31", url: "https://www.federalreserve.gov/releases/lbr/current/" };
 
@@ -61,7 +91,8 @@ export type Bank = {
   fedRank: number;
   leadBank: string;
   assetsUsdMillions: number;
-  charter: "National bank (OCC)" | "State member bank (Fed)" | "State nonmember bank (FDIC)";
+  /** Free text: charter type and primary federal supervisor, plus ownership notes where relevant. */
+  charter: string;
   /** One line: the shape of the strategy */
   posture: string;
   /** The flagship internal platform or assistant, if there is one */
@@ -83,9 +114,9 @@ export type Bank = {
 
 /**
  * Ordered by size. Batch 1 (1–10): the ten largest US bank holding companies.
- * Batch 2 (11–20): the next ten by the Federal Reserve's lead-bank ranking
- * (Charles Schwab's lead bank is a savings bank outside that release and
- * is deferred to batch 3).
+ * Charles Schwab follows by holding-company assets ($517bn); its lead bank is a
+ * savings bank outside the Fed's commercial-bank release, so its fedRank is 0.
+ * The rest follow the Federal Reserve's lead-bank ranking through rank 50.
  */
 export const BANKS: Bank[] = [
   JPMORGAN_CHASE,
@@ -98,6 +129,7 @@ export const BANKS: Bank[] = [
   CAPITAL_ONE,
   PNC,
   TRUIST,
+  SCHWAB,
   BNY_MELLON,
   STATE_STREET,
   TD_BANK_US,
@@ -107,7 +139,36 @@ export const BANKS: Bank[] = [
   FIRST_CITIZENS,
   CITIZENS,
   AMERICAN_EXPRESS,
-  MT_BANK
+  MT_BANK,
+  KEYBANK,
+  ALLY,
+  NORTHERN_TRUST,
+  HSBC_USA,
+  REGIONS,
+  PINNACLE,
+  UBS_USA,
+  SANTANDER_US,
+  CITY_NATIONAL,
+  WESTERN_ALLIANCE,
+  ZIONS,
+  FLAGSTAR,
+  WEBSTER,
+  FIRST_HORIZON,
+  EAST_WEST,
+  OLD_NATIONAL,
+  UMB,
+  SOUTHSTATE,
+  COLUMBIA,
+  CIBC_US,
+  VALLEY,
+  BOKF,
+  FROST,
+  FNB,
+  SOFI,
+  EVERBANK,
+  BARCLAYS_US,
+  RAYMOND_JAMES,
+  ASSOCIATED
 ];
 
 export function getBank(slug: string): Bank | undefined {

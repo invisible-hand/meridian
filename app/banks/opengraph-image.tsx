@@ -3,7 +3,7 @@ import { BANKS, BANKS_UPDATED, BANK_SOURCE_COUNT } from "@/lib/banks";
 import { formatTimelineDate } from "@/lib/regulators";
 import { DISPLAY, OG_COLORS, OG_SIZE, OgFrame, loadOgFonts, ogJoin } from "@/lib/og";
 
-export const alt = "AI strategy of the 20 largest US banks — BankingNewsAI";
+export const alt = `AI strategy of the ${BANKS.length} largest US banks — BankingNewsAI`;
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

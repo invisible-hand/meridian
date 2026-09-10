@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BANK_COUNT } from "@/lib/banks";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
 import { absoluteUrl } from "@/lib/seo";
 import { REGULATORS, formatTimelineDate, isUsAuthority } from "@/lib/regulators";
@@ -169,7 +170,7 @@ export default function AiRegulationHub() {
           <Link href="/ai-regulation/for-compliance-officers">For compliance officers →</Link>
           <Link href="/ai-regulation/for-bank-executives">For bank executives →</Link>
           <Link href="/agentic-banking">AI agents: the operating model →</Link>
-          <Link href="/banks">The 20 largest banks&apos; AI strategies →</Link>
+          <Link href="/banks">The {BANK_COUNT} largest banks&apos; AI strategies →</Link>
         </div>
       </Section>
 

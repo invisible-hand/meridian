@@ -18,6 +18,11 @@ export const PRIMARY_HOSTS = [
   "schwab.com", "americanexpress.com", "discover.com", "synchrony.com", "ally.com", "fifththird.com",
   "keybank.com", "regions.com", "mtb.com", "citizensbank.com", "huntington.com",
   "bny.com", "bnymellon.com", "statestreet.com", "td.com", "53.com", "bmo.com", "firstcitizens.com", "svb.com",
+  "key.com", "northerntrust.com", "hsbc.com", "us.hsbc.com", "pnfp.com", "ubs.com", "santanderus.com", "santander.com",
+  "cnb.com", "rbc.com", "westernalliancebancorporation.com", "westernalliancebank.com", "zionsbancorporation.com", "zionsbank.com",
+  "flagstar.com", "websterbank.com", "firsthorizon.com", "eastwestbank.com", "oldnational.com", "umb.com", "southstatebank.com",
+  "columbiabankingsystem.com", "umpquabank.com", "cibc.com", "valley.com", "bokf.com", "frostbank.com", "fnb-online.com",
+  "sofi.com", "everbank.com", "barclaysus.com", "home.barclays", "raymondjames.com", "associatedbank.com", "aboutschwab.com", "southstatecorrespondent.com", "eastwestbank.com", "oldnational.com",
   // core / fintech vendors
   "fiserv.com", "fisglobal.com", "jackhenry.com", "ncino.com", "temenos.com", "mambu.com", "nymbus.com",
   "q2.com", "alkami.com", "plaid.com", "stripe.com", "adyen.com", "visa.com", "visa.co.uk", "mastercard.com",
