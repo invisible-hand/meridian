@@ -31,11 +31,11 @@ export default function BankIndexPage() {
   const faq = [
     {
       q: "Which US banks are furthest ahead on AI?",
-      a: `By the depth of the public record, the top ten are ${top.map((r) => r.bank.shortName).join(", ")}. Each has named an AI platform, described several use cases, named the people running the programme, disclosed numbers about it and made a run of dated moves in the last twelve months. ${top[0].bank.name} leads with ${top[0].score} of ${INDEX_MAX} points.`
+      a: `By the depth of the public record, the top ten are ${top.map((r) => r.bank.shortName).join(", ")}. Each has been reported on widely by independent outlets, named an AI platform, described several use cases, named the people running the programme, disclosed numbers about it and made a run of dated moves in the last twelve months. ${top[0].bank.name} leads with ${top[0].score} of ${INDEX_MAX} points.`
     },
     {
       q: "What does this ranking measure?",
-      a: `Disclosure, not capability. Every point comes from something the bank or a tier-1 source has put on the record and that the bank's page on this site cites. Out of ${INDEX_MAX}: up to ${INDEX_WEIGHTS.sources.cap} for the number of sources the page rests on, up to ${INDEX_WEIGHTS.moves12m.cap} for dated moves since ${formatDate(INDEX_SINCE)}, up to ${INDEX_WEIGHTS.useCases.cap} for the breadth of use cases, ${INDEX_WEIGHTS.platform} for a named platform or programme, up to ${INDEX_WEIGHTS.leaders.cap} for named AI leaders and up to ${INDEX_WEIGHTS.numbers.cap} for disclosed numbers. A bank whose page records that it has disclosed no AI programme is capped at ${INDEX_WEIGHTS.undisclosedCap}. A bank that runs a large programme and says little scores low.`
+      a: `Disclosure, not capability. Every point comes from something the bank or a tier-1 source has put on the record and that the bank's page on this site cites. Out of ${INDEX_MAX}: up to ${INDEX_WEIGHTS.independent.cap} for independent coverage (sources that are not the bank's own releases, filings or job postings, nor wire copies of them), up to ${INDEX_WEIGHTS.own.cap} for the bank's own material, up to ${INDEX_WEIGHTS.moves12m.cap} for dated moves since ${formatDate(INDEX_SINCE)}, up to ${INDEX_WEIGHTS.useCases.cap} for the breadth of use cases, ${INDEX_WEIGHTS.platform} for a named platform or programme, up to ${INDEX_WEIGHTS.leaders.cap} for named AI leaders and up to ${INDEX_WEIGHTS.numbers.cap} for disclosed numbers. A bank whose page records that it has disclosed no AI programme is capped at ${INDEX_WEIGHTS.undisclosedCap}. A bank that runs a large programme and says little scores low.`
     },
     {
       q: "How many of the 100 largest US banks have disclosed an AI programme?",
@@ -101,7 +101,7 @@ export default function BankIndexPage() {
                 <th>Leaders</th>
                 <th>Numbers</th>
                 <th className="trk-td-nowrap">Moves, 12 mo</th>
-                <th>Sources</th>
+                <th className="trk-td-nowrap">Independent / all sources</th>
               </tr>
             </thead>
             <tbody>
@@ -118,7 +118,7 @@ export default function BankIndexPage() {
                   <td>{r.leaders}</td>
                   <td>{r.numbers}</td>
                   <td>{r.moves12m}</td>
-                  <td>{r.sources}</td>
+                  <td className="trk-td-nowrap">{r.independent} / {r.sources}</td>
                 </tr>
               ))}
             </tbody>
@@ -129,10 +129,10 @@ export default function BankIndexPage() {
       <Section label="Method" id="method">
         <h2 className="trk-h2-q">How is the AI disclosure score calculated?</h2>
         <p className="trk-p">
-          Every point comes from a sourced fact on the bank&apos;s page, and the components with real spread across banks carry the weight. Out of {INDEX_MAX}: the number of primary and tier-1 sources the page rests on, {INDEX_WEIGHTS.sources.each} each up to {INDEX_WEIGHTS.sources.cap}; dated moves since {formatDate(INDEX_SINCE)}, up to {INDEX_WEIGHTS.moves12m.cap}; breadth of use cases, {INDEX_WEIGHTS.useCases.each} each up to {INDEX_WEIGHTS.useCases.cap}; a named AI platform or programme, {INDEX_WEIGHTS.platform}; named AI or technology leaders, {INDEX_WEIGHTS.leaders.each} each up to {INDEX_WEIGHTS.leaders.cap}; disclosed numbers (spend, headcount, volumes, adoption), up to {INDEX_WEIGHTS.numbers.cap}. A bank whose page records that it has not disclosed an AI programme, leader, vendor or budget is capped at {INDEX_WEIGHTS.undisclosedCap}. Ties are broken by assets.
+          Every point comes from a sourced fact on the bank&apos;s page, and the components with real spread across banks carry the weight. Out of {INDEX_MAX}: independent coverage, meaning sources that are neither the bank&apos;s own releases, filings and job postings nor wire or aggregator copies of them, {INDEX_WEIGHTS.independent.each} each up to {INDEX_WEIGHTS.independent.cap}; the bank&apos;s own material, {INDEX_WEIGHTS.own.each} each up to {INDEX_WEIGHTS.own.cap}; dated moves since {formatDate(INDEX_SINCE)}, up to {INDEX_WEIGHTS.moves12m.cap}; breadth of use cases, {INDEX_WEIGHTS.useCases.each} each up to {INDEX_WEIGHTS.useCases.cap}; a named AI platform or programme, {INDEX_WEIGHTS.platform}; named AI or technology leaders, {INDEX_WEIGHTS.leaders.each} each up to {INDEX_WEIGHTS.leaders.cap}; disclosed numbers (spend, headcount, volumes, adoption), up to {INDEX_WEIGHTS.numbers.cap}. A bank whose page records that it has not disclosed an AI programme, leader, vendor or budget is capped at {INDEX_WEIGHTS.undisclosedCap}. Ties are broken by assets.
         </p>
         <p className="trk-p">
-          The score rewards a bank for saying what it does, which is what the pages exist to record. It does not attempt to judge how well a programme works, and it under-rates banks that build quietly. Use it as a map of where the public record is deep, then read the page. The ranking recomputes whenever a bank page is updated; the last update was {formatDate(BANKS_UPDATED)}.
+          The score rewards a bank for saying what it does and for being reported on by others, which is what the pages exist to record. Independent coverage carries the most weight because a page built from a bank&apos;s own newsroom and job postings can be the longest on the site without the outside world having noticed; that is also why a bank with a strong programme but a page that leans on its own releases sits lower than its reputation. The score does not attempt to judge how well a programme works, and it under-rates banks that build quietly. Use it as a map of where the public record is deep, then read the page. The ranking recomputes whenever a bank page is updated; the last update was {formatDate(BANKS_UPDATED)}.
         </p>
       </Section>
 

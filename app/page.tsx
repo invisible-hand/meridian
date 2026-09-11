@@ -184,7 +184,14 @@ export default async function HomePage() {
         .lp-col-text a { color: #111111; text-decoration: none; border-bottom: 1px solid #e4e4df; }
         .lp-col-text a:hover { color: #1a3fcb; border-color: #1a3fcb; }
 
+        .lp-more { border-top: 1px solid #e4e4df; background: #fbfbf9; }
+        .lp-more-inner { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 40px; padding: 40px 56px 48px; max-width: 1440px; margin: 0 auto; box-sizing: border-box; }
+        .lp-more-text { margin: 8px 0 0; font-family: var(--font-sans), 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 1.7; color: #4a4a47; }
+        .lp-more-text a { color: #111111; text-decoration: none; border-bottom: 1px solid #e4e4df; }
+        .lp-more-text a:hover { color: #1a3fcb; border-color: #1a3fcb; }
+
         @media (max-width: 720px) {
+          .lp-more-inner { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px 40px; }
           .lp-hero { padding: 40px 24px; }
           .lp-strip { flex-direction: column; padding: 0 24px 32px; }
           .lp-col { padding: 12px 0; border-right: none; border-bottom: 1px solid #e4e4df; }
