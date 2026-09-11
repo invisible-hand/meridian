@@ -86,44 +86,53 @@ export default function BankIndexPage() {
 
       <Section label="The ranking" id="ranking">
         <h2 className="trk-h2-q">How do the {BANK_COUNT} largest US banks rank on disclosed AI activity?</h2>
+        <style>{`
+          .idx-table th, .idx-table td { padding-left: 8px; padding-right: 8px; }
+          .idx-table td:first-child, .idx-table th:first-child { padding-left: 0; }
+          .idx-sub { display: block; font-family: var(--font-mono), 'Courier New', monospace; font-size: 10px; letter-spacing: 0.06em; color: #9a9a96; margin-top: 3px; white-space: nowrap; }
+          .idx-sub em { font-style: normal; color: #b45309; }
+          .idx-num { text-align: right; font-variant-numeric: tabular-nums; }
+        `}</style>
         <div className="trk-table-wrap">
-          <table className="trk-table">
+          <table className="trk-table idx-table">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Bank</th>
-                <th className="trk-td-nowrap">Assets</th>
-                <th className="trk-td-nowrap">Score / {INDEX_MAX}</th>
-                <th>Programme</th>
-                <th>Platform</th>
-                <th className="trk-td-nowrap">Use cases</th>
-                <th className="trk-td-nowrap">In production</th>
-                <th>Leaders</th>
-                <th>Numbers</th>
-                <th className="trk-td-nowrap">Moves, 12 mo</th>
-                <th className="trk-td-nowrap">Independent / all sources</th>
+                <th className="idx-num">Score</th>
+                <th className="idx-num" title="Use cases described, of which in production">Use cases</th>
+                <th className="idx-num">Leaders</th>
+                <th className="idx-num">Numbers</th>
+                <th className="idx-num" title="Dated moves in the last twelve months">Moves</th>
+                <th className="idx-num" title="Independent sources / all sources">Sources</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
                 <tr key={r.bank.slug}>
                   <td className="trk-td-nowrap">{r.rank}</td>
-                  <td><Link href={bankPath(r.bank)} className="trk-td-strong">{r.bank.shortName}</Link></td>
-                  <td className="trk-td-nowrap">{formatAssets(r.bank.assetsUsdMillions)}</td>
-                  <td className="trk-td-nowrap trk-td-strong">{r.score}</td>
-                  <td className="trk-td-nowrap">{r.disclosed ? "disclosed" : "not disclosed"}</td>
-                  <td>{r.platform ? "named" : "—"}</td>
-                  <td>{r.useCases}</td>
-                  <td>{r.inProduction}</td>
-                  <td>{r.leaders}</td>
-                  <td>{r.numbers}</td>
-                  <td>{r.moves12m}</td>
-                  <td className="trk-td-nowrap">{r.independent} / {r.sources}</td>
+                  <td>
+                    <Link href={bankPath(r.bank)} className="trk-td-strong">{r.bank.shortName}</Link>
+                    <span className="idx-sub">
+                      {formatAssets(r.bank.assetsUsdMillions)}
+                      {r.platform ? " · platform named" : ""}
+                      {r.disclosed ? "" : <> · <em>no programme disclosed</em></>}
+                    </span>
+                  </td>
+                  <td className="idx-num trk-td-strong">{r.score}</td>
+                  <td className="idx-num">{r.useCases} <span style={{ color: "#9a9a96" }}>({r.inProduction})</span></td>
+                  <td className="idx-num">{r.leaders}</td>
+                  <td className="idx-num">{r.numbers}</td>
+                  <td className="idx-num">{r.moves12m}</td>
+                  <td className="idx-num">{r.independent} / {r.sources}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <p className="trk-p" style={{ marginTop: 14, fontSize: 13, color: "#6a6a66" }}>
+          Use cases: described, with the number in production in brackets. Moves: dated entries since {formatDate(INDEX_SINCE)}. Sources: independent reporting / all sources on the bank&apos;s page.
+        </p>
       </Section>
 
       <Section label="Method" id="method">
