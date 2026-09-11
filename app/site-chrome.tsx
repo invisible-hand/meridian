@@ -79,6 +79,17 @@ export const chromeCss = `
     color: #b3b3ae;
   }
 
+  /* the signup form, shared by every page (components/subscribe-form.tsx) */
+  .sf-form { display: flex; align-items: baseline; gap: 16px; max-width: 640px; border-bottom: 2px solid #111111; padding-bottom: 12px; margin: 0; }
+  .sf-arrow { font-family: var(--font-mono), 'Courier New', monospace; font-size: 13px; color: #1a3fcb; flex-shrink: 0; }
+  .sf-input { flex: 1; min-width: 0; font-family: var(--font-serif), 'Helvetica Neue', sans-serif; font-size: 20px; font-weight: 300; color: #111111; background: transparent; border: none; border-radius: 0; padding: 0; outline: none; box-shadow: none; }
+  .sf-input:focus { outline: none; border: none; box-shadow: none; }
+  .sf-input::placeholder { color: #b3b3ae; font-weight: 300; }
+  .sf-btn { font-family: var(--font-serif), 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #111111; background: transparent; border: none; border-radius: 0; padding: 0; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .sf-btn:hover { color: #1a3fcb; background: transparent; }
+  .sf-compact .sf-input { font-size: 17px; }
+  .sf-fine { font-family: var(--font-mono), 'Courier New', monospace; font-size: 10px; letter-spacing: 0.1em; color: #b3b3ae; margin: 12px 0 0; }
+
   @media (max-width: 720px) {
     .sc-top { padding: 18px 24px 0; flex-wrap: wrap; }
     .sc-top-data { display: none; }

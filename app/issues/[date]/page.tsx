@@ -1,5 +1,6 @@
 import { publisherName } from "@/lib/email";
 import { cache } from "react";
+import { SubscribeForm } from "@/components/subscribe-form";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -595,7 +596,7 @@ export default async function IssuePage({
             { href: "/ai-regulation", label: "regulation" },
             { href: "/banks", label: "banks" },
             { href: "/issues", label: "archive" },
-            { href: "/#subscribe", label: "subscribe" }
+            { href: "#subscribe", label: "subscribe" }
           ]}
         />
 
@@ -703,12 +704,10 @@ export default async function IssuePage({
               )}
 
               {/* Subscribe CTA */}
-              <div className="issue-cta">
+              <div className="issue-cta" id="subscribe">
                 <h3>Get this in your inbox every morning</h3>
                 <p>Free · No spam · Unsubscribe anytime</p>
-                <Link href="/#subscribe" className="issue-cta-btn">
-                  Subscribe free →
-                </Link>
+                <SubscribeForm src={`/issues/${date}`} compact />
               </div>
 
             </div>

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import { SubscribeForm } from "@/components/subscribe-form";
 import { trackerCss } from "./tracker-styles";
 import { SiteFooter, SiteHeader, chromeCss } from "../site-chrome";
 
@@ -10,12 +10,15 @@ export function TrackerShell({
   title,
   updated,
   children,
+  path = "/ai-regulation",
   ctaTitle = "Regulators move daily. So do we."
 }: {
   eyebrow: ReactNode;
   title: ReactNode;
   updated: string;
   children: ReactNode;
+  /** Path of the page, recorded as the signup source */
+  path?: string;
   ctaTitle?: string;
 }) {
   return (
@@ -32,7 +35,7 @@ export function TrackerShell({
             { href: "/ai-regulation/compliance-checklist", label: "checklist" },
             { href: "/ai-regulation/by-use-case", label: "by use case" },
             { href: "/agentic-banking", label: "agents" },
-            { href: "/#subscribe", label: "subscribe" }
+            { href: "#subscribe", label: "subscribe" }
           ]}
         />
 
@@ -47,10 +50,11 @@ export function TrackerShell({
 
         <main className="trk-body">
           {children}
-          <div className="trk-cta">
+          <div className="trk-cta" id="subscribe">
             <h3>{ctaTitle}</h3>
-            <p>6 curated AI stories for banking executives · Every morning · Free</p>
-            <Link href="/#subscribe" className="trk-cta-btn">Subscribe to BankingNewsAI →</Link>
+            <p>the daily brief · six sourced stories · in your inbox by 7 am ET · free</p>
+            <SubscribeForm src={path} />
+            <p className="sf-fine">plus every tracker, bank and agent page update, the morning after · leave any morning</p>
           </div>
         </main>
 

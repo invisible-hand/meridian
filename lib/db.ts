@@ -126,15 +126,32 @@ export async function listSubscribers(): Promise<Subscriber[]> {
   return (data as Subscriber[]) ?? [];
 }
 
-export async function addOrActivateSubscriber(email: string): Promise<void> {
+export type SubscribeOutcome = { status: "new" | "reactivated" | "already-active" };
+
+/**
+ * Inserts or re-activates a subscriber and reports which of the two happened,
+ * so callers can send a welcome email once and never to an already-active
+ * address. Safe to call from the admin panel, which ignores the result.
+ */
+export async function addOrActivateSubscriber(email: string): Promise<SubscribeOutcome> {
   await ensureSchema();
   const supabase = getSupabaseAdminClient();
+  const { data: existing, error: lookupError } = await supabase
+    .from("subscribers")
+    .select("status")
+    .eq("email", email)
+    .maybeSingle();
+  if (lookupError) {
+    throw lookupError;
+  }
   const { error } = await supabase
     .from("subscribers")
     .upsert({ email, status: "active", updated_at: new Date().toISOString() }, { onConflict: "email" });
   if (error) {
     throw error;
   }
+  if (!existing) return { status: "new" };
+  return { status: existing.status === "active" ? "already-active" : "reactivated" };
 }
 
 export async function unsubscribeByEmail(email: string): Promise<void> {

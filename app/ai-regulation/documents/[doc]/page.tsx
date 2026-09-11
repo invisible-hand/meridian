@@ -108,6 +108,7 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
 
   return (
     <TrackerShell
+      path={documentPath(doc)}
       eyebrow={
         <>
           <Link href="/ai-regulation" style={{ color: "inherit", textDecoration: "none" }}>AI Regulation Tracker</Link>

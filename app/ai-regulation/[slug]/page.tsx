@@ -108,6 +108,7 @@ export default async function RegulatorPage({
 
   return (
     <TrackerShell
+      path={`/ai-regulation/${reg.slug}`}
       eyebrow={
         <>
           <Link href="/ai-regulation" style={{ color: "inherit", textDecoration: "none" }}>AI Regulation Tracker</Link>

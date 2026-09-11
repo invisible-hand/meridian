@@ -1,29 +1,14 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BANK_COUNT } from "@/lib/banks";
-import { addOrActivateSubscriber, ensureSchema } from "@/lib/db";
+import { ensureSchema } from "@/lib/db";
+import { SubscribeForm } from "@/components/subscribe-form";
 import { JsonLd, homeSchema } from "@/lib/json-ld";
 import { FOOTER_NAV, SiteFooter, SiteHeader, chromeCss } from "./site-chrome";
 
 export const dynamic = "force-dynamic";
 
-async function subscribeAction(formData: FormData) {
-  "use server";
-  const email = String(formData.get("email") || "").trim().toLowerCase();
-  if (!email || !email.includes("@")) return;
+export default async function HomePage() {
   await ensureSchema();
-  await addOrActivateSubscriber(email);
-  redirect("/?subscribed=1");
-}
-
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ subscribed?: string }>;
-}) {
-  await ensureSchema();
-  const { subscribed } = await searchParams;
-  const didSubscribe = subscribed === "1";
 
   return (
     <>
@@ -118,6 +103,10 @@ export default async function HomePage({
         }
 
         .lp-btn:hover { color: #1a3fcb; background: transparent; }
+
+        .lp-form-wrap { margin-top: clamp(40px, 6vw, 72px); max-width: 760px; }
+        .lp-form-wrap .sf-form { max-width: 760px; gap: 18px; padding-bottom: 14px; }
+        .lp-form-wrap .sf-input { font-size: 22px; }
 
         .lp-fine {
           margin-top: 18px;
@@ -216,30 +205,7 @@ export default async function HomePage({
             read by <em>7 am</em>.
           </h1>
 
-          {didSubscribe ? (
-            <div className="lp-success">
-              <p className="lp-success-title">You&rsquo;re in.</p>
-              <p className="lp-success-body">
-                first issue lands tomorrow morning · check spam if it doesn&rsquo;t
-              </p>
-            </div>
-          ) : (
-            <form className="lp-form" action={subscribeAction}>
-              <span className="lp-arrow">→</span>
-              <input
-                className="lp-input"
-                name="email"
-                type="email"
-                required
-                placeholder="your work address"
-                autoComplete="email"
-                aria-label="Email address"
-              />
-              <button className="lp-btn" type="submit">
-                subscribe — free
-              </button>
-            </form>
-          )}
+          <div className="lp-form-wrap"><SubscribeForm src="/" /></div>
 
           <p className="lp-fine">no paywalls · no noise · leave any morning</p>
         </div>

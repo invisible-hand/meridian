@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
+import { SubscribeForm } from "@/components/subscribe-form";
 import { trackerCss } from "../ai-regulation/tracker-styles";
 import { SiteFooter, SiteHeader, chromeCss } from "../site-chrome";
 
@@ -11,7 +11,7 @@ export const BANK_NAV = [
   { href: "/ai-regulation", label: "tracker" },
   { href: "/agentic-banking", label: "agents" },
   { href: "/ai-regulation/for-bank-executives", label: "for executives" },
-  { href: "/#subscribe", label: "subscribe" }
+  { href: "#subscribe", label: "subscribe" }
 ];
 
 export const bankCss = `
@@ -71,12 +71,15 @@ export function BankShell({
   title,
   updated,
   children,
+  path = "/banks",
   ctaTitle = "Every bank's next AI move, the morning after."
 }: {
   eyebrow: ReactNode;
   title: ReactNode;
   updated: string;
   children: ReactNode;
+  /** Path of the page, recorded as the signup source */
+  path?: string;
   ctaTitle?: string;
 }) {
   return (
@@ -96,10 +99,11 @@ export function BankShell({
         </div>
         <main className="trk-body">
           {children}
-          <div className="trk-cta">
+          <div className="trk-cta" id="subscribe">
             <h3>{ctaTitle}</h3>
-            <p>6 curated AI stories for banking executives · Every morning · Free</p>
-            <Link href="/#subscribe" className="trk-cta-btn">Subscribe to BankingNewsAI →</Link>
+            <p>the daily brief · six sourced stories · in your inbox by 7 am ET · free</p>
+            <SubscribeForm src={path} />
+            <p className="sf-fine">plus every tracker, bank and agent page update, the morning after · leave any morning</p>
           </div>
         </main>
         <SiteFooter
