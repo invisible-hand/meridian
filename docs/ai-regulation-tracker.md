@@ -388,3 +388,16 @@ the commit; nobody reviews by hand.
   CFPB Reg B, FSB final report).
 - Keep this file's checklists current: when a watched item lands, replace it
   here with the next thing to watch.
+
+### Signup, metadata and the disclosure index (2026-09-10)
+
+- Every page renders the same signup form (`components/subscribe-form.tsx`) through one server action
+  (`lib/subscribe.ts`); it lands on `/subscribed`, which records the conversion (GA4 event `subscribe` with the
+  source path) and shows `siteInventory()` from `lib/welcome-email.ts`. New or re-activated addresses get the
+  welcome email from the same module. When a standing page is added, add it to `siteInventory()`.
+- Titles and descriptions go through `clampText` / `metaDescription` (`lib/seo.ts`): ≤60 and ≤155 characters.
+  Keep new pages inside those limits; the layout appends the brand to every title.
+- `/banks/ai-index` (`lib/bank-index.ts`) scores each bank from its own page data; the weights are printed on the
+  page and a page whose text says no AI programme has been disclosed is capped and labelled. It recomputes at build.
+- Authority and document pages list the banks whose `regulatory[]` cites them; nothing to maintain, but a new bank
+  page should cite the authorities and document slugs it actually answers to for the links to appear.
