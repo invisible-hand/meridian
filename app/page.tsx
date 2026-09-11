@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { BANK_COUNT } from "@/lib/banks";
+import { BANK_COUNT, BANK_SOURCE_COUNT } from "@/lib/banks";
+import { REGULATORS } from "@/lib/regulators";
+import { DOCUMENTS, upcomingDeadlines } from "@/lib/tracker";
+import { listSentDigests } from "@/lib/db";
 import { ensureSchema } from "@/lib/db";
 import { SubscribeForm } from "@/components/subscribe-form";
 import { JsonLd, homeSchema } from "@/lib/json-ld";
@@ -9,6 +12,9 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   await ensureSchema();
+  const latest = await listSentDigests(1).then((d) => d[0]).catch(() => undefined);
+  const latestHeadline = (latest?.content_json as { briefSummary?: string } | null)?.briefSummary;
+  const deadlines = upcomingDeadlines().length;
 
   return (
     <>
@@ -207,7 +213,7 @@ export default async function HomePage() {
 
           <div className="lp-form-wrap"><SubscribeForm src="/" /></div>
 
-          <p className="lp-fine">no paywalls · no noise · leave any morning</p>
+          <p className="lp-fine">the daily brief, plus a regulation tracker, {BANK_COUNT} bank profiles and an agents playbook · no paywalls · leave any morning</p>
         </div>
 
         {/* the brief, as data */}
@@ -231,6 +237,35 @@ export default async function HomePage() {
             </span>
           </div>
         </div>
+
+        {/* what the site is, for the reader who arrived from a search and for the crawler */}
+        <section className="lp-more" aria-label="What is on this site">
+          <div className="lp-more-inner">
+            <div className="lp-more-col">
+              <p className="lp-col-label">THE DAILY BRIEF</p>
+              <p className="lp-more-text">
+                Six stories every morning on what AI did to banking the day before: three on banks, regulators and deals, three on the models, vendors and infrastructure behind them. Each links to its source. Nothing paywalled, nothing sponsored.
+                {latest && latestHeadline ? (
+                  <> Latest issue: <Link href={`/issues/${latest.digest_date}`}>{latestHeadline}</Link>.</>
+                ) : (
+                  <> <Link href="/issues">Read the archive</Link>.</>
+                )}
+              </p>
+            </div>
+            <div className="lp-more-col">
+              <p className="lp-col-label">THE REGULATION TRACKER</p>
+              <p className="lp-more-text">
+                <Link href="/ai-regulation">{REGULATORS.length} authorities</Link> and <Link href="/ai-regulation/documents">{DOCUMENTS.length} documents</Link>, from the Fed, OCC and CFPB to the EU AI Act, ECB and PRA, each dated, summarised and linked to the official text. <Link href="/ai-regulation/deadlines">{deadlines} deadlines ahead</Link>, a <Link href="/ai-regulation/compliance-checklist">compliance checklist</Link>, the rules <Link href="/ai-regulation/by-use-case">by use case</Link>, and what <Link href="/ai-regulation/regulator-warnings">regulators are warning about</Link>.
+              </p>
+            </div>
+            <div className="lp-more-col">
+              <p className="lp-col-label">BANKS AND AGENTS</p>
+              <p className="lp-more-text">
+                The AI strategy of <Link href="/banks">each of the {BANK_COUNT} largest US banks</Link>, from the public record: platforms, use cases, leaders, numbers and the regulators each answers to, {BANK_SOURCE_COUNT} sources in all. And <Link href="/agentic-banking">an operating system for AI agents in a bank</Link>: the control plane, the lifecycle gates and what supervisors have said so far. Written for <Link href="/ai-regulation/for-bank-executives">boards and executives</Link> and for <Link href="/ai-regulation/for-compliance-officers">compliance officers</Link>.
+              </p>
+            </div>
+          </div>
+        </section>
 
         <SiteFooter links={FOOTER_NAV} />
       </div>

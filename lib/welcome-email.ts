@@ -27,6 +27,7 @@ export function siteInventory(): { label: string; path: string; line: string }[]
     { label: "By use case", path: "/ai-regulation/by-use-case", line: "What applies to credit decisions, AML, fraud, chatbots, model risk and generative AI." },
     { label: "Regulator warnings", path: "/ai-regulation/regulator-warnings", line: "What supervisors are warning banks about: deepfakes, AI-enabled cyber attacks, stability." },
     { label: `The ${BANK_COUNT} largest US banks`, path: "/banks", line: "Each bank's AI strategy from the public record: platforms, use cases, leaders, numbers, regulators, every claim sourced." },
+    { label: "AI banks, ranked", path: "/banks/ai-index", line: "The same 100 banks ranked by what each has put on the record: platforms, use cases in production, leaders, numbers." },
     { label: "AI agents in banking", path: "/agentic-banking", line: "An operating system for agents in a bank: the control plane, the lifecycle gates and what regulators have said." },
     { label: "For bank executives", path: "/ai-regulation/for-bank-executives", line: "A board-level briefing on what changed in 2026 and a 30-day reading plan." },
     { label: "For compliance officers", path: "/ai-regulation/for-compliance-officers", line: "Where to start, which documents to read first, and in what order." },

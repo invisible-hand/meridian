@@ -131,6 +131,7 @@ export default function BanksHubPage() {
 
       <Section label="Also on this site">
         <div className="trk-related">
+          <Link href="/banks/ai-index">The {BANK_COUNT} banks ranked by disclosed AI activity →</Link>
           <Link href="/ai-regulation">AI Regulation Tracker →</Link>
           <Link href="/agentic-banking">AI agents: the operating model →</Link>
           <Link href="/ai-regulation/for-bank-executives">For bank executives →</Link>

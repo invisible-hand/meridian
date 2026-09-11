@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
 import { absoluteUrl, metaDescription } from "@/lib/seo";
+import { BANKS, BANK_COUNT, bankPath } from "@/lib/banks";
 import {
   REGULATORS,
   formatTimelineDate,
@@ -103,6 +104,7 @@ export default async function RegulatorPage({
   const related = reg.related
     .map((s) => getRegulator(s))
     .filter((r): r is NonNullable<typeof r> => Boolean(r));
+  const banks = BANKS.filter((b) => b.regulatory.some((r) => r.authority === reg.slug));
   const docs = documentsFor(reg.slug);
   const timeline = timelineFor(reg);
 
@@ -201,6 +203,19 @@ export default async function RegulatorPage({
           </table>
         </div>
       </Section>
+
+      {banks.length > 0 && (
+        <Section label="Banks in this tracker">
+          <h2 className="trk-h2-q">Which of the {BANK_COUNT} largest US banks answer to the {reg.name} on AI?</h2>
+          <p className="trk-p">
+            {banks.length} of the {BANK_COUNT} bank pages on this site name the {reg.name} among the authorities their AI programme answers to. Each page lists the documents that apply and why.
+          </p>
+          <div className="trk-related">
+            {banks.map((b) => (<Link key={b.slug} href={bankPath(b)}>{b.shortName} →</Link>))}
+            <Link href="/banks">All {BANK_COUNT} banks →</Link>
+          </div>
+        </Section>
+      )}
 
       <Section label="What to watch next">
         <ul className="trk-list">

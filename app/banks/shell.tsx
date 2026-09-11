@@ -8,6 +8,7 @@ import { SiteFooter, SiteHeader, chromeCss } from "../site-chrome";
 
 export const BANK_NAV = [
   { href: "/banks", label: "banks" },
+  { href: "/banks/ai-index", label: "ranking" },
   { href: "/ai-regulation", label: "tracker" },
   { href: "/agentic-banking", label: "agents" },
   { href: "/ai-regulation/for-bank-executives", label: "for executives" },

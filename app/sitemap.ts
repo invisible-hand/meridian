@@ -55,6 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: i === 0 ? 0.8 : 0.7
     })),
     { url: `${BASE_URL}/banks`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/banks/ai-index`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.7 },
     ...BANKS.map((b) => ({
       url: `${BASE_URL}${bankPath(b)}`,
       lastModified: new Date(b.lastUpdated),

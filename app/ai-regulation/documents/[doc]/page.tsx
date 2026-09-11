@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
 import { TITLE_MAX, absoluteUrl, clampText, metaDescription } from "@/lib/seo";
+import { BANKS, BANK_COUNT, bankPath } from "@/lib/banks";
 import { getRegulator } from "@/lib/regulators";
 import {
   DOCUMENTS,
@@ -62,6 +63,7 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
   const replaces = supersededDocs(doc);
   const replacedBy = supersedingDoc(doc);
   const related = relatedDocuments(doc);
+  const banks = BANKS.filter((b) => b.regulatory.some((r) => r.docSlugs.includes(doc.slug)));
 
   const schema: Record<string, unknown>[] = [
     {
@@ -229,6 +231,19 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
                 ))}
               </tbody>
             </table>
+          </div>
+        </Section>
+      )}
+
+      {banks.length > 0 && (
+        <Section label="Banks in this tracker">
+          <h2 className="trk-h2-q">Which banks&apos; AI programmes does {doc.shortName} reach?</h2>
+          <p className="trk-p">
+            {banks.length} of the {BANK_COUNT} largest US banks profiled on this site cite {doc.shortName} among the documents their AI work answers to.
+          </p>
+          <div className="trk-related">
+            {banks.map((b) => (<Link key={b.slug} href={bankPath(b)}>{b.shortName} →</Link>))}
+            <Link href="/banks">All {BANK_COUNT} banks →</Link>
           </div>
         </Section>
       )}
