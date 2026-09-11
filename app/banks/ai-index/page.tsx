@@ -87,8 +87,11 @@ export default function BankIndexPage() {
       <Section label="The ranking" id="ranking">
         <h2 className="trk-h2-q">How do the {BANK_COUNT} largest US banks rank on disclosed AI activity?</h2>
         <style>{`
-          .idx-table th, .idx-table td { padding-left: 8px; padding-right: 8px; }
-          .idx-table td:first-child, .idx-table th:first-child { padding-left: 0; }
+          .idx-table { table-layout: fixed; width: 100%; }
+          .idx-table th, .idx-table td { padding-left: 12px; padding-right: 12px; }
+          .idx-table th:first-child, .idx-table td:first-child { width: 44px; padding-left: 16px; }
+          .idx-table th:nth-child(2), .idx-table td:nth-child(2) { width: 30%; }
+          .idx-table th:last-child, .idx-table td:last-child { padding-right: 16px; }
           .idx-sub { display: block; font-family: var(--font-mono), 'Courier New', monospace; font-size: 10px; letter-spacing: 0.06em; color: #9a9a96; margin-top: 3px; white-space: nowrap; }
           .idx-sub em { font-style: normal; color: #b45309; }
           .idx-num { text-align: right; font-variant-numeric: tabular-nums; }
