@@ -58,7 +58,145 @@ export const DOCUMENTS: RegDocument[] = [
         "a": "Critical analysis of a model by objective, informed parties who have the incentives, competence, and organizational influence to identify limitations and force changes. It is the central validation principle and survives in the 2026 revision."
       }
     ],
-    "lastUpdated": "2026-08-26"
+    "deepDives": [
+      {
+        "id": "what-is-sr-11-7",
+        "label": "SR 11-7 explained",
+        "question": "What is SR 11-7 and is it still in effect?",
+        "answer": "SR 11-7 is the Federal Reserve's April 4, 2011 Supervisory Guidance on Model Risk Management, issued jointly with the OCC as Bulletin 2011-12 and adopted by the FDIC in 2017. It defined a model as a quantitative method that processes input data into estimates, and built model risk management on three pillars: sound development, implementation and use; independent validation with 'effective challenge'; and governance through board oversight, policies, a model inventory and internal audit. It is no longer in effect: on April 17, 2026 the Fed, OCC and FDIC replaced it with revised interagency guidance (SR 26-2, OCC Bulletin 2026-13, FDIC FIL-15-2026), which keeps the same architecture, narrows what counts as a model, ties the intensity of validation to materiality, and places generative and agentic AI outside its scope.",
+        "requirements": [
+          {
+            "rule": "SR 11-7 / OCC Bulletin 2011-12 (2011 guidance)",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-11-7",
+            "requirement": "Model definition, the three pillars (development and use, validation, governance), effective challenge, a comprehensive model inventory and coverage of vendor models.",
+            "when": "Superseded Apr 17, 2026"
+          },
+          {
+            "rule": "SR 26-2 (Fed)",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-26-2",
+            "requirement": "The replacement: a risk-based, materiality-driven framework; narrower model definition that excludes simple arithmetic and deterministic rules; generative and agentic AI out of scope; most relevant above $30 billion in assets.",
+            "when": "In force from Apr 17, 2026"
+          },
+          {
+            "rule": "OCC Bulletin 2026-13",
+            "authority": "occ",
+            "docSlug": "occ-bulletin-2026-13",
+            "requirement": "Same text for national banks; rescinds Bulletins 2011-12, 1997-24 and 2021-19 and the Comptroller's Handbook booklet; states non-compliance is not by itself a basis for criticism.",
+            "when": "In force from Apr 17, 2026"
+          },
+          {
+            "rule": "FDIC FIL-15-2026",
+            "authority": "fdic",
+            "docSlug": "fdic-fil-15-2026",
+            "requirement": "Same text for state non-member banks; rescinds FIL-22-2017, the FDIC's 2017 adoption of the 2011 guidance, and FIL-27-2021.",
+            "when": "In force from Apr 17, 2026"
+          },
+          {
+            "rule": "SR 23-4 (third-party risk)",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-23-4",
+            "requirement": "Vendor and cloud-hosted models: due diligence and ongoing monitoring, with validation consistent with model risk management guidance.",
+            "when": "In force"
+          },
+          {
+            "rule": "PRA SS1/23 (UK counterpart)",
+            "authority": "uk",
+            "docSlug": "pra-ss1-23-model-risk-management",
+            "requirement": "Five principles covering all models that inform business decisions, including vendor models, with a sub-principle on AI and machine-learning risks and a named senior manager accountable.",
+            "when": "In force from May 17, 2024"
+          }
+        ],
+        "detail": [
+          "The 2011 guidance answered a question the financial crisis had exposed: banks were making capital, pricing and credit decisions on models nobody outside the modelling team had tested. Its answer was a discipline rather than a rule. Development had to be documented well enough for an outsider to review; validation had to cover conceptual soundness, ongoing monitoring (process verification and benchmarking) and outcomes analysis (back-testing); and 'effective challenge' had to come from people with the incentives, competence and organisational standing to force a change. Every model went into an inventory, the board and senior management owned the framework, and internal audit checked that it worked. Purchased models were not exempt: a bank had to understand and validate what it bought.",
+          "Because the definition of a model was technology-neutral, SR 11-7 became the framework US banks applied to machine-learning credit, fraud and anti-money-laundering models through the 2010s and early 2020s, and its validation vocabulary was borrowed by supervisors worldwide, from the PRA's SS1/23 to the EBA's work on machine learning in internal ratings-based models. The 2021 interagency statement on model risk in BSA/AML systems (SR 21-8) extended it to compliance models.",
+          "The April 2026 revision kept the architecture and changed the perimeter. A model is now a 'complex' quantitative method, so spreadsheets and deterministic rule engines drop out of the inventory; validation effort follows materiality rather than a single standard; the guidance is expected to matter most to banking organisations above $30 billion in assets; and generative and agentic AI are declared 'novel and rapidly evolving' and outside its scope, with the agencies promising a request for information on AI and model risk. Anything a bank built on SR 11-7 still stands; what changed is how much of it examiners expect for a given model, and the explicit gap around generative systems."
+        ],
+        "practice": [
+          "Cite SR 26-2, OCC Bulletin 2026-13 or FDIC FIL-15-2026 in new policies; SR 11-7 is the history, not the standard.",
+          "Re-tier the inventory against the narrower model definition and document what left it and why: the validation budget freed is the point of the revision.",
+          "Keep the SR 11-7 disciplines for machine-learning models in credit, fraud and AML; they remain inside the 2026 guidance and its validation expectations.",
+          "Generative and agentic AI need a governance home outside the model policy, because the new guidance explicitly declines to be one; enterprise risk, third-party risk (SR 23-4) and data governance are what examiners will ask about until the promised request for information becomes guidance."
+        ]
+      },
+      {
+        "id": "sr-11-7-machine-learning-ai",
+        "label": "Applying it to AI",
+        "question": "How does SR 11-7, and now SR 26-2, apply to machine-learning and AI models?",
+        "answer": "Under SR 11-7 a machine-learning model was a model like any other: if it processed input data into quantitative estimates it needed documented development, independent validation with conceptual-soundness review, ongoing monitoring and outcomes analysis, an inventory entry and board-level governance, and banks applied exactly that to ML underwriting, fraud and AML models for a decade. SR 26-2 keeps machine-learning models in scope on a materiality basis but states that generative AI and agentic AI models are 'not within the scope of this guidance', directing banks to broader risk-management and governance practices for them. Two things do not change with the model type: a credit model that produces an adverse decision must still yield the specific principal reasons ECOA and FCRA require, and a model bought from a vendor is still the bank's to understand and validate under SR 23-4.",
+        "requirements": [
+          {
+            "rule": "SR 26-2 / OCC 2026-13 / FDIC FIL-15-2026",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-26-2",
+            "requirement": "Machine-learning models that meet the 'complex quantitative method' definition are in scope, with validation and monitoring proportionate to materiality; generative and agentic AI are outside scope and left to broader governance pending an interagency request for information.",
+            "when": "In force from Apr 17, 2026"
+          },
+          {
+            "rule": "SR 11-7 validation elements",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-11-7",
+            "requirement": "Conceptual soundness (including the quality and relevance of input data), ongoing monitoring with benchmarking, and outcomes analysis with back-testing: the three tests still applied to ML models under the 2026 guidance.",
+            "when": "Superseded Apr 17, 2026; disciplines retained"
+          },
+          {
+            "rule": "ECOA / Regulation B adverse action",
+            "authority": "cfpb",
+            "docSlug": "cfpb-ecoa-regulation-b-adverse-action",
+            "requirement": "A credit decision made or informed by a model must be explainable to the applicant as specific principal reasons; model complexity is not a defence.",
+            "when": "In force"
+          },
+          {
+            "rule": "FCRA adverse action and key factors",
+            "authority": "cfpb",
+            "docSlug": "cfpb-fcra-adverse-action-key-factors",
+            "requirement": "Where a credit score is used, the key factors that adversely affected it must be disclosed, which constrains opaque feature sets.",
+            "when": "In force"
+          },
+          {
+            "rule": "SR 23-4 (third-party risk)",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-23-4",
+            "requirement": "Vendor ML and foundation-model access fall under third-party risk management, with validation consistent with model-risk guidance and monitoring through the relationship's life.",
+            "when": "In force"
+          },
+          {
+            "rule": "NIST AI RMF 1.0",
+            "authority": "nist",
+            "docSlug": "nist-ai-100-1",
+            "requirement": "Voluntary Govern-Map-Measure-Manage framework and seven trustworthiness characteristics that many banks use to govern generative AI where model-risk guidance now stops.",
+            "when": "Voluntary"
+          },
+          {
+            "rule": "PRA SS1/23",
+            "authority": "uk",
+            "docSlug": "pra-ss1-23-model-risk-management",
+            "requirement": "UK equivalent that keeps AI and machine-learning models explicitly inside model risk management through a dedicated sub-principle.",
+            "when": "In force from May 17, 2024"
+          },
+          {
+            "rule": "ECB Guide to internal models, ML section",
+            "authority": "ecb",
+            "docSlug": "ecb-guide-to-internal-models-2025-machine-learning",
+            "requirement": "For euro-area capital models: ML techniques must be adequately explainable and their added complexity justified by performance.",
+            "when": "In force from Jul 28, 2025"
+          }
+        ],
+        "detail": [
+          "The practical translation of SR 11-7 to machine learning was worked out by validators rather than regulators. Conceptual soundness became a review of feature engineering, training data quality and the choice of algorithm against simpler alternatives; ongoing monitoring became drift detection on inputs and outputs with a champion-challenger benchmark; outcomes analysis became back-testing against realised defaults, fraud losses or alert dispositions. The hard part was always explainability: a gradient-boosted credit model can pass every statistical test and still fail the requirement to tell a declined applicant the principal reasons, which is why post-hoc explanation methods and constrained model forms became part of validation in US retail credit.",
+          "SR 26-2 draws a line that SR 11-7 never had to. Predictive machine-learning models stay inside model risk management, scaled to materiality. Generative models and agents are outside it, not because they are low-risk but because the agencies judged the 2011 toolkit, built around estimates that can be back-tested, a poor fit for systems that produce text or take actions. The guidance tells banks to rely on broader risk-management and governance practices for those systems and promises a request for information; until that arrives, the working answer in most large banks is an AI governance framework alongside the model policy, often built on the NIST AI Risk Management Framework, with third-party risk management covering the vendor and data governance covering the inputs.",
+          "Outside the US the perimeter runs the other way. The PRA's SS1/23 keeps AI and machine learning explicitly inside model risk management through a dedicated sub-principle, the ECB's 2025 Guide to internal models tests ML capital models for explainability and justified complexity, and the EBA's guidelines on loan origination require staff who can interpret and override automated credit models. A bank operating on both sides of the Atlantic therefore governs the same model under two different assumptions about where model risk management ends."
+        ],
+        "practice": [
+          "For predictive ML in credit, fraud and AML, keep the full SR 11-7 validation stack and document the materiality tier that sets its depth under SR 26-2.",
+          "Test adverse-action explainability as a validation gate, not a compliance afterthought: if the model cannot produce specific principal reasons, it is not deployable for credit decisions.",
+          "Put generative and agentic systems under a written AI governance standard that names an owner, an inventory, an approval gate, monitoring and a human-oversight rule; cite the NIST AI RMF and SR 23-4 as the basis while the interagency RFI is pending.",
+          "Read the SR 26-2 carve-out as temporary. The agencies asked for information on AI and model risk in the near future; the request will show where guidance is heading."
+        ]
+      }
+    ],
+    "lastUpdated": "2026-09-10"
   },
   {
     "slug": "fed-interagency-ai-rfi-2021",
@@ -7161,9 +7299,78 @@ export const DOCUMENTS: RegDocument[] = [
           "Treat AI training data as risk data: the January 2026 newsletter makes the link explicit, and the ECB's 2024 guide expects the same controls over model inputs.",
           "For D-SIBs the clock starts at designation — three years — and national supervisors decide which other banks are assessed; ask your supervisor rather than assuming you are out of scope."
         ]
+      },
+      {
+        "id": "bcbs-239-ai-data",
+        "label": "BCBS 239 and AI",
+        "question": "How does BCBS 239 apply to the data behind AI and machine-learning models?",
+        "answer": "BCBS 239 never mentions artificial intelligence, but it is the standard supervisors reach for when they ask how the data feeding a bank's AI and machine-learning models is governed. Its scope is the bank's risk-management data, including the data behind key internal models, and its first six principles map directly onto an AI data pipeline: a named owner and board accountability (Principle 1), architecture that works under stress (Principle 2), accuracy and integrity with documented lineage and 'largely automated' aggregation (Principle 3), completeness across entities and business lines (Principle 4), timeliness (Principle 5) and adaptability to ad hoc requests (Principle 6). The Basel Committee's January 2026 implementation newsletter made the link explicit, saying AI and advanced automation depend on high-quality data and make robust data management more important, and the 2026 US model-risk guidance, the EU AI Act's data-governance article and the ECB's internal-models guide each restate the same expectations for model inputs in their own terms.",
+        "requirements": [
+          {
+            "rule": "BCBS 239, Principles 1–6",
+            "authority": "basel-committee",
+            "docSlug": "bcbs-239",
+            "requirement": "Ownership and board accountability, supporting architecture, accuracy with lineage and largely automated aggregation, completeness, timeliness and adaptability for all risk-management data, including the data behind key internal models.",
+            "when": "G-SIBs from 2016; D-SIBs 3 years after designation"
+          },
+          {
+            "rule": "BCBS 239 implementation newsletter",
+            "authority": "basel-committee",
+            "docSlug": "bcbs-newsletter-bcbs239-implementation-2026",
+            "requirement": "Data lineage and ad hoc reporting still 'a work in progress'; AI and advanced automation depend on high-quality data, so robust data management matters more, not less.",
+            "when": "Published Jan 6, 2026"
+          },
+          {
+            "rule": "SR 26-2 / OCC Bulletin 2026-13",
+            "authority": "federal-reserve",
+            "docSlug": "fed-sr-26-2",
+            "requirement": "US model risk management retains the expectation that input data be assessed for quality and relevance as part of sound development and conceptual-soundness review, scaled to materiality.",
+            "when": "In force from Apr 17, 2026"
+          },
+          {
+            "rule": "EU AI Act, Article 10 (data and data governance)",
+            "authority": "eu-ai-act",
+            "docSlug": "eu-ai-act-regulation-2024-1689",
+            "requirement": "High-risk systems, including credit scoring of natural persons, need training, validation and testing data subject to documented governance: design choices, provenance, preparation, bias examination, gaps and their remedies.",
+            "when": "Stand-alone Annex III obligations from Dec 2, 2027"
+          },
+          {
+            "rule": "ECB Guide to internal models, ML section",
+            "authority": "ecb",
+            "docSlug": "ecb-guide-to-internal-models-2025-machine-learning",
+            "requirement": "ML capital models must be adequately explainable and their complexity justified; the data behind them sits inside the ECB's internal-model data-quality expectations.",
+            "when": "In force from Jul 28, 2025"
+          },
+          {
+            "rule": "EBA Guidelines on loan origination and monitoring",
+            "authority": "eba",
+            "docSlug": "eba-gl-2020-06-loan-origination-monitoring",
+            "requirement": "Automated creditworthiness models need governance of their design and data, proportionate model-risk management, and staff able to interpret and override outputs.",
+            "when": "In force from Jun 30, 2021"
+          },
+          {
+            "rule": "NIST AI RMF 1.0, Map and Measure functions",
+            "authority": "nist",
+            "docSlug": "nist-ai-100-1",
+            "requirement": "Voluntary framework whose Map and Measure outcomes cover data provenance, representativeness and quality for AI systems.",
+            "when": "Voluntary"
+          }
+        ],
+        "detail": [
+          "The reason BCBS 239 travels so well into AI is that it was written about a failure of data rather than a failure of models. In 2007–09 banks could not aggregate exposures to a counterparty across legal entities or produce a group-wide view of a risk in days. The Committee's remedy was to make risk data a governed asset: owned, architected, traceable from report to source, complete, timely and available for questions nobody planned for. A training dataset, a feature store and a retrieval corpus are risk data in exactly that sense, and an examiner reviewing an AI model's inputs asks the BCBS 239 questions whether or not the paper is cited: who owns this data, where did it come from, how do you know it is complete and current, and could you re-run it tomorrow with a different cut?",
+          "Three principles carry most of the weight for AI. Principle 3, accuracy and integrity, is where lineage lives, and lineage is what makes a model's output defensible when a supervisor, an auditor or a declined customer asks how a number was produced; the Committee's 2026 newsletter singles out lineage as the capability legacy systems still frustrate. Principle 4, completeness, is the control against models trained on a subset that silently excludes a business line, a legal entity or a population. Principle 6, adaptability, is the ad hoc test: a bank that cannot reproduce or re-cut the data behind a model on request has a model it cannot explain in a crisis.",
+          "Newer rules restate the same expectations in their own vocabulary. The 2026 US model-risk guidance keeps data quality and relevance inside conceptual-soundness review. The EU AI Act's Article 10 turns data governance into a legal duty for high-risk systems such as consumer credit scoring, with provenance, preparation, bias examination and gap analysis to be documented, from December 2, 2027 for stand-alone Annex III systems after the Digital Omnibus deferral. The ECB's internal-models guide asks whether an ML model's complexity is justified by performance, a question that cannot be answered without controlled data. A bank that has genuinely implemented BCBS 239 for its risk data has most of the evidence these regimes ask for; the gap is usually that AI datasets were assembled outside the governed perimeter."
+        ],
+        "practice": [
+          "Classify training, validation and inference datasets for material AI models as risk data under the BCBS 239 framework, with a named owner, a lineage record and a data-quality threshold for each.",
+          "Make lineage the first artefact a model validation asks for: source systems, transformations, feature definitions and the date of the cut, reproducible on demand (Principles 3 and 6).",
+          "Test completeness explicitly: which entities, products, periods and populations are absent from the training set, and what that does to the model's outputs (Principle 4).",
+          "For EU credit scoring, map the BCBS 239 evidence onto Article 10 of the AI Act now; the December 2, 2027 date is a deadline for documentation that takes years to assemble.",
+          "Expect the question from the board: the Committee's 2026 newsletter says boards must oversee risk data aggregation, and AI has made data the board-level risk it was always meant to be."
+        ]
       }
     ],
-    "lastUpdated": "2026-09-02"
+    "lastUpdated": "2026-09-10"
   },
   {
     "slug": "bcbs-principles-operational-resilience-2021",
