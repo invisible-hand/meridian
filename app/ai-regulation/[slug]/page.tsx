@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, metaDescription } from "@/lib/seo";
 import {
   REGULATORS,
   formatTimelineDate,
@@ -30,8 +30,8 @@ export async function generateMetadata({
   const { slug } = await params;
   const reg = getRegulator(slug);
   if (!reg) return {};
-  const title = `${reg.name} on AI in Banking: Rules, Timeline, What Applies (2026)`;
-  const description = reg.answerFirst.slice(0, 300);
+  const title = `${reg.name}: AI Rules and Guidance for Banks (2026)`;
+  const description = metaDescription(reg.answerFirst);
   return {
     title,
     description,

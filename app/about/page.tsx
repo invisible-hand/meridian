@@ -4,9 +4,9 @@ import { FOOTER_NAV, SiteFooter, SiteHeader, chromeCss } from "../site-chrome";
 import { JsonLd, aboutPageSchema } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
-  title: "About — AI News for Banking Executives",
+  title: "About: AI News for Banking Executives",
   description:
-    "BankingNewsAI was built for VPs, SVPs, and C-suite leaders in banking and fintech who need to stay current on AI without spending an hour a day sifting through noise. Here's why it exists.",
+    "Why BankingNewsAI exists: a daily six-story AI brief for banking leaders, plus a regulation tracker, 100 bank profiles and an agent playbook. Free.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "website",

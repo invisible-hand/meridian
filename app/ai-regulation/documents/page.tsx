@@ -15,9 +15,9 @@ import {
 } from "@/lib/tracker";
 import { Section, TrackerShell } from "../shell";
 
-const TITLE = "Every AI Regulation Document for Banks — Bulletins, Circulars, Rules, Reports (2026)";
+const TITLE = "AI Regulation Documents for Banks: Full Index (2026)";
 const DESCRIPTION =
-  "A dated index of every primary-source document that governs AI in banking — OCC bulletins, Federal Reserve SR letters, CFPB circulars, the EU AI Act, FSB and Basel reports — each with status, what it says, and who it applies to.";
+  "A dated index of every primary document governing AI in banking: OCC bulletins, Fed SR letters, CFPB rules, the EU AI Act, FSB and Basel papers, with.";
 
 export const metadata: Metadata = {
   title: TITLE,

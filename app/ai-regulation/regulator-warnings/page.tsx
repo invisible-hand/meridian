@@ -16,9 +16,9 @@ import {
 import { getRegulator, type RegDocument } from "@/lib/regulators";
 import { Section, TrackerShell } from "../shell";
 
-const TITLE = "What Regulators Are Warning Banks About on AI — Fraud, Deepfakes, Cyber, Stability (2026)";
+const TITLE = "What Regulators Warn Banks About on AI (2026)";
 const DESCRIPTION =
-  "Every formal AI warning regulators have issued to banks, in one place: FinCEN's deepfake alerts, the ECB's Dear-CEO letter on AI-enabled cyber threats, NY DFS industry letters, OCC and FDIC risk reports, and the FSB's financial-stability warnings — each linked to the primary source.";
+  "Every formal AI warning regulators have issued to banks: FinCEN deepfake alerts, the ECB Dear-CEO letter on AI cyber threats, NY DFS letters, OCC and FSB.";
 
 export const metadata: Metadata = {
   title: TITLE,

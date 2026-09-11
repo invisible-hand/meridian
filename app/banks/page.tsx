@@ -8,9 +8,8 @@ import { BankShell, Section } from "./shell";
 import { AssetsFigure, MovesFigure } from "./graphics";
 
 const PATH = "/banks";
-const TITLE = `AI Strategy of the ${BANK_COUNT} Largest US Banks (2026) — Sourced, Bank by Bank`;
-const DESCRIPTION =
-  `How the ${BANK_COUNT} largest US banks — from JPMorgan Chase, Bank of America and Citigroup through BNY, TD, Fifth Third and M&T to Customers Bank, Seacoast, Busey and NBT — are deploying AI: platforms, agents, budgets, headcount, leadership and regulators, every claim linked to a primary or tier-1 source.`;
+const TITLE = `AI Strategy of the ${BANK_COUNT} Largest US Banks (2026)`;
+const DESCRIPTION = `How the ${BANK_COUNT} largest US banks, JPMorgan to Axos, are deploying AI: platforms, agents, budgets, headcount, leaders and regulators, every claim sourced.`;
 
 export const metadata: Metadata = {
   title: TITLE,

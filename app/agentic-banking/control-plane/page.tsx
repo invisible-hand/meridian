@@ -9,9 +9,9 @@ import { AgentShell, DocList } from "../shell";
 import { resolveDoc } from "../docs";
 import { StackFigure } from "../graphics";
 
-const TITLE = "The Control Plane for AI Agents in Banking: Eight Layers, Mapped to Regulation";
+const TITLE = "The Control Plane for AI Agents in Banking";
 const DESCRIPTION =
-  "Governance, identity, action gateway, data, models and vendors, runtime, observability, human oversight — the eight control layers an AI agent in a bank runs on, each with a quotable answer, the controls, and the primary-source documents it answers to.";
+  "The eight control layers an AI agent in a bank runs on: governance, identity, action gateway, data, models and vendors, runtime, observability, human.";
 
 export const metadata: Metadata = {
   title: TITLE,

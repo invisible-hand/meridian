@@ -76,3 +76,40 @@ export function isoToArticleDate(iso: string): string {
   // Convert "YYYY-MM-DD" → ISO datetime at noon UTC for stable Article schema.
   return `${iso}T12:00:00.000Z`;
 }
+
+// ── Length discipline for <title> and meta description ────────────────────────
+// Google rewrites titles over ~60 characters and truncates descriptions over
+// ~155; the 2026-09-10 review found every inner page far over both, with
+// near-zero CTR at positions 2–10. These helpers cut on a word boundary.
+
+export const TITLE_MAX = 60;
+export const DESCRIPTION_MAX = 155;
+
+/** Cut `text` to at most `max` characters on a word boundary, with an ellipsis. */
+export function clampText(text: string, max: number): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  const at = cut.lastIndexOf(" ");
+  return `${(at > max * 0.6 ? cut.slice(0, at) : cut).replace(/[\s,;:—–-]+$/, "")}…`;
+}
+
+/**
+ * Meta description from a longer answer: as many whole sentences as fit in
+ * `max`, or the first sentence clamped when even that is too long.
+ */
+export function metaDescription(text: string, max = DESCRIPTION_MAX): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  // Split only where a terminator is followed by a space and a capital, so
+  // "U.S. Treasury" and "12 CFR 1002.9" stay whole.
+  const sentences = t.split(/(?<=[.!?])\s+(?=[A-Z"'(])/);
+  let out = "";
+  for (const s of sentences) {
+    const next = out ? `${out} ${s.trim()}` : s.trim();
+    if (next.length > max) break;
+    out = next;
+  }
+  // Too little survived (a single long first sentence): clamp the text instead.
+  return out.length >= 90 ? out : clampText(t, max);
+}

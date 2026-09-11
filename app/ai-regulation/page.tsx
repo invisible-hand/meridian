@@ -17,9 +17,9 @@ import { Section, TrackerShell } from "./shell";
 // The open-consultation / upcoming-deadline blocks depend on today's date.
 export const revalidate = 86400;
 
-const TITLE = "Who Regulates AI in Banking? Every Major Authority, Tracked (2026)";
+const TITLE = "AI Regulation in Banking: Every Authority Tracked (2026)";
 const DESCRIPTION =
-  "A continuously updated reference to every body that regulates AI in banking — Federal Reserve, OCC, FDIC, CFPB, SEC, FinCEN, CFTC, Treasury, NCUA, state laws, EU AI Act, ECB, EBA, UK PRA/FCA, FSB, Basel Committee, NIST — with every document each has published, what binds banks, deadlines, and what's next.";
+  "Every body that regulates AI in banking, Fed, OCC and CFPB to the EU AI Act, ECB and PRA: each document, what binds banks, deadlines and next steps.";
 
 export const metadata: Metadata = {
   title: TITLE,

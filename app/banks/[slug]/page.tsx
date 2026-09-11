@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, clampText } from "@/lib/seo";
 import { getRegulator } from "@/lib/regulators";
 import { USE_CASE_LABELS, documentPath, formatDate, getDocument } from "@/lib/tracker";
 import { BANKS, BANKS_PUBLISHED, FED_LBR, bankPath, formatAssets, getBank, type Bank } from "@/lib/banks";
@@ -19,10 +19,15 @@ export function generateStaticParams() {
 }
 
 function titleFor(b: Bank) {
-  return `${b.name} AI Strategy (2026): Platforms, Agents, Budget, Headcount and Regulators`;
+  return `${b.shortName} AI Strategy (2026): Use Cases, Leaders`;
 }
 function descriptionFor(b: Bank) {
-  return `${b.name}'s AI strategy from the public record: ${b.platform ? `${b.platform.name}, ` : ""}${b.timeline.length} dated moves, disclosed numbers, leadership, the regulators it answers to and what the record suggests — ${b.sources.length} primary and tier-1 sources.`;
+  const platform = b.platform && b.platform.name.length <= 30 ? `${b.platform.name}; ` : "";
+  const inProd = b.useCases.filter((u) => u.status === "In production").length;
+  return clampText(
+    `How ${b.shortName} uses AI, from the public record: ${platform}${b.timeline.length} dated moves, ${b.useCases.length} use cases (${inProd} in production), ${b.leadership.length} named leaders, the regulators it answers to. ${b.sources.length} sources.`,
+    155
+  );
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

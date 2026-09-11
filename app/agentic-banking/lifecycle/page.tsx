@@ -9,9 +9,9 @@ import { AgentShell, DocList } from "../shell";
 import { resolveDoc } from "../docs";
 import { LifecycleFigure } from "../graphics";
 
-const TITLE = "AI Agent Lifecycle for Banks: Eight Gates from Intake to Retirement";
+const TITLE = "AI Agent Lifecycle for Banks: Eight Gates";
 const DESCRIPTION =
-  "How an AI agent gets from idea to production in a bank and back out again: intake, risk tiering, design, build and onboard, validate and test, approve and deploy, operate and monitor, change and retirement — with the gate question, the evidence, and the primary-source documents for each stage.";
+  "How an AI agent gets from idea to production in a bank and back out: intake, risk tiering, design, build, validation, approval, operation, change and.";
 
 export const metadata: Metadata = {
   title: TITLE,

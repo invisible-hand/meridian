@@ -13,9 +13,9 @@ import {
 } from "@/lib/tracker";
 import { Section, TrackerShell } from "../shell";
 
-const TITLE = "AI Regulation Deadlines for Banks — Effective Dates & Comment Periods (2026–2027)";
+const TITLE = "AI Regulation Deadlines for Banks (2026–2027)";
 const DESCRIPTION =
-  "Every dated AI-regulation deadline that affects banks in one calendar: EU AI Act application dates, US comment periods, guidance effective dates and consultation closings — upcoming first, with the past year for reference.";
+  "Every dated AI-regulation deadline that affects banks: EU AI Act application dates, US comment periods, guidance effective dates and consultation closings.";
 
 export const metadata: Metadata = {
   title: TITLE,

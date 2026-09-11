@@ -18,9 +18,9 @@ import {
 } from "@/lib/tracker";
 import { Section, TrackerShell } from "../shell";
 
-const TITLE = "AI Regulation for Bank Compliance Officers — Where to Start (2026)";
+const TITLE = "AI Regulation for Bank Compliance Officers (2026)";
 const DESCRIPTION =
-  "A working orientation for compliance and risk officers facing AI: the five documents to read first, what applies to your bank today, this quarter's deadlines, and how to stay current — built on a tracker of 18 authorities and every primary source.";
+  "Where a bank compliance or risk officer starts on AI: the five documents to read first, what applies today, this quarter's deadlines and how to stay.";
 
 export const metadata: Metadata = {
   title: TITLE,

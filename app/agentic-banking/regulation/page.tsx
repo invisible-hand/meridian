@@ -10,9 +10,9 @@ import { AgentShell } from "../shell";
 import { agentMatcher, resolveDoc } from "../docs";
 import { TimelineFigure } from "../graphics";
 
-const TITLE = "What Regulators Say About AI Agents in Banking (2026): Every Position, Dated";
+const TITLE = "What Regulators Say About AI Agents in Banking (2026)";
 const DESCRIPTION =
-  "Every documented regulatory position on agentic AI in banking — the Fed, OCC and FDIC model-risk carve-out, the FSB's sound practices, NIST's agent-security work, New York DFS, the ESAs, the ECB, the EU AI Act and Colorado — dated, quoted, and linked to the primary source.";
+  "Every documented regulatory position on agentic AI in banking: the Fed, OCC and FDIC carve-out, FSB sound practices, NIST, NY DFS, the ESAs, ECB, EU AI.";
 
 export const metadata: Metadata = {
   title: TITLE,

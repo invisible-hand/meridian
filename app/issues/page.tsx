@@ -20,8 +20,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = "Banking AI News Today — Daily Brief";
   const description = updated
-    ? `Banking AI news from the last 24 hours, updated ${updated}. What the Fed, OCC, FDIC and the major US banks did today, in six curated stories. Free, no paywall.`
-    : "Banking AI news from the last 24 hours: what the Fed, OCC, FDIC and the major US banks did today, in six curated stories every morning. Free, no paywall.";
+    ? `Banking AI news from the last 24 hours, updated ${updated}: what the Fed, OCC, FDIC and the major US banks did, in six curated stories. Free.`
+    : "Banking AI news from the last 24 hours: what the Fed, OCC, FDIC and the major US banks did, in six curated stories every morning. Free.";
 
   return {
     title,

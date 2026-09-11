@@ -9,6 +9,8 @@ import { DailyDigest, DigestStory } from "@/lib/types";
 import {
   absoluteUrl,
   buildIssueDescription,
+  clampText,
+  metaDescription,
   formatIssueDateLong,
   formatIssueDateShort,
   isoToArticleDate,
@@ -189,10 +191,14 @@ export async function generateMetadata({
     ? `${content.briefSummary} — ${formattedShort}`
     : `Banking AI Brief — ${formatted}`;
   const url = `/issues/${date}`;
+  // <title> ≤60 chars: the summary clamped, then the date; OG keeps the full headline.
+  const shortTitle = content?.briefSummary
+    ? `${clampText(content.briefSummary, 46)} · ${formattedShort}`
+    : `Banking AI Brief · ${formattedShort}`;
 
   return {
-    title: headline,
-    description,
+    title: shortTitle,
+    description: metaDescription(description),
     alternates: { canonical: url },
     openGraph: {
       type: "article",

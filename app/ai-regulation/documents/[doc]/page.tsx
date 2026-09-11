@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, breadcrumbSchema } from "@/lib/json-ld";
-import { absoluteUrl } from "@/lib/seo";
+import { TITLE_MAX, absoluteUrl, clampText, metaDescription } from "@/lib/seo";
 import { getRegulator } from "@/lib/regulators";
 import {
   DOCUMENTS,
@@ -35,8 +35,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { doc: slug } = await params;
   const doc = getDocument(slug);
   if (!doc) return {};
-  const title = `${doc.shortName}: ${doc.title} — What It Says, Who It Applies To`;
-  const description = doc.answerFirst.slice(0, 300);
+  // ≤60 chars: the searcher types the document's ID; the layout appends the brand.
+  const full = `${doc.shortName}: What It Means for Banks`;
+  const bare = doc.shortName.replace(/\s*\([^)]*\)\s*$/, "");
+  const title = full.length <= TITLE_MAX ? full : bare.length <= TITLE_MAX ? bare : clampText(bare, TITLE_MAX);
+  const description = metaDescription(doc.answerFirst);
   const path = documentPath(doc);
   return {
     title,
@@ -128,6 +131,10 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
       <JsonLd data={schema} />
 
       <p className="trk-answer">{doc.answerFirst}</p>
+      <p className="trk-kicker" style={{ margin: "-8px 0 36px" }}>
+        OFFICIAL TEXT: <a href={doc.link} target="_blank" rel="noopener noreferrer" className="trk-source">{sourceHost(doc.link)} ↗</a>
+        {" · "}{statusLabel(doc).toUpperCase()}{" · "}{authority.name.toUpperCase()}
+      </p>
 
       <Section label="At a glance">
         <div className="trk-table-wrap">

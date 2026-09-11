@@ -15,9 +15,9 @@ import {
 } from "@/lib/tracker";
 import { Section, TrackerShell } from "../shell";
 
-const TITLE = "AI Regulation in Banking by Use Case — Credit, AML, Fraud, Chatbots, Model Risk (2026)";
+const TITLE = "AI Regulation in Banking by Use Case (2026)";
 const DESCRIPTION =
-  "Which rules govern each AI use case in banking: credit scoring, fair lending, AML/KYC, fraud, chatbots, model risk, generative and agentic AI, vendors, cybersecurity, data and trading — mapped to the governing document from every authority.";
+  "Which rules govern each AI use case in banking: credit scoring, fair lending, AML, fraud, chatbots, model risk, generative and agentic AI, vendors, cyber.";
 
 export const metadata: Metadata = {
   title: TITLE,

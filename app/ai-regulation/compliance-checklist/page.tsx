@@ -16,9 +16,9 @@ import {
 } from "@/lib/tracker";
 import { Section, TrackerShell } from "../shell";
 
-const TITLE = "AI Compliance Checklist for Banks — Every Deadline and Obligation (2026–2028)";
+const TITLE = "AI Compliance Checklist for Banks (2026–2028)";
 const DESCRIPTION =
-  "The dated AI compliance checklist for banks: what is in force today, what takes effect this quarter, and every deadline through 2028 — ECB AI-cyber action plans, Colorado's ADMT Act, the EU AI Act's high-risk regime — each linked to its primary source.";
+  "The dated AI compliance checklist for banks: what is in force today, what takes effect this quarter and every deadline through 2028, each linked to its.";
 
 export const metadata: Metadata = {
   title: TITLE,

@@ -11,9 +11,9 @@ import { AgentShell } from "./shell";
 import { agentMatcher, resolveDoc } from "./docs";
 import { AutonomyFigure, FunctionMapFigure, LifecycleFigure, MaturityFigure, StackFigure, TimelineFigure, type FunctionCell } from "./graphics";
 
-const TITLE = "AI Agents in Banking: The Operating System Your Bank Needs (2026)";
+const TITLE = "AI Agents in Banking: An Operating System (2026)";
 const DESCRIPTION =
-  "An end-to-end model for running AI agents in a bank: eight control layers, an eight-stage lifecycle, where agents are landing by function, five autonomy levels, and how regulators are moving — every claim tied to a primary-source document.";
+  "How to run AI agents in a bank: eight control layers, an eight-gate lifecycle, where agents land by function, autonomy levels and what regulators have.";
 
 export const metadata: Metadata = {
   title: TITLE,

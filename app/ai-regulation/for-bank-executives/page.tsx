@@ -19,9 +19,9 @@ import { DeepDives, deepDiveFaqEntries } from "../deep-dive";
 import { Section, TrackerShell } from "../shell";
 
 const PATH = "/ai-regulation/for-bank-executives";
-const TITLE = "AI for Bank Executives — A Board-Level Briefing and 30-Day Training Guide (2026)";
+const TITLE = "AI for Bank Executives: Board Briefing (2026)";
 const DESCRIPTION =
-  "What bank boards and the C-suite must know about AI in 2026: what changed this year, what regulators expect of the board, the ten questions to ask your CRO and CIO, what applies by footprint, the agent decision, and a 30-day reading plan — every claim linked to its primary source.";
+  "What bank boards and the C-suite must know about AI in 2026: what changed, what regulators expect of the board, ten questions for the CRO and CIO, a.";
 
 export const metadata: Metadata = {
   title: TITLE,
