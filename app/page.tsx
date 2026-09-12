@@ -240,6 +240,8 @@ export default async function HomePage() {
               {" · "}
               <Link href="/agentic-banking">an operating system for AI agents in your bank</Link>
               {" · "}
+              <Link href="/agentic-banking/build">the build map: ten questions, one design brief</Link>
+              {" · "}
               <Link href="/ai-governance">AI governance</Link>
               {" and "}
               <Link href="/ai-fraud-detection">AI fraud detection</Link>
@@ -272,7 +274,7 @@ export default async function HomePage() {
             <div className="lp-more-col">
               <p className="lp-col-label">BANKS AND AGENTS</p>
               <p className="lp-more-text">
-                The AI strategy of <Link href="/banks">each of the {BANK_COUNT} largest US banks</Link>, from the public record: platforms, use cases, leaders, numbers and the regulators each answers to, {BANK_SOURCE_COUNT} sources in all. And <Link href="/agentic-banking">an operating system for AI agents in a bank</Link>: the control plane, the lifecycle gates and what supervisors have said so far. Written for <Link href="/ai-regulation/for-bank-executives">boards and executives</Link> and for <Link href="/ai-regulation/for-compliance-officers">compliance officers</Link>.
+                The AI strategy of <Link href="/banks">each of the {BANK_COUNT} largest US banks</Link>, from the public record: platforms, use cases, leaders, numbers and the regulators each answers to, {BANK_SOURCE_COUNT} sources in all. And <Link href="/agentic-banking">an operating system for AI agents in a bank</Link>: the control plane, the lifecycle gates and what supervisors have said so far. Building something? <Link href="/agentic-banking/build">The build map</Link> turns ten answers into a design brief with the pattern, the controls, the rules that apply and the questions an examiner will ask. Written for <Link href="/ai-regulation/for-bank-executives">boards and executives</Link> and for <Link href="/ai-regulation/for-compliance-officers">compliance officers</Link>.
               </p>
             </div>
           </div>
