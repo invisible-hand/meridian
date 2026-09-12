@@ -11,6 +11,7 @@ import { REGULATORS, USE_CASES, type RegDocument, type Regulator } from "../lib/
 import { DOCUMENTS } from "../lib/regulatory-documents";
 import { AGENT_OS_DOC_SLUGS, AGENT_OS_UPDATED, LAYERS, LIFECYCLE, TIMELINE } from "../lib/agent-os";
 import { FRAUD_SECTIONS, GOVERNANCE_PILLARS, HUBS_UPDATED, HUB_DOC_SLUGS } from "../lib/hubs";
+import { BUILD_DOC_SLUGS, BUILD_UPDATED, QUESTIONS, USE_CASE_BRIEFS } from "../lib/build";
 import {
   AGENT_DEEP_DIVE,
   BOARD_DEEP_DIVE,
@@ -117,6 +118,22 @@ function checkDocument(d: RegDocument) {
   if (d.supersededBy && !DOCUMENTS.some((x) => x.slug === d.supersededBy)) err(`${at}: supersededBy "${d.supersededBy}" does not exist`);
   if (d.supersededBy && d.status !== "Superseded" && d.status !== "Withdrawn") warn(`${at}: has supersededBy but status is ${d.status}`);
   if (d.status === "Comment period open" && !d.commentDeadline) warn(`${at}: open for comment but no commentDeadline`);
+}
+
+function checkBuild() {
+  const at = "build";
+  if (!ISO.test(BUILD_UPDATED)) err(`${at}: BUILD_UPDATED not ISO`);
+  for (const slug of BUILD_DOC_SLUGS) if (!DOCUMENTS.some((d) => d.slug === slug)) err(`${at}: docSlug "${slug}" does not exist`);
+  for (const q of QUESTIONS) {
+    if (!q.question.trim().endsWith("?")) err(`${at}: question ${q.key} must be a question`);
+    if (q.options.length < 3) err(`${at}: question ${q.key} needs at least three options`);
+  }
+  for (const [u, b] of Object.entries(USE_CASE_BRIEFS)) {
+    if (b.intro.length < 300) err(`${at}: brief ${u} intro too short`);
+    if (b.decomposition.length < 4) err(`${at}: brief ${u} needs at least four decomposition steps`);
+    if (!b.decomposition.some((r) => r.owner === "human")) err(`${at}: brief ${u} has no step owned by a person`);
+    if (b.pitfalls.length < 3) err(`${at}: brief ${u} needs three pitfalls`);
+  }
 }
 
 function checkHubs() {
@@ -287,6 +304,7 @@ async function fetchStatus(url: string): Promise<number> {
   checkAgentOs();
   checkExecutiveBriefing();
   checkHubs();
+  checkBuild();
   checkBanks();
   for (const r of REGULATORS) {
     if (!DOCUMENTS.some((d) => d.authority === r.slug)) warn(`regulator ${r.slug} has no documents`);

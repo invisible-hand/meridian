@@ -12,6 +12,7 @@ export const AGENT_NAV = [
   { href: "/agentic-banking/control-plane", label: "control plane" },
   { href: "/agentic-banking/lifecycle", label: "lifecycle" },
   { href: "/agentic-banking/regulation", label: "what regulators say" },
+  { href: "/agentic-banking/build", label: "build map" },
   { href: "/ai-regulation", label: "tracker" },
   { href: "/banks", label: "banks" },
   { href: "#subscribe", label: "subscribe" }

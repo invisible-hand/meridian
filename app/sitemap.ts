@@ -6,6 +6,8 @@ import { BASE_URL } from "@/lib/seo";
 import { BANKS, BANKS_UPDATED, bankPath } from "@/lib/banks";
 import { AGENT_OS_UPDATED } from "@/lib/agent-os";
 import { HUBS_UPDATED } from "@/lib/hubs";
+import { BUILD_UPDATED } from "@/lib/build";
+import { USE_CASES } from "@/lib/regulators";
 
 // Revalidate at most every hour as a fallback. The send cron route invalidates
 // /sitemap.xml immediately after each successful send, so in practice the
@@ -55,6 +57,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: i === 0 ? 0.8 : 0.7
     })),
+    { url: `${BASE_URL}/agentic-banking/build`, lastModified: new Date(BUILD_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 },
+    ...USE_CASES.map((u) => ({ url: `${BASE_URL}/agentic-banking/build/${u}`, lastModified: new Date(BUILD_UPDATED), changeFrequency: "monthly" as const, priority: 0.7 })),
     ...["/ai-governance", "/ai-fraud-detection"].map((p) => ({ url: `${BASE_URL}${p}`, lastModified: new Date(HUBS_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 })),
     { url: `${BASE_URL}/banks`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/banks/ai-index`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.7 },

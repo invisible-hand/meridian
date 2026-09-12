@@ -46,6 +46,7 @@ ${BANKS.map((b) => `- [${b.name} AI strategy](${abs(bankPath(b))}): ${oneLine(b.
 - [AI agents in banking](${abs("/agentic-banking")}): An operating system for AI agents in a bank — eight control layers, the lifecycle, autonomy levels, and how regulators are moving, every claim sourced
 - [Control plane for AI agents](${abs("/agentic-banking/control-plane")}): The eight control layers, each with a quotable answer and its primary-source documents
 - [AI agent lifecycle](${abs("/agentic-banking/lifecycle")}): Eight gates from intake to retirement, with evidence and documents per gate
+- [The build map](${abs("/agentic-banking/build")}): A vendor-neutral design tool for AI systems inside a bank — ten questions produce a brief with pattern, controls, applicable documents, evals, human gates and examiner questions; twelve standard briefs by use case
 - [What regulators say about AI agents](${abs("/agentic-banking/regulation")}): Every documented position on agentic AI in banking, dated and quoted
 - [AI Regulation Tracker](${abs("/ai-regulation")}): Who regulates AI in banking — every authority, tracked
 - [All documents](${abs("/ai-regulation/documents")}): Every tracked regulatory document, newest first
