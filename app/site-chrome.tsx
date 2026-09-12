@@ -138,6 +138,8 @@ export const FOOTER_NAV: ChromeLink[] = [
   { href: "/issues", label: "archive" },
   { href: "/ai-regulation", label: "ai regulation tracker" },
   { href: "/agentic-banking", label: "ai agents in banking" },
+  { href: "/ai-governance", label: "ai governance" },
+  { href: "/ai-fraud-detection", label: "ai fraud detection" },
   { href: "/banks", label: "banks' ai strategies" },
   { href: "/about", label: "about" }
 ];

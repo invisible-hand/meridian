@@ -113,6 +113,8 @@ export function BankShell({
             { href: "/banks", label: "banks" },
             { href: "/ai-regulation", label: "tracker" },
             { href: "/agentic-banking", label: "ai agents" },
+            { href: "/ai-governance", label: "ai governance" },
+            { href: "/ai-fraud-detection", label: "ai fraud detection" },
             { href: "/ai-regulation/for-bank-executives", label: "for executives" },
             { href: "/issues", label: "archive" }
           ]}

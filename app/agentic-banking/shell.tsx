@@ -120,6 +120,8 @@ export function AgentShell({
             { href: "/agentic-banking/lifecycle", label: "lifecycle" },
             { href: "/agentic-banking/regulation", label: "what regulators say" },
             { href: "/ai-regulation", label: "tracker" },
+            { href: "/ai-governance", label: "ai governance" },
+            { href: "/ai-fraud-detection", label: "ai fraud detection" },
             { href: "/banks", label: "banks" },
             { href: "/ai-regulation/documents", label: "documents" },
             { href: "/issues", label: "archive" }
