@@ -25,6 +25,7 @@ export function siteInventory(): { label: string; path: string; line: string }[]
     { label: "Deadlines", path: "/ai-regulation/deadlines", line: "Every effective date and comment period that touches AI in banking, in one calendar." },
     { label: "Compliance checklist", path: "/ai-regulation/compliance-checklist", line: "Each obligation as a checkbox, with the document it comes from." },
     { label: "By use case", path: "/ai-regulation/by-use-case", line: "What applies to credit decisions, AML, fraud, chatbots, model risk and generative AI." },
+    { label: "AI governance and AI fraud detection", path: "/ai-governance", line: "Two topic hubs: what governance regulators require, pillar by pillar, and the warnings, rules and practice of AI against fraud." },
     { label: "Regulator warnings", path: "/ai-regulation/regulator-warnings", line: "What supervisors are warning banks about: deepfakes, AI-enabled cyber attacks, stability." },
     { label: `The ${BANK_COUNT} largest US banks`, path: "/banks", line: "Each bank's AI strategy from the public record: platforms, use cases, leaders, numbers, regulators, every claim sourced." },
     { label: "AI banks, ranked", path: "/banks/ai-index", line: "The same 100 banks ranked by what each has put on the record: platforms, use cases in production, leaders, numbers." },

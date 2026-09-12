@@ -41,6 +41,8 @@ Citation guidance: every document page links the regulator's own text — cite t
 - [Home](${abs("/")}): Subscribe to the daily brief
 - [AI strategy of the ${BANKS.length} largest US banks](${abs("/banks")}): Bank-by-bank pages on platforms, agents, budgets, headcount, leadership and regulators, every claim sourced
 ${BANKS.map((b) => `- [${b.name} AI strategy](${abs(bankPath(b))}): ${oneLine(b.posture, 140)}`).join("\n")}
+- [AI governance in banking](${abs("/ai-governance")}): Six pillars of AI governance for banks, each mapped to the documents that require it, with the banks that have disclosed arrangements
+- [AI fraud detection in banking](${abs("/ai-fraud-detection")}): What regulators warn about, the rules a bank's fraud models run under, public results, and the banks using AI against fraud
 - [AI agents in banking](${abs("/agentic-banking")}): An operating system for AI agents in a bank — eight control layers, the lifecycle, autonomy levels, and how regulators are moving, every claim sourced
 - [Control plane for AI agents](${abs("/agentic-banking/control-plane")}): The eight control layers, each with a quotable answer and its primary-source documents
 - [AI agent lifecycle](${abs("/agentic-banking/lifecycle")}): Eight gates from intake to retirement, with evidence and documents per gate

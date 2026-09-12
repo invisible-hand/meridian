@@ -5,6 +5,7 @@ import { DOCUMENTS, documentPath, latestDocumentUpdate } from "@/lib/tracker";
 import { BASE_URL } from "@/lib/seo";
 import { BANKS, BANKS_UPDATED, bankPath } from "@/lib/banks";
 import { AGENT_OS_UPDATED } from "@/lib/agent-os";
+import { HUBS_UPDATED } from "@/lib/hubs";
 
 // Revalidate at most every hour as a fallback. The send cron route invalidates
 // /sitemap.xml immediately after each successful send, so in practice the
@@ -54,6 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: i === 0 ? 0.8 : 0.7
     })),
+    ...["/ai-governance", "/ai-fraud-detection"].map((p) => ({ url: `${BASE_URL}${p}`, lastModified: new Date(HUBS_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 })),
     { url: `${BASE_URL}/banks`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/banks/ai-index`, lastModified: new Date(BANKS_UPDATED), changeFrequency: "weekly" as const, priority: 0.7 },
     ...BANKS.map((b) => ({

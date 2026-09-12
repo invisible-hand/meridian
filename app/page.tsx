@@ -240,6 +240,10 @@ export default async function HomePage() {
               {" · "}
               <Link href="/agentic-banking">an operating system for AI agents in your bank</Link>
               {" · "}
+              <Link href="/ai-governance">AI governance</Link>
+              {" and "}
+              <Link href="/ai-fraud-detection">AI fraud detection</Link>
+              {", mapped to the rules · "}
               <Link href="/banks">what the {BANK_COUNT} largest banks are doing with AI</Link>
             </span>
           </div>

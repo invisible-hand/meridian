@@ -10,6 +10,7 @@
 import { REGULATORS, USE_CASES, type RegDocument, type Regulator } from "../lib/regulators";
 import { DOCUMENTS } from "../lib/regulatory-documents";
 import { AGENT_OS_DOC_SLUGS, AGENT_OS_UPDATED, LAYERS, LIFECYCLE, TIMELINE } from "../lib/agent-os";
+import { FRAUD_SECTIONS, GOVERNANCE_PILLARS, HUBS_UPDATED, HUB_DOC_SLUGS } from "../lib/hubs";
 import {
   AGENT_DEEP_DIVE,
   BOARD_DEEP_DIVE,
@@ -116,6 +117,17 @@ function checkDocument(d: RegDocument) {
   if (d.supersededBy && !DOCUMENTS.some((x) => x.slug === d.supersededBy)) err(`${at}: supersededBy "${d.supersededBy}" does not exist`);
   if (d.supersededBy && d.status !== "Superseded" && d.status !== "Withdrawn") warn(`${at}: has supersededBy but status is ${d.status}`);
   if (d.status === "Comment period open" && !d.commentDeadline) warn(`${at}: open for comment but no commentDeadline`);
+}
+
+function checkHubs() {
+  const at = "hubs";
+  if (!ISO.test(HUBS_UPDATED)) err(`${at}: HUBS_UPDATED not ISO`);
+  for (const slug of HUB_DOC_SLUGS) if (!DOCUMENTS.some((d) => d.slug === slug)) err(`${at}: docSlug "${slug}" does not exist`);
+  for (const p of [...GOVERNANCE_PILLARS, ...FRAUD_SECTIONS]) {
+    if (!SLUG.test(p.id)) err(`${at}: section id "${p.id}" not kebab-case`);
+    if (!p.question.trim().endsWith("?")) err(`${at}: section ${p.id} question must be a question`);
+    if (p.answer.length < 200) err(`${at}: section ${p.id} answer too short to be quotable`);
+  }
 }
 
 function checkAgentOs() {
@@ -274,6 +286,7 @@ async function fetchStatus(url: string): Promise<number> {
   }
   checkAgentOs();
   checkExecutiveBriefing();
+  checkHubs();
   checkBanks();
   for (const r of REGULATORS) {
     if (!DOCUMENTS.some((d) => d.authority === r.slug)) warn(`regulator ${r.slug} has no documents`);
