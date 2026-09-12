@@ -76,8 +76,8 @@ export function Stack({ layers }: { layers: Record<LayerId, number> }) {
         return (
           <g key={id}>
             <text x={0} y={yy + 19} fontFamily={SANS} fontSize="12.5" fill={w >= 0.9 ? INK : SOFT}>{LAYER_NAMES[id]}</text>
-            <line x1={labelW} y1={yy + 15} x2={W} y2={yy + 15} stroke={HAIR} />
-            <rect x={labelW} y={yy + 9} width={W - labelW} height="12" rx="2" fill={ACCENT} className="bd-anim" style={{ transformOrigin: `${labelW}px ${yy + 15}px`, transform: `scaleX(${Math.max(w, 0.04)})`, opacity: 0.25 + 0.75 * w, transition: EASE }} />
+            <line x1={labelW} y1={yy + 15} x2={W - 78} y2={yy + 15} stroke={HAIR} />
+            <rect x={labelW} y={yy + 9} width={W - 78 - labelW} height="12" rx="2" fill={ACCENT} className="bd-anim" style={{ transformOrigin: `${labelW}px ${yy + 15}px`, transform: `scaleX(${Math.max(w, 0.04)})`, opacity: 0.25 + 0.75 * w, transition: EASE }} />
             <text x={W} y={yy + 19} textAnchor="end" fontFamily={MONO} fontSize="9.5" letterSpacing="1" fill={w >= 0.9 ? ACCENT : MUTED} className="bd-anim" style={{ transition: "fill 640ms" }}>{w >= 0.9 ? "CORE" : w >= 0.6 ? "STANDARD" : "LIGHT"}</text>
           </g>
         );
